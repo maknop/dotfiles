@@ -12,7 +12,7 @@ CASE_SENSITIVE="true"
 plugins=(git)
 
 # oh-my-zsh
-source $ZSH/.oh-my-zsh/oh-my-zsh.sh
+source $ZSH/oh-my-zsh.sh
 
 # tmux
 source ~/tmux.sh
