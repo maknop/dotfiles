@@ -2,6 +2,7 @@
 export ZSH=$HOME/.oh-my-zsh
 
 alias python=python3
+alias pip=pip3
 
 # Theme for oh-my-zsh
 # Link: https://github.com/dikiaap/dotfiles/blob/master/.oh-my-zsh/themes/oxide.zsh-theme
