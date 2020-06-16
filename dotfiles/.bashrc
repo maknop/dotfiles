@@ -9,3 +9,6 @@ alias mkdir='mkdir -pv'
 
 # Running python command is always version greater than 3
 alias python='python3'
+
+# Pip runs Pip3
+alias pip='pip3'
