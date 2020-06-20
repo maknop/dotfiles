@@ -34,4 +34,4 @@ fi
 
 # Symlink all the files
 echo Symlinking dotfiles into ${HOME}
-ln -sf $HOME/dotfiles/dotfiles/.[!.]* $HOME
+ln -sf $HOME/.dotfiles/dotfiles/.[!.]* $HOME
