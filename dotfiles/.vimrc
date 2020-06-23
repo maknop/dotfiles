@@ -96,7 +96,11 @@ nnoremap <leader>n :NERDTreeToggle<CR>
 "   Settings for Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "let &t_Co=256
-syntax enable
+syntax on
+
+highlight Normal ctermbg=None
+highlight LineNr ctermfg=DarkGrey
+
 filetype plugin indent on
 filetype plugin on
 
@@ -112,7 +116,8 @@ let g:ctrlp_custom_ignore= '\v(.*[\/](node_modules|doc|build|bin|gen|res)[\/].*)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-colorscheme citylights
+colorscheme onedark
+"colorscheme citylights
 " For dark
 "colorscheme bluewery
 "let g:lightline = { 'colorscheme': 'bluewery' }
