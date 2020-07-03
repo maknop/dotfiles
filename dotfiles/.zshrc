@@ -10,6 +10,7 @@ plugins=(git)
 
 # oh-my-zsh
 source $ZSH/oh-my-zsh.sh
+source ~/.zsh_aliases
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
