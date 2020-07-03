@@ -21,13 +21,16 @@ Plugin 'kien/ctrlp.vim'
 " Colorschemes
 Plugin 'relastle/bluewery.vim'
 
+" Installs fzf
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
 call vundle#end()    
 " Type PluginInstall
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Plugins - Python Programming
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Proper pep8 indents for python
 Bundle 'hynek/vim-python-pep8-indent'
 
