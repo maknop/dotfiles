@@ -1,4 +1,4 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Plugins - General 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Setting up Vundle
@@ -23,6 +23,13 @@ Plugin 'relastle/bluewery.vim'
 
 " Installs fzf
 Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
+" vim-airline
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+" vim theme - hybrid-material
+Plugin 'kristijanhusak/vim-hybrid-material'
 
 call vundle#end()    
 " Type PluginInstall
@@ -92,7 +99,8 @@ nnoremap ; :
 inoremap jj <ESC>
 inoremap JJ <ESC>
 
-nnoremap <leader>n :NERDTreeToggle<CR>
+" Open NERDTree with ctrl+n
+map <C-n> :NERDTreeToggle<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -120,13 +128,11 @@ let g:ctrlp_custom_ignore= '\v(.*[\/](node_modules|doc|build|bin|gen|res)[\/].*)
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 colorscheme onedark
+"set background=dark
+"colorscheme hybrid_material
+
+"air-line theme
+let g:airline_theme='hybrid'
+
 "colorscheme citylights
-" For dark
-"colorscheme bluewery
-"let g:lightline = { 'colorscheme': 'bluewery' }
-
-" For light
-"colorscheme bluewery-light
-"let g:lightline = { 'colorscheme': 'bluewery_light' }
-
 
