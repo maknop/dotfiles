@@ -18,15 +18,15 @@ Plugin 'scrooloose/nerdcommenter'
 " Ctlr-P Stuff
 Plugin 'kien/ctrlp.vim'
 
-" Colorschemes
-Plugin 'relastle/bluewery.vim'
-
 " Installs fzf
 Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
 " vim-airline
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+
+"  vim theme - Nord
+Plugin 'arcticicestudio/nord-vim'
 
 " vim theme - hybrid-material
 Plugin 'kristijanhusak/vim-hybrid-material'
@@ -127,6 +127,7 @@ let g:ctrlp_custom_ignore= '\v(.*[\/](node_modules|doc|build|bin|gen|res)[\/].*)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"colorscheme nord
 colorscheme onedark
 "set background=dark
 "colorscheme hybrid_material
