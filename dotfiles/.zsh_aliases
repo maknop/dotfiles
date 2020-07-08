@@ -10,7 +10,7 @@ alias mkd='mkdir -pv'
 # Running python command is always version >=3
 alias python='python3'
 
-# Pip runs Pip3
+# Pip jkjkkk
 alias pip='pip3'
 
 # Git
@@ -32,5 +32,7 @@ alias build='docker-compose build'
 
 # tmux
 alias t='tmux'
-alias ts='tmux ls'
-
+alias tl='tmux ls'
+alias tas='tmux attach-session -t' # <session-name>
+alias tk='tmux kill-session' 
+alias ts='tmux new -s' # <session-name> 
