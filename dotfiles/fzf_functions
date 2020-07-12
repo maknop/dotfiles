@@ -1,0 +1,9 @@
+export FZF_DEFAULT_OPTS='--height 40% --reverse'
+
+find * -type f | fzf > selected
+
+fe() {
+    local files
+    IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+    [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+}
