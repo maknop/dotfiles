@@ -96,8 +96,8 @@ nnoremap <C-p> :set paste!<cr>
 nnoremap ; :
 
 " Exiting insert mode
-inoremap jj <ESC>
-inoremap JJ <ESC>
+inoremap jk <ESC>
+inoremap JK <ESC>
 
 " Open NERDTree with ctrl+n
 map <C-n> :NERDTreeToggle<CR>
