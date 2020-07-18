@@ -20,6 +20,7 @@ Plugin 'kien/ctrlp.vim'
 
 " Installs fzf
 Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
 
 " vim-airline
 Plugin 'vim-airline/vim-airline'
