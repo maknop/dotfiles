@@ -9,6 +9,9 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+" Color schemes
+Plugin 'altercation/vim-colors-solarized'
+
 " NERDTree -- File browser in vim
 Plugin 'scrooloose/nerdtree'
 
@@ -28,11 +31,7 @@ Plugin 'jiangmiao/auto-pairs'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-" Tmux Line
-Plugin 'edkolev/tmuxline.vim'
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Plugins - Python Programming
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Proper pep8 indents for python
@@ -41,10 +40,13 @@ Plugin 'hynek/vim-python-pep8-indent'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Plugins - JavaScript Programming
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+" Beautifier for JavaScript
+Plugin 'beautify-web/js-beautify'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call vundle#end()    
+
+" :source %
 " Type PluginInstall
 
 
@@ -136,8 +138,4 @@ set background=light
 colorscheme solarized
 
 let g:solarized_termcolors=256
-
-let g:airline#extensions#tabline#enabled = 1
-let g:enable_bold_font = 1      " Code to be bolded
-let g:enable_italic_font = 1    " Comments italicized
 
