@@ -1,4 +1,4 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Plugins - General 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Setting up Vundle
@@ -20,27 +20,32 @@ Plugin 'kien/ctrlp.vim'
 
 " Installs fzf
 Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plugin 'junegunn/fzf.vim'
+
+" Insert or delete brackets, parens, quotes in pair
+Plugin 'jiangmiao/auto-pairs'
 
 " vim-airline
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-"  vim theme - Nord
-Plugin 'arcticicestudio/nord-vim'
+" Tmux Line
+Plugin 'edkolev/tmuxline.vim'
 
-" vim theme - hybrid-material
-Plugin 'kristijanhusak/vim-hybrid-material'
 
-call vundle#end()    
-" Type PluginInstall
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"   Plugins - Python Programming
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Proper pep8 indents for python
+Plugin 'hynek/vim-python-pep8-indent'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"   Plugins - JavaScript Programming
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"   Plugins - Python Programming
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Proper pep8 indents for python
-Bundle 'hynek/vim-python-pep8-indent'
+call vundle#end()    
+" Type PluginInstall
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -94,7 +99,7 @@ vnoremap <C-c> "+y
 nnoremap <C-p> :set paste!<cr>
 
 " Entering command mode with ; instead of :
-nnoremap ; :
+nnorema ; :
 
 " Exiting insert mode
 inoremap jk <ESC>
@@ -107,11 +112,8 @@ map <C-n> :NERDTreeToggle<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Settings for Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"let &t_Co=256
+let &t_Co=256
 syntax on
-
-highlight Normal ctermbg=None
-highlight LineNr ctermfg=DarkGrey
 
 filetype plugin indent on
 filetype plugin on
@@ -128,13 +130,14 @@ let g:ctrlp_custom_ignore= '\v(.*[\/](node_modules|doc|build|bin|gen|res)[\/].*)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"colorscheme nord
-colorscheme onedark
-"set background=dark
-"colorscheme hybrid_material
+set background=light
 
-"air-line theme
-let g:airline_theme='hybrid'
+"colorscheme onedark
+colorscheme solarized
 
-"colorscheme citylights
+let g:solarized_termcolors=256
+
+let g:airline#extensions#tabline#enabled = 1
+let g:enable_bold_font = 1      " Code to be bolded
+let g:enable_italic_font = 1    " Comments italicized
 
