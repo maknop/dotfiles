@@ -121,7 +121,7 @@ map <C-n> :NERDTreeToggle<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Settings for Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"let &t_Co=256
+let t_Co=256
 syntax on
 
 filetype plugin indent on
@@ -139,10 +139,9 @@ let g:ctrlp_custom_ignore= '\v(.*[\/](node_modules|doc|build|bin|gen|res)[\/].*)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set background=light
+"set background=dark
 
-"colorscheme onedark
-colorscheme solarized
-
-let g:solarized_termcolors=256
+colorscheme onedark
+"colorscheme solarized
+let g:airline_theme='onedark'
 
