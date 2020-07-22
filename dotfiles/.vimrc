@@ -44,6 +44,13 @@ Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'beautify-web/js-beautify'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"   Plugins - JavaScript Programming
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Auto-complete for Java
+Plugin 'artur-shaik/vim-javacomplete2'
+
+
+" Required for Vundle
 call vundle#end()    
 
 " :source %
@@ -114,7 +121,7 @@ map <C-n> :NERDTreeToggle<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Settings for Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let &t_Co=256
+"let &t_Co=256
 syntax on
 
 filetype plugin indent on
