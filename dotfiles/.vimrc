@@ -11,6 +11,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 " Color schemes
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'morhetz/gruvbox'
 
 " NERDTree -- File browser in vim
 Plugin 'scrooloose/nerdtree'
@@ -140,8 +141,9 @@ let g:ctrlp_custom_ignore= '\v(.*[\/](node_modules|doc|build|bin|gen|res)[\/].*)
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "set background=dark
-
-colorscheme onedark
+colorscheme gruvbox
+"colorscheme onedark
 "colorscheme solarized
+let g:gruvbox_contrast_dark="soft"
 let g:airline_theme='onedark'
 
