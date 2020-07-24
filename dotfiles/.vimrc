@@ -79,8 +79,6 @@ set mouse=a
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set tabstop=4                   " Indent to four spaces
 set expandtab                   " Spaces, not tabs
-set autoindent
-set smartindent
 set wrap                        " Lines wrap
 set cursorcolumn                " Column cursorline
 
@@ -144,6 +142,6 @@ let g:ctrlp_custom_ignore= '\v(.*[\/](node_modules|doc|build|bin|gen|res)[\/].*)
 colorscheme gruvbox
 "colorscheme onedark
 "colorscheme solarized
-let g:gruvbox_contrast_dark="soft"
+let g:gruvbox_contrast_dark="hard"
 let g:airline_theme='onedark'
 
