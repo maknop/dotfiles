@@ -35,6 +35,9 @@ Plugin 'Rainbow-Parenthesis'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
+" Markdown preview
+Plugin 'JamshedVesuna/vim-markdown-preview'
+
 """""""""""""""""""""""""""""""""""""""
 "   Plugins - Python Programming
 """""""""""""""""""""""""""""""""""""""
@@ -158,11 +161,14 @@ augroup fzf
     \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 augroup END
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vim markdown preview configurations
+let vim_markdown_preview_hotkey='<C-m>'
+let vim_markdown_preview_browser='Google Chrome'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 colorscheme gruvbox
 "colorscheme onedark
 "colorscheme solarized
-let g:gruvbox_contrast_dark="hard"
+let g:gruvbox_contrast_dark="soft"
 
