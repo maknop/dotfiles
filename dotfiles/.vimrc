@@ -158,5 +158,5 @@ augroup END
 colorscheme gruvbox
 "colorscheme onedark
 "colorscheme solarized
-let g:gruvbox_contrast_dark="medium"
+let g:gruvbox_contrast_dark="hard"
 
