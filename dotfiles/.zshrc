@@ -11,12 +11,7 @@ plugins=(git)
 # oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 source ~/.zsh_aliases
-source ~/powerlevel10k/powerlevel10k.zsh-theme
 tmux source ~/.tmux.conf
 source ~/functions
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
 
