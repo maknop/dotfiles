@@ -1,4 +1,4 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Plugins - General 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Setting up Vundle
@@ -46,6 +46,12 @@ Plugin 'hynek/vim-python-pep8-indent'
 """""""""""""""""""""""""""""""""""""""
 " Beautifier for JavaScript
 Plugin 'beautify-web/js-beautify'
+
+" Documentation for Javascript
+Plugin 'heavenshell/vim-jsdoc', { 
+  \ 'for': ['javascript', 'javascript.jsx','typescript'], 
+  \ 'do': 'make install'
+  \}
 
 """""""""""""""""""""""""""""""""""""""
 "   Plugins - JavaScript Programming
