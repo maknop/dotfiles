@@ -24,29 +24,32 @@ Plugin 'kien/ctrlp.vim'
 
 " Installs fzf
 Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
 
 " Insert or delete brackets, parens, quotes in pair
 Plugin 'jiangmiao/auto-pairs'
+
+Plugin 'Rainbow-Parenthesis'
 
 " vim-airline
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""
 "   Plugins - Python Programming
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""
 " Proper pep8 indents for python
 Plugin 'hynek/vim-python-pep8-indent'
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""
 "   Plugins - JavaScript Programming
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""
 " Beautifier for JavaScript
 Plugin 'beautify-web/js-beautify'
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""
 "   Plugins - JavaScript Programming
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""
 " Auto-complete for Java
 Plugin 'artur-shaik/vim-javacomplete2'
 
@@ -79,6 +82,8 @@ set mouse=a
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set tabstop=4                   " Indent to four spaces
 set expandtab                   " Spaces, not tabs
+set autoindent
+set smartindent
 set wrap                        " Lines wrap
 set cursorcolumn                " Column cursorline
 
@@ -120,7 +125,7 @@ map <C-n> :NERDTreeToggle<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Settings for Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let t_Co=256
+"let t_Co=256
 syntax on
 
 filetype plugin indent on
@@ -134,14 +139,24 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 set wildignore+=*.class,*.o,*.a,*.pyc
 let g:ctrlp_custom_ignore= '\v(.*[\/](node_modules|doc|build|bin|gen|res)[\/].*)|(*.(o|class))'
 
+" FZF commands
+let g:fzf_action = {
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit'
+      \ }
+nnoremap <c-p> :Files<cr>
+augroup fzf
+  autocmd!
+  autocmd! FileType fzf
+  autocmd  FileType fzf set laststatus=0 noshowmode noruler
+    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"set background=dark
 colorscheme gruvbox
 "colorscheme onedark
 "colorscheme solarized
-let g:gruvbox_contrast_dark="hard"
-let g:airline_theme='onedark'
+let g:gruvbox_contrast_dark="medium"
 
