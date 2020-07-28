@@ -8,10 +8,9 @@ ZSH_THEME="oxide"
 # Plugins loaded
 plugins=(git)
 
-# oh-my-zsh
+# Source other configuration files
+tmux source ~/.tmux.conf
 source $ZSH/oh-my-zsh.sh
 source ~/.zsh_aliases
-tmux source ~/.tmux.conf
 source ~/functions
-source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
 
