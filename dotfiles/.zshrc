@@ -8,6 +8,8 @@ ZSH_THEME="oxide"
 # Plugins loaded
 plugins=(git)
 
+alias tmux="TERM=screen-256color-bce tmux"
+
 # Source other configuration files
 tmux source ~/.tmux.conf
 source $ZSH/oh-my-zsh.sh
