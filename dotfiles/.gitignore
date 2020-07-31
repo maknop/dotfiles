@@ -1,0 +1,6 @@
+# Java stuff
+*.javac
+
+# Mac stuff
+.DS_Store
+
