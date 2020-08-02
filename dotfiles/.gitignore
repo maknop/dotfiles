@@ -1,6 +1,9 @@
 # Java stuff
-*.javac
+*.class
 
 # Mac stuff
 .DS_Store
 
+# Environments
+.env
+.venv
