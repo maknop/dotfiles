@@ -59,8 +59,8 @@ Plugin 'heavenshell/vim-jsdoc', {
 " Javascript indentation help
 Plugin 'JavaScript-Indent'
 
-""""""""""""""""""""""""""""""""""""""
-"   Plugins - JavaScript Programming
+"""""""""""""""""""""""""""""""""""""""
+" Plugins - Java Programming
 """""""""""""""""""""""""""""""""""""""
 " Auto-complete for Java
 Plugin 'artur-shaik/vim-javacomplete2'
