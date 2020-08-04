@@ -56,7 +56,10 @@ Plugin 'heavenshell/vim-jsdoc', {
   \ 'do': 'make install'
   \}
 
-"""""""""""""""""""""""""""""""""""""""
+" Javascript indentation help
+Plugin 'JavaScript-Indent'
+
+""""""""""""""""""""""""""""""""""""""
 "   Plugins - JavaScript Programming
 """""""""""""""""""""""""""""""""""""""
 " Auto-complete for Java
