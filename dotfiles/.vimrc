@@ -170,6 +170,7 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set background=dark
 colorscheme gruvbox
 "colorscheme onedark
 "colorscheme solarized
