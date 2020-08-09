@@ -38,39 +38,21 @@ Plugin 'vim-airline/vim-airline-themes'
 " Markdown preview
 Plugin 'JamshedVesuna/vim-markdown-preview'
 
-"""""""""""""""""""""""""""""""""""""""
-"   Plugins - Python Programming
-"""""""""""""""""""""""""""""""""""""""
 " Proper pep8 indents for python
-Plugin 'hynek/vim-python-pep8-indent'
+Plugin 'hynek/vim-python-pep8-indent'   # Python 
 
-"""""""""""""""""""""""""""""""""""""""
-"   Plugins - JavaScript Programming
-"""""""""""""""""""""""""""""""""""""""
 " Beautifier for JavaScript
-Plugin 'beautify-web/js-beautify'
-
-" Documentation for Javascript
-Plugin 'heavenshell/vim-jsdoc', { 
-  \ 'for': ['javascript', 'javascript.jsx','typescript'], 
-  \ 'do': 'make install'
-  \}
+Plugin 'beautify-web/js-beautify'       # JavaScript
 
 " Javascript indentation help
-Plugin 'JavaScript-Indent'
+Plugin 'JavaScript-Indent'              # JavaScript
 
-"""""""""""""""""""""""""""""""""""""""
-" Plugins - Java Programming
-"""""""""""""""""""""""""""""""""""""""
 " Auto-complete for Java
-Plugin 'artur-shaik/vim-javacomplete2'
+Plugin 'artur-shaik/vim-javacomplete2'  # Java
 
 
 " Required for Vundle
 call vundle#end()    
-
-" :source %
-" Type PluginInstall
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -167,12 +149,14 @@ augroup END
 " Vim markdown preview configurations
 let vim_markdown_preview_hotkey='<C-m>'
 let vim_markdown_preview_browser='Google Chrome'
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set background=dark
-colorscheme gruvbox
 "colorscheme onedark
 "colorscheme solarized
+
+colorscheme gruvbox
 let g:gruvbox_contrast_dark="soft"
 
