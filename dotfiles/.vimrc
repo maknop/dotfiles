@@ -39,20 +39,23 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'JamshedVesuna/vim-markdown-preview'
 
 " Proper pep8 indents for python
-Plugin 'hynek/vim-python-pep8-indent'   # Python 
+Plugin 'hynek/vim-python-pep8-indent'   " Python 
 
 " Beautifier for JavaScript
-Plugin 'beautify-web/js-beautify'       # JavaScript
+Plugin 'beautify-web/js-beautify'       " JavaScript
 
 " Javascript indentation help
-Plugin 'JavaScript-Indent'              # JavaScript
+Plugin 'JavaScript-Indent'              " JavaScrip
 
 " Auto-complete for Java
-Plugin 'artur-shaik/vim-javacomplete2'  # Java
+Plugin 'artur-shaik/vim-javacomplete2'  " Java
 
 
 " Required for Vundle
 call vundle#end()    
+
+" :source %
+" Type PluginInstall
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
