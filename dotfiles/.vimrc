@@ -1,4 +1,4 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Plugins - General 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Setting up Vundle
@@ -41,11 +41,8 @@ Plugin 'JamshedVesuna/vim-markdown-preview'
 " Proper pep8 indents for python
 Plugin 'hynek/vim-python-pep8-indent'   " Python 
 
-" Indentation and syntax for html
-Plugin 'othree/html5.vim'               " HTML
-
 " Auto-complete tags in html
-Plugin 'alvan/vim-closetag'             "HTML
+Plugin 'alvan/vim-closetag'             " HTML
 
 " Beautifier for JavaScript
 Plugin 'beautify-web/js-beautify'       " JavaScript
@@ -126,13 +123,14 @@ map <C-n> :NERDTreeToggle<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"   Settings for Plugins
+"   General/Plugin Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"let t_Co=256
 syntax on
-
 filetype plugin indent on
 filetype plugin on
+
+set tabstop=4
+set shiftwidth=4
 
 " Nerdtree settings
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
