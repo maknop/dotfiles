@@ -1,4 +1,4 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Plugins - General 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Setting up Vundle
@@ -41,11 +41,17 @@ Plugin 'JamshedVesuna/vim-markdown-preview'
 " Proper pep8 indents for python
 Plugin 'hynek/vim-python-pep8-indent'   " Python 
 
+" Indentation and syntax for html
+Plugin 'othree/html5.vim'               " HTML
+
+" Auto-complete tags in html
+Plugin 'alvan/vim-closetag'             "HTML
+
 " Beautifier for JavaScript
 Plugin 'beautify-web/js-beautify'       " JavaScript
 
 " Javascript indentation help
-Plugin 'JavaScript-Indent'              " JavaScrip
+Plugin 'JavaScript-Indent'              " JavaScript
 
 " Auto-complete for Java
 Plugin 'artur-shaik/vim-javacomplete2'  " Java
@@ -156,10 +162,10 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set background=dark
+set background=light
 "colorscheme onedark
-"colorscheme solarized
+colorscheme solarized
 
-colorscheme gruvbox
-let g:gruvbox_contrast_dark="soft"
+"colorscheme gruvbox
+"let g:gruvbox_contrast_dark="soft"
 
