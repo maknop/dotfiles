@@ -160,10 +160,10 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set background=light
+set background=dark
 "colorscheme onedark
-colorscheme solarized
+"colorscheme solarized
 
-"colorscheme gruvbox
-"let g:gruvbox_contrast_dark="soft"
+colorscheme gruvbox
+let g:gruvbox_contrast_dark="soft"
 
