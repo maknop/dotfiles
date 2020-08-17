@@ -2,6 +2,7 @@
 "   Plugins - General 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Setting up Vundle
+set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/vundle.vim
 call vundle#begin()
@@ -160,10 +161,10 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set background=light
+"set background=light
 "colorscheme onedark
-colorscheme solarized
+"colorscheme solarized
 
-"colorscheme gruvbox
-"let g:gruvbox_contrast_dark="soft"
+colorscheme gruvbox
+let g:gruvbox_contrast_dark="hard"
 
