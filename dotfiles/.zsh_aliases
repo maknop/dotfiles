@@ -26,6 +26,10 @@ alias v='vim'
 alias jc='javac'
 alias j='java'
 
+# C Programming, compile and execute
+alias c = "gcc"
+alias o = "--output"
+
 # Docker
 alias up='docker-compose up'
 alias build='docker-compose build'
