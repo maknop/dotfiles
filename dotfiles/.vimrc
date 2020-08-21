@@ -39,6 +39,9 @@ Plugin 'vim-airline/vim-airline-themes'
 " Markdown preview
 Plugin 'JamshedVesuna/vim-markdown-preview'
 
+" Vim Personal Wiki
+Plugin 'vimwiki/vimwiki'
+
 " Proper pep8 indents for python
 Plugin 'hynek/vim-python-pep8-indent'   " Python 
 
@@ -161,18 +164,10 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-<<<<<<< HEAD
 set background=dark
-=======
-"set background=light
->>>>>>> be1cb826a47f9b98f2c67acbe467f59e3ce1cf93
 "colorscheme onedark
 "colorscheme solarized
 
 colorscheme gruvbox
-<<<<<<< HEAD
 let g:gruvbox_contrast_dark="soft"
-=======
-let g:gruvbox_contrast_dark="hard"
->>>>>>> be1cb826a47f9b98f2c67acbe467f59e3ce1cf93
 
