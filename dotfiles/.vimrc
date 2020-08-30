@@ -48,7 +48,10 @@ Plugin 'hynek/vim-python-pep8-indent'   " Python
 " Auto-complete tags in html
 Plugin 'alvan/vim-closetag'             " HTML
 
-" Beautifier for JavaScript
+" Better CSS Highlighting for Vim
+Plugin 'hail2u/vim-css3-syntax'         " CSS
+
+"Beautifier for JavaScript
 Plugin 'beautify-web/js-beautify'       " JavaScript
 
 " Javascript indentation help
