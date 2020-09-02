@@ -1,6 +1,6 @@
 # Command 'ls' shows all files including dotfiles
-alias ls='ls -A'
-alias ll='ls -alF'
+# alias ls='ls -A'
+# alias ll='ls -alF'
 # Moving a file gives an explanation
 alias mv='mv -v'
 
@@ -26,10 +26,6 @@ alias v='vim'
 alias jc='javac'
 alias j='java'
 
-# C Programming, compile and execute
-alias c = "gcc"
-alias o = "--output"
-
 # Docker
 alias up='docker-compose up'
 alias build='docker-compose build'
@@ -37,6 +33,8 @@ alias build='docker-compose build'
 # tmux
 alias t='tmux'
 alias tl='tmux ls'
-alias tas='tmux attach-session -t' # <session-name>
+alias ta='tmux attach-session -t' # <session-name>
 alias tk='tmux kill-session' 
 alias ts='tmux new -s' # <session-name> 
+
+alias myserver=${MYSERVER}
