@@ -37,4 +37,5 @@ alias ta='tmux attach-session -t' # <session-name>
 alias tk='tmux kill-session' 
 alias ts='tmux new -s' # <session-name> 
 
+# Access to cloud server
 alias myserver=${MYSERVER}
