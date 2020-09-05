@@ -40,10 +40,10 @@ echo Symlinking dotfiles into ${HOME}
 ln -sf $HOME/.dotfiles/dotfiles/.[!.]* $HOME
 
 echo Making zsh the default shell...
-
+chsh -s /bin/zsh 
 
 echo Copying oxide theme into themes folder in oh-my-zsh directory...
-cp $HOME/dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
+cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
 
 
 
