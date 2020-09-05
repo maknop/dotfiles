@@ -3,7 +3,7 @@ export ZSH=$HOME/.oh-my-zsh
 
 # Theme for oh-my-zsh
 # Link: https://github.com/dikiaap/dotfiles/blob/master/.oh-my-zsh/themes/oxide.zsh-theme
-ZSH_THEME="amuse"
+ZSH_THEME="oxide"
 
 # Plugins loaded
 plugins=(git)
