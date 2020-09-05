@@ -16,10 +16,12 @@ if (( $? != 0 )) ; then
 fi
 
 # Installs oh-my-zsh as alternative to bash
+echo
 echo Installing Oh-My-Zsh as shell alternative to Bash
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Sets zsh as default shell, after checking OS
+echo
 echo Making zsh the default shell for your terminal...
 if (( "$OSTYPE" == "linux-gnu"* )); then  # Unix
     sudo chsh -s /bin/zsh 
@@ -30,29 +32,38 @@ fi
 # Clone dotfiles if they aren't present
 if [ ! -d "$HOME/.dotfiles" ]; then
     # Clone the dotfiles
+    echo
     echo Cloning remote dotfiles...
     git clone --recursive https://github.com/${repository_location} -b ${repository_branch} ${HOME}/.dotfiles
     git_exit_status=$?
 fi
 
 # Pull the most updated copy
+echo
 echo Pulling most updated copy of dotfiles...
 cd $HOME/.dotfiles && git pull
 git_exit_status=$?
 
 # If the clone/pull operation failed, exit with the exit status provided by git
 if (( $git_exit_status != 0 )) ; then
+    echo
     echo There was an error while attempting to clone/pull dotfiles! 1>&2
     exit $git_exit_status
+elif (($git_exit_status == 0)) ; then
+    echo
+    echo Successfully clone/pulled dotfiles!
 fi
 
 # Symlink all the files
+echo
 echo Symlinking dotfiles into ${HOME}
 ln -sf $HOME/.dotfiles/dotfiles/.[!.]* $HOME
 
+echo
 echo Copying oxide theme into themes folder in oh-my-zsh directory...
 cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
 
+echo
 echo Setup Vundle for VIM package management...
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
