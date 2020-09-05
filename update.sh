@@ -8,6 +8,7 @@ repository_branch="master"
 dotfiles_folder="dotfiles"
 
 # Check that git is installed
+echo Verifying that Git is installed...
 command -v git > /dev/null 2>&1
 if (( $? != 0 )) ; then
     echo Git is required to update dotfiles 1>&2
@@ -15,7 +16,16 @@ if (( $? != 0 )) ; then
 fi
 
 # Installs oh-my-zsh as alternative to bash
+echo Installing Oh-My-Zsh as shell alternative to Bash
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Sets zsh as default shell, after checking OS
+echo Making zsh the default shell for your terminal...
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then  # Unix
+    sudo chsh -s /bin/zsh 
+elif [[ "$OSTYPE" == "darwin"* ]]; then   # MacOS 
+    chsh -s /bin/zsh 
+fi
 
 # Clone dotfiles if they aren't present
 if [ ! -d "$HOME/.dotfiles" ]; then
@@ -26,6 +36,7 @@ if [ ! -d "$HOME/.dotfiles" ]; then
 fi
 
 # Pull the most updated copy
+echo Pulling most updated copy of dotfiles...
 cd $HOME/.dotfiles && git pull
 git_exit_status=$?
 
@@ -39,14 +50,9 @@ fi
 echo Symlinking dotfiles into ${HOME}
 ln -sf $HOME/.dotfiles/dotfiles/.[!.]* $HOME
 
-# Checks if OS is Unix or MacOS
-echo Making zsh the default shell...
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    sudo chsh -s /bin/zsh 
-elif [[ "$OSTYPE" == "darwin"* ]]; then        
-    chsh -s /bin/zsh 
-fi
-
 echo Copying oxide theme into themes folder in oh-my-zsh directory...
 cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
+
+echo Setup Vundle for VIM package management...
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
