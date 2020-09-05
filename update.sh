@@ -39,8 +39,13 @@ fi
 echo Symlinking dotfiles into ${HOME}
 ln -sf $HOME/.dotfiles/dotfiles/.[!.]* $HOME
 
+# Checks if OS is Unix or MacOS
 echo Making zsh the default shell...
-chsh -s /bin/zsh 
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    sudo chsh -s /bin/zsh 
+elif [[ "$OSTYPE" == "darwin"* ]]; then        
+    chsh -s /bin/zsh 
+fi
 
 echo Copying oxide theme into themes folder in oh-my-zsh directory...
 cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
