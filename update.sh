@@ -21,9 +21,9 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 
 # Sets zsh as default shell, after checking OS
 echo Making zsh the default shell for your terminal...
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then  # Unix
+if (( "$OSTYPE" == "linux-gnu"* )); then  # Unix
     sudo chsh -s /bin/zsh 
-elif [[ "$OSTYPE" == "darwin"* ]]; then   # MacOS 
+elif (( "$OSTYPE" == "darwin"* )); then   # MacOS 
     chsh -s /bin/zsh 
 fi
 
