@@ -14,6 +14,9 @@ if (( $? != 0 )) ; then
     exit 1
 fi
 
+# Installs oh-my-zsh as alternative to bash
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 # Clone dotfiles if they aren't present
 if [ ! -d "$HOME/.dotfiles" ]; then
     # Clone the dotfiles
@@ -35,3 +38,12 @@ fi
 # Symlink all the files
 echo Symlinking dotfiles into ${HOME}
 ln -sf $HOME/.dotfiles/dotfiles/.[!.]* $HOME
+
+echo Making zsh the default shell...
+
+
+echo Copying oxide theme into themes folder in oh-my-zsh directory...
+cp $HOME/dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
+
+
+
