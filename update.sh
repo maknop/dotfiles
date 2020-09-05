@@ -45,5 +45,5 @@ chsh -s /bin/zsh
 echo Copying oxide theme into themes folder in oh-my-zsh directory...
 cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
 
-
-
+echo Sourcing zshrc file...
+source ~/.zshrc
