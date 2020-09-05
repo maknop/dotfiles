@@ -10,6 +10,11 @@ into your favorite terminal.
 curl https://raw.githubusercontent.com/maknop/dotfiles/master/update.sh | sh
 ```
 
+You will want to then source the zshrc file.
+```
+source ~/.zshrc
+```
+
 My vimrc utilizes Vundle for package management so you'll
 want to run this command when .vimrc file is opened to 
 install all packages:
