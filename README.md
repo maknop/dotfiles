@@ -23,4 +23,4 @@ install all packages:
 ```
 
 ### Acknowledgements
-Thank you [gizmo385](https://github.com/gizmo385/dotfiles) for the help! 😁 
+Thank you [gizmo385](https://github.com/gizmo385/dotfiles) for the help 😁 
