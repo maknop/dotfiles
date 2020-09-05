@@ -57,4 +57,4 @@ cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
 
 echo Setup Vundle for VIM package management...
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/autoload/Vundle.vim
-
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
