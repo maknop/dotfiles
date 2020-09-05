@@ -58,6 +58,6 @@ cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
 echo Setup Vundle for VIM package management...
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-echo -e "\nRun :PluginInstall when starting vim if plugins are not installed." 
+echo Run :PluginInstall when starting vim if plugins are not installed. 
 
-echo -e "\nFinished installing dotfiles. Please source the relevant files for your shell."
+echo Finished installing dotfiles. Please source the relevant files for your shell.
