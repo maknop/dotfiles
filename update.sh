@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Set the location of the repository on github
 repository_location="maknop/dotfiles"
