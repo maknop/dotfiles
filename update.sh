@@ -56,5 +56,4 @@ echo Copying oxide theme into themes folder in oh-my-zsh directory...
 cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
 
 echo Setup Vundle for VIM package management...
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/autoload/Vundle.vim
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
