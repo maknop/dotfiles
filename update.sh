@@ -41,10 +41,10 @@ cd $HOME/.dotfiles && git pull
 git_exit_status=$?
 
 # If the clone/pull operation failed, exit with the exit status provided by git
-if [ $git_exit_status != 0 ] ; then
+if (( $git_exit_status != 0 )); then
     echo There was an error while attempting to clone/pull dotfiles! 1>&2
     exit $git_exit_status
-elif [ $git_exit_status == 0 ] ; then
+elif (( $git_exit_status == 0 )); then
     echo Successfully clone/pulled dotfiles!
 fi
 
@@ -57,3 +57,7 @@ cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
 
 echo Setup Vundle for VIM package management...
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+echo Run :PluginInstall when starting vim if plugins are not installed. 
+
+echo Finished installing dotfiles. Please source the relevant files for your shell.
