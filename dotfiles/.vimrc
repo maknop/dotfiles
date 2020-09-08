@@ -23,10 +23,6 @@ Plugin 'scrooloose/nerdcommenter'
 " Ctlr-P Stuff
 Plugin 'kien/ctrlp.vim'
 
-" Installs fzf
-Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plugin 'junegunn/fzf.vim'
-
 " Insert or delete brackets, parens, quotes in pair
 Plugin 'jiangmiao/auto-pairs'
 
@@ -60,6 +56,8 @@ Plugin 'JavaScript-Indent'              " JavaScript
 " Auto-complete for Java
 Plugin 'artur-shaik/vim-javacomplete2'  " Java
 
+Plugin 'dart-lang/dart-vim-plugin'      " Dart
+Plugin 'thosakwe/vim-flutter'           " Dart
 
 " Required for Vundle
 call vundle#end()    
@@ -128,6 +126,15 @@ inoremap JK <ESC>
 " Open NERDTree with ctrl+n
 map <C-n> :NERDTreeToggle<CR>
 
+" Enable Flutter menu
+call FlutterMenu()
+
+" Flutter key mapping
+nnoremap <leader>fa :FlutterRun<cr>
+nnoremap <leader>fq :FlutterQuit<cr>
+nnoremap <leader>fr :FlutterHotReload<cr>
+nnoremap <leader>fR :FlutterHotRestart<cr>
+nnoremap <leader>fD :FlutterVisualDebug<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   General/Plugin Settings
