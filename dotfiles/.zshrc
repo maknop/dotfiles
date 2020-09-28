@@ -1,9 +1,12 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Theme for oh-my-zsh
-# Link: https://github.com/dikiaap/dotfiles/blob/master/.oh-my-zsh/themes/oxide.zsh-theme
-ZSH_THEME="oxide"
+if [[ 'uname' == "Darwin" ]]; then
+    # Theme for oh-my-zsh
+    # Link: https://github.com/dikiaap/dotfiles/blob/master/.oh-my-zsh/themes/oxide.zsh-theme
+    ZSH_THEME="oxide"
+elif [['uname' == "Linux" ]]; then
+    ZSH_THEME="eastwood"
 
 # Plugins loaded
 plugins=(git)
