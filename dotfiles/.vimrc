@@ -126,9 +126,6 @@ inoremap JK <ESC>
 " Open NERDTree with ctrl+n
 map <C-n> :NERDTreeToggle<CR>
 
-" Enable Flutter menu
-call FlutterMenu()
-
 " Flutter key mapping
 nnoremap <leader>fa :FlutterRun<cr>
 nnoremap <leader>fq :FlutterQuit<cr>
