@@ -59,6 +59,7 @@ echo Creating a vim directory.
 if [ ! -d "$HOME/.vim" ]; then 
     echo Creating a vim folder...
     mkdir .vim
+    mkdir .vim/bundle
 fi
 
 echo Setup Vundle for VIM package management...
