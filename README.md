@@ -7,7 +7,7 @@ My dotfiles work specifically with a MacOS  development environment
 Navigate to your root directory and copy/paste the following  
 into your favorite terminal.
 ```
-curl https://raw.githubusercontent.com/maknop/dotfiles/master/update.sh | sh
+curl https://github.com/maknop/dotfiles/blob/main/update.sh | sh
 ```
 
 You will want to then source the zshrc file.
