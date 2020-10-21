@@ -55,6 +55,13 @@ ln -sf $HOME/.dotfiles/dotfiles/.[!.]* $HOME
 echo Copying oxide theme into themes folder in oh-my-zsh directory...
 cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
 
+echo Creating a vim directory.
+if [ ! -d "$HOME/.vim" ]; then 
+    echo Creating a vim folder...
+    mkdir .vim
+    mkdir .vim/bundle
+fi
+
 echo Setup Vundle for VIM package management...
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
