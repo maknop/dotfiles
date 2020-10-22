@@ -104,7 +104,10 @@ nnoremap k gk
 nnoremap H ^
 nnoremap L $
 
-" Change windows with <C-movement>
+" Rebind back a word keys
+nnoremap w b
+
+"Change windows with <C-movement>
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
