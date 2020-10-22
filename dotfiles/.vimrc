@@ -53,9 +53,14 @@ Plugin 'beautify-web/js-beautify'       " JavaScript
 " Javascript indentation help
 Plugin 'JavaScript-Indent'              " JavaScript
 
+" JSX Syntax Highlighting
+Plugin 'pangloss/vim-javascript'        " React JS
+Plugin 'mxw/vim-jsx'
+
 " Auto-complete for Java
 Plugin 'artur-shaik/vim-javacomplete2'  " Java
 
+" Vim support for Dart/Flutter
 Plugin 'dart-lang/dart-vim-plugin'      " Dart
 Plugin 'thosakwe/vim-flutter'           " Dart
 
