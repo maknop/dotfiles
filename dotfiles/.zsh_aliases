@@ -34,7 +34,7 @@ alias build='docker-compose build'
 alias t='tmux'
 alias tl='tmux ls'
 alias ta='tmux attach-session -t' # <session-name>
-alias tk='tmux kill-session' 
+alias tk='tmux kill-session -t' 
 alias ts='tmux new -s' # <session-name> 
 
 # Access to cloud server
