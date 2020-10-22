@@ -6,6 +6,7 @@ My dotfiles work specifically with a MacOS  development environment
 - [Installation](https://github.com/maknop/dotfiles#installation)
 - [Vim Commands](https://github.com/maknop/dotfiles#vim-commands)
 - [Tmux Commands](https://github.com/maknop/dotfiles#tmux-commands)
+- [Acknowledgements](https://github.com/maknop/dotfiles#acknowledgements)
 
 ## Installation
 Navigate to your root directory and copy/paste the following  
