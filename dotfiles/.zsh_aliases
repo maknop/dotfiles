@@ -29,6 +29,7 @@ alias j='java'
 # Docker
 alias up='docker-compose up'
 alias build='docker-compose build'
+alias upbuild='docker-compose up -d --build'
 
 # tmux
 alias t='tmux'
