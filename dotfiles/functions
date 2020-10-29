@@ -5,3 +5,8 @@ function kdock {
     docker kill $(docker ps -q)
     docker rm $(docker ps -a -q)
 }
+
+function kdc {
+    docker-compose stop
+    docker-compose rm
+}
