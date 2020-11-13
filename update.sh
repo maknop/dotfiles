@@ -52,6 +52,10 @@ fi
 echo Symlinking dotfiles into ${HOME}
 ln -sf $HOME/.dotfiles/dotfiles/.[!.]* $HOME
 
+if (( "$OSTYPE" == "linux-gnu"* )); then  # Unix
+    sudo apt-get install yakuake
+    cp dotfiles/dotfiles/yakuakerc ../../.config/
+
 echo Copying oxide theme into themes folder in oh-my-zsh directory...
 cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
 
@@ -65,6 +69,9 @@ fi
 echo Setup Vundle for VIM package management...
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-echo Run :PluginInstall when starting vim if plugins are not installed. 
+#echo Run :PluginInstall when starting vim if plugins are not installed. 
+
+echo Runs PluginInstall for Vundle packages to install from the terminal
+vim -c 'PluginInstall' -c 'qa!'
 
 echo Finished installing dotfiles. Please source the relevant files for your shell.
