@@ -23,6 +23,7 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 if [ ! -d "$HOME/.dotfiles" ]; then
     # Clone the dotfiles
     echo Cloning remote dotfiles...
+    mkdir ~/.dotfiles
     git clone --recursive https://github.com/${repository_location} -b ${repository_branch} ${HOME}/.dotfiles
     git_exit_status=$?
 fi
