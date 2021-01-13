@@ -17,13 +17,20 @@ fi
 
 # Installs oh-my-zsh as alternative to bash
 echo Installing Oh-My-Zsh as shell alternative to Bash
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+if [[ `uname` == "Darwin" ]]; then
+    echo 'OS: MacOS'
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+elif [[ `uname` == "Linux" ]]; then
+    echo 'OS: Linux'
+    sudo apt-get install zsh
+else
+    echo 'Unknown OS!'
+fi
 
 # Clone dotfiles if they aren't present
 if [ ! -d "$HOME/.dotfiles" ]; then
     # Clone the dotfiles
     echo Cloning remote dotfiles...
-    mkdir ~/.dotfiles
     git clone --recursive https://github.com/${repository_location} -b ${repository_branch} ${HOME}/.dotfiles
     git_exit_status=$?
 fi
