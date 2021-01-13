@@ -2,7 +2,7 @@
 
 # Set the location of the repository on github
 repository_location="maknop/dotfiles"
-repository_branch="master"
+repository_branch="main"
 
 # In the repository, this is the folder that contains the dotfiles to copy
 dotfiles_folder="dotfiles"
