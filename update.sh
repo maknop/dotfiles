@@ -19,7 +19,7 @@ fi
 echo Installing Oh-My-Zsh as shell alternative to Bash
 if [[ `uname` == "Darwin" ]]; then
     echo 'OS: MacOS'
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/main/tools/install.sh)"
 elif [[ `uname` == "Linux" ]]; then
     echo 'OS: Linux'
     sudo apt-get install zsh
