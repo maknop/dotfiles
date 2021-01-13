@@ -57,7 +57,7 @@ if (( "$OSTYPE" == "linux-gnu"* )); then  # Unix
     cp dotfiles/dotfiles/yakuakerc ../../.config/
 
 echo Copying oxide theme into themes folder in oh-my-zsh directory...
-cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ../.oh-my-zsh/themes
+cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ~/.oh-my-zsh/themes
 
 echo Creating a vim directory.
 if [ ! -d "$HOME/.vim" ]; then 
