@@ -31,7 +31,7 @@ fi
 if [ ! -d "$HOME/.dotfiles" ]; then
     # Clone the dotfiles
     echo Cloning remote dotfiles...
-    git clone --recursive https://github.com/${repository_location} -b ${repository_branch} ${HOME}/.dotfiles
+    git clone --recursive https://github.com/${repository_location} -b ${repository_branch} $HOME/.dotfiles
     git_exit_status=$?
 fi
 
