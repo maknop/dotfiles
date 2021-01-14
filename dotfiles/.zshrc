@@ -5,7 +5,14 @@ export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="oxide"
 
 # Plugins loaded
-plugins=(git)
+plugins=(
+    git
+    docker
+    pip
+    python
+    npm
+    
+)
 
 alias tmux="TERM=screen-256color-bce tmux"
 
