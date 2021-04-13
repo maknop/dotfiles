@@ -15,8 +15,7 @@ if (( $? != 0 )) ; then
     exit 1
 fi
 
-# Installs oh-my-zsh as alternative to bash
-echo Installing Oh-My-Zsh as shell alternative to Bash
+# Installing programs based on detected OS.
 if [[ `uname` == "Darwin" ]]; then
     echo 'Installing Oh-My-Zsh as alternative to Bash'
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/main/tools/install.sh)"
