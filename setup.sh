@@ -18,7 +18,7 @@ fi
 # Installing programs based on detected OS.
 if [[ `uname` == "Darwin" ]]; then
     echo 'Installing Oh-My-Zsh as alternative to Bash'
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/main/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
     echo 'Installing iterm2 with Brew'
     brew install iterm2
