@@ -5,7 +5,7 @@ repository_location="maknop/dotfiles"
 repository_branch="main"
 
 # In the repository, this is the folder that contains the dotfiles to copy
-dotfiles_folder="dotfiles"
+dotfiles_folder="files"
 
 # Check that git is installed
 echo Verifying that Git is installed...
@@ -20,7 +20,7 @@ echo Installing Oh-My-Zsh as shell alternative to Bash
 if [[ `uname` == "Darwin" ]]; then
     echo 'Installing Oh-My-Zsh as alternative to Bash'
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/main/tools/install.sh)"
-    echo 'iterm2'
+    echo 'Installing iterm2'
     brew install iterm2
     echo 'Installing tmux'
     brew install tmux
@@ -56,12 +56,13 @@ elif (( $git_exit_status == 0 )); then
     echo Successfully clone/pulled dotfiles!
 fi
 
+if [ -f ~/.functions ]; then
+    . ~/.functions
+fi
+
 # Symlink all the files
 echo Symlinking dotfiles into ${HOME}
-ln -sf $HOME/.dotfiles/dotfiles/.[!.]* $HOME
-
-echo Copying oxide theme into themes folder in oh-my-zsh directory...
-cp $HOME/.dotfiles/dotfiles/oxide.zsh-theme ~/.oh-my-zsh/themes
+ln -sf $HOME/.dotfiles/files/.[!.]* $HOME
 
 echo Creating a vim directory.
 if [ ! -d "$HOME/.vim" ]; then 
