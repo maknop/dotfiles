@@ -16,6 +16,9 @@ plugins=(
 
 alias tmux="TERM=screen-256color-bce tmux"
 
+# Set global .gitignore file.
+git config --global core.excludesfile ~/.gitignore
+
 # Source other configuration files
 tmux source-file ~/.tmux.conf
 source $ZSH/oh-my-zsh.sh
