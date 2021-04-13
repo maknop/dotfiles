@@ -20,17 +20,24 @@ echo Installing Oh-My-Zsh as shell alternative to Bash
 if [[ `uname` == "Darwin" ]]; then
     echo 'Installing Oh-My-Zsh as alternative to Bash'
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/main/tools/install.sh)"
-    echo 'Installing iterm2'
+
+    echo 'Installing iterm2 with Brew'
     brew install iterm2
-    echo 'Installing tmux'
+
+    echo 'Installing tmux with Brew'
     brew install tmux
+    brew upgrade tmux
+
 elif [[ `uname` == "Linux" ]]; then
     echo 'Installing Oh-My-Zsh as alternative to Bash'
     sudo apt-get install zsh
+
     echo 'Installing Yakuake'
     sudo apt-get install yakuake
+
     echo 'Installing tmux'
     sudo apt install tmux
+
 else
     echo 'Unknown OS!'
 fi
