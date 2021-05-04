@@ -80,6 +80,9 @@ fi
 echo Setup Vundle for VIM package management...
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
+echo Install tpm...
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 #echo Run :PluginInstall when starting vim if plugins are not installed. 
 
 echo Runs PluginInstall for Vundle packages to install from the terminal
