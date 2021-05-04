@@ -1,8 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Link: https://github.com/dikiaap/dotfiles/blob/master/.oh-my-zsh/themes/oxide.zsh-theme
-#ZSH_THEME="amuse"
 ZSH_THEME="af-magic"
 
 # Plugins loaded
@@ -26,4 +24,3 @@ tmux source-file ~/.tmux.conf
 source $ZSH/oh-my-zsh.sh
 source ~/.zsh_aliases
 source ~/functions
-
