@@ -1,6 +1,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
+# Ignore insecure completion-dependent directory warning
+ZSH_DISABLE_COMPFIX=true
+
 ZSH_THEME="af-magic"
 
 # Plugins loaded
