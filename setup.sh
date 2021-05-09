@@ -51,7 +51,7 @@ fi
 
 # Pull the most updated copy
 echo Pulling most updated copy of dotfiles...
-cd $HOME/.dotfiles && git pull
+cd $HOME/.dotfiles && git pull --ff-only
 git_exit_status=$?
 
 # If the clone/pull operation failed, exit with the exit status provided by git
