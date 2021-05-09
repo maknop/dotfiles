@@ -51,7 +51,7 @@ fi
 
 # Pull the most updated copy
 echo Pulling most updated copy of dotfiles...
-cd $HOME/.dotfiles && git pull --ff-only
+cd $HOME/.dotfiles && git pull
 git_exit_status=$?
 
 # If the clone/pull operation failed, exit with the exit status provided by git
@@ -77,13 +77,15 @@ if [ ! -d "$HOME/.vim" ]; then
     mkdir .vim/bundle
 fi
 
-echo Setup Vundle for VIM package management...
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+if [ ! -d "$HOME/.vim/bundle/Vundle.vim"]; then
+    echo Setup Vundle for VIM package management...
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+fi
 
-echo Install tpm...
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
-#echo Run :PluginInstall when starting vim if plugins are not installed. 
+if [ ! -d "$HOME/.tmux/plugins/tpm"]; then
+    echo Install tpm...
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
 
 echo Runs PluginInstall for Vundle packages to install from the terminal
 vim -c 'PluginInstall' -c 'qa!'
