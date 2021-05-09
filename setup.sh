@@ -77,17 +77,17 @@ if [ ! -d "$HOME/.vim" ]; then
     mkdir .vim/bundle
 fi
 
-if [ ! -d "$HOME/.vim/bundle/Vundle.vim"]; then
+if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
     echo Setup Vundle for VIM package management...
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 
-if [ ! -d "$HOME/.tmux/plugins/tpm"]; then
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
     echo Install tpm...
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
-echo Runs PluginInstall for Vundle packages to install from the terminal
+echo Installing Vim packages with Vundle...
 vim -c 'PluginInstall' -c 'qa!'
 
 echo Finished installing dotfiles. Please source the relevant files for your shell.
