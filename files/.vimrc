@@ -60,11 +60,10 @@ Plugin 'mxw/vim-jsx'
 " Auto-complete for Java
 Plugin 'artur-shaik/vim-javacomplete2'  " Java
 
-" Vim support for Dart/Flutter
-Plugin 'dart-lang/dart-vim-plugin'      " Dart
-Plugin 'thosakwe/vim-flutter'           " Dart
+" Go development plugin for Vim
+Plugin 'fatih/vim-go'                   "Golang
 
-" Required for Vundle
+"Required for Vundle
 call vundle#end()    
 
 " :source %
