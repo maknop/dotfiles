@@ -20,12 +20,10 @@ You will want to then source the zshrc file.
 source ~/.zshrc
 ```
 
-My vimrc utilizes Vundle for package management so you'll
-want to run this command when .vimrc file is opened to 
-install all packages:
-```
-:PluginInstall
-```
+## Vundle for Vim Plugins
+My vimrc utilizes Vundle for package management. the `setup.sh` script  
+will install them towards the end of its execution.
+
 
 ## Vim Commands
 ```
@@ -50,4 +48,4 @@ tl                Lists all current tmux sessions
 ```
 
 ## Acknowledgements
-Thank you [gizmo385](https://github.com/gizmo385/dotfiles) for the help 😁 
+Thank you [gizmo385](https://github.com/gizmo385/dotfiles) for the help!
