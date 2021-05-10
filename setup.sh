@@ -33,6 +33,7 @@ if [[ `uname` == "Darwin" ]]; then
         brew upgrade tmux
     else
         echo Tmux is already installed...\n
+    fi
 
 elif [[ `uname` == "Linux" ]]; then
     echo 'Installing Oh-My-Zsh as alternative to Bash'
