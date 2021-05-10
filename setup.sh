@@ -25,8 +25,12 @@ fi
 
 # Installing programs based on detected OS.
 if [[ `uname` == "Darwin" ]]; then
-    echo "${GREEN}Installing Oh-My-Zsh as alternative to Bash${WHITE}"
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    if [ ! -d "${HOME}/.oh-my-zsh"]; then
+        echo "${GREEN}Installing Oh-My-Zsh as alternative to Bash${WHITE}"
+        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    else
+        echo "${LIGHTBLUE}Oh-My-Zsh is already installed...${WHITE}"
+    fi
 
     if [[ ! -d "/Applications/iTerm.app" ]]; then
         echo "${GREEN}Installing iterm2 with Brew${WHITE}"
@@ -37,8 +41,7 @@ if [[ `uname` == "Darwin" ]]; then
 
     if [ type tmux >/dev/null 2>/dev/null ]; then
         echo "${GREEN}Installing tmux with Brew${WHITE}"
-        brew install tmux
-        brew upgrade tmux
+        brew install tmux && brew upgrade tmux
     else
         echo "${LIGHTBLUE}Tmux is already installed...${WHITE}"
     fi
