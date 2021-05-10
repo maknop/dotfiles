@@ -112,6 +112,6 @@ else
 fi
 
 printf "${GREEN}Installing Vim packages with Vundle...${WHITE}\n\n"
-script -c 'vim' -c 'PluginInstall' -c 'qa!'
+vim -c 'PluginInstall' -c 'qa!'
 
-printf "${PURPLE}Finished installing dotfiles. Happy coding!${WHITE}"
+printf "${PURPLE}Finished installing dotfiles. Happy coding!${WHITE}\n"
