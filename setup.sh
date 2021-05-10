@@ -27,7 +27,7 @@ if [[ `uname` == "Darwin" ]]; then
         echo Iterm2 is already installed...\n
     fi
 
-    if type tmux >/dev/null 2>/dev/null; then
+    if [ type tmux >/dev/null 2>/dev/null ]; then
         echo Installing tmux with Brew\n
         brew install tmux
         brew upgrade tmux
