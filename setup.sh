@@ -30,7 +30,7 @@ if [[ `uname` == "Darwin" ]]; then
         printf "${GREEN}Installing Oh-My-Zsh as alternative to Bash${WHITE}"
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     else
-        printf "${LIGHTBLUE}Oh-My-Zsh is already installed...\n${WHITE}"
+        printf "${LIGHTBLUE}Oh-My-Zsh is already installed...${WHITE}\n"
     fi
 
     if [[ ! -d "/Applications/iTerm.app" ]]; then
