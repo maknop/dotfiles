@@ -46,6 +46,3 @@ ta <name>         Reattaches to a previous tmux session
 tk <name>         Kills tmux session
 tl                Lists all current tmux sessions
 ```
-
-## Acknowledgements
-Thank you [gizmo385](https://github.com/gizmo385/dotfiles) for the help!
