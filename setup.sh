@@ -16,50 +16,54 @@ PURPLE='\033[0;35m'
 WHITE='\033[1;37m'
 
 # Check that git is installed
-echo "${GREEN}Verifying that Git is installed...${WHITE}\n"
+echo "${GREEN}Verifying that Git is installed...${WHITE}"
 command -v git > /dev/null 2>&1
 if (( $? != 0 )) ; then
     echo "${RED}Git is required to update dotfiles 1>&2${WHITE}\n"
     exit 1
 fi
-echo "${GREEN}Git is installed on this device!\n"
+echo "${GREEN}Git is installed on this device!${WHITE}\n"
 
 # Installing programs based on detected OS.
 if [[ `uname` == "Darwin" ]]; then
+    echo "${GREEN}MacOS detected!${WHITE}"
     if [ ! -d "${HOME}/.oh-my-zsh" ]; then
-        echo "${GREEN}Installing Oh-My-Zsh as alternative to Bash${WHITE}"
+        echo "\t${GREEN}Installing Oh-My-Zsh as alternative to Bash${WHITE}"
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     else
-        echo "${LIGHTBLUE}Oh-My-Zsh is already installed...${WHITE}\n"
+        echo "\t${LIGHTBLUE}Oh-My-Zsh is already installed...${WHITE}\n"
     fi
 
     if [[ ! -d "/Applications/iTerm.app" ]]; then
-        echo "${GREEN}Installing iterm2 with Brew${WHITE}\n"
+        echo "\t${GREEN}Installing iterm2 with Brew${WHITE}\n"
         brew install iterm2
     else
-        echo "${LIGHTBLUE}Iterm2 is already installed...${WHITE}\n"
+        echo "\t${LIGHTBLUE}Iterm2 is already installed...${WHITE}\n"
     fi
 
     if [ type tmux >/dev/null 2>/dev/null ]; then
-        echo "${GREEN}Installing tmux with Brew${WHITE}\n"
+        echo "\t${GREEN}Installing tmux with Brew${WHITE}\n"
         brew install tmux && brew upgrade tmux
     else
         echo "${LIGHTBLUE}Tmux is already installed...${WHITE}\n"
     fi
 
 elif [[ `uname` == "Linux" ]]; then
-    echo "${GREEN}Installing Oh-My-Zsh as alternative to Bash${WHITE}\n"
+    echo "${GREEN}Linux Operating System Detected!"
+    echo "\t${GREEN}Installing Oh-My-Zsh as alternative to Bash${WHITE}"
     sudo apt-get install zsh
 
-    echo "${GREEN}Installing Yakuake${WHITE}\n"
+    echo "\t${GREEN}Installing Yakuake${WHITE}"
     sudo apt-get install yakuake
 
-    echo "${GREEN}Installing tmux${WHITE}\n"
+    echo "\t${GREEN}Installing tmux${WHITE}"
     sudo apt install tmux
 
 else
-    echo "${RED}Unknown OS!${WHITE}\n"
+    echo "${RED}Unknown OS!${WHITE}"
 fi
+
+echo "\n"
 
 # Clone dotfiles if they aren't present
 if [ ! -d "$HOME/.dotfiles" ]; then
