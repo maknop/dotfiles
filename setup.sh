@@ -20,12 +20,19 @@ if [[ `uname` == "Darwin" ]]; then
     echo 'Installing Oh-My-Zsh as alternative to Bash'
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-    echo 'Installing iterm2 with Brew'
-    brew install iterm2
+    if [[ ! -d /Applications/iTerm.app ]]; then
+        echo 'Installing iterm2 with Brew'
+        brew install iterm2
+    else
+        echo Iterm2 is already installed...\n
+    fi
 
-    echo 'Installing tmux with Brew'
-    brew install tmux
-    brew upgrade tmux
+    if type tmux >/dev/null 2>/dev/null; then
+        echo Installing tmux with Brew\n
+        brew install tmux
+        brew upgrade tmux
+    else
+        echo Tmux is already installed...\n
 
 elif [[ `uname` == "Linux" ]]; then
     echo 'Installing Oh-My-Zsh as alternative to Bash'
@@ -51,7 +58,7 @@ fi
 
 # Pull the most updated copy
 echo Pulling most updated copy of dotfiles...
-cd $HOME/.dotfiles && git pull
+cd $HOME/.dotfiles && git pull --ff-only
 git_exit_status=$?
 
 # If the clone/pull operation failed, exit with the exit status provided by git
@@ -78,13 +85,17 @@ if [ ! -d "$HOME/.vim" ]; then
 fi
 
 if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
-    echo Setup Vundle for VIM package management...
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    echo Setup Vundle for VIM package management...\n
+else
+    echo Vundle is already installed\n
 fi
 
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
-    echo Install tpm...
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    echo tpm installed\n
+else
+    echo tpm is already installed\n
 fi
 
 echo Installing Vim packages with Vundle...
