@@ -28,10 +28,10 @@ echo "${GREEN}Git is installed on this device!${WHITE}\n"
 if [[ `uname` == "Darwin" ]]; then
     echo "${GREEN}MacOS detected!${WHITE}"
     if [ ! -d "${HOME}/.oh-my-zsh" ]; then
-        echo "\t${GREEN}Installing Oh-My-Zsh as alternative to Bash${WHITE}"
+        echo "    ${GREEN}Installing Oh-My-Zsh as alternative to Bash${WHITE}"
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     else
-        echo "\t${LIGHTBLUE}Oh-My-Zsh is already installed...${WHITE}\n"
+        echo "    ${LIGHTBLUE}Oh-My-Zsh is already installed...${WHITE}\n"
     fi
 
     if [[ ! -d "/Applications/iTerm.app" ]]; then
