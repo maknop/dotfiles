@@ -90,16 +90,19 @@ if [ -f ~/.functions ]; then
     . ~/.functions
 fi
 
+#echo "${GREEN}Creating a vim directory.${WHITE}"
+#if [ ! -d "$HOME/.vim" ]; then 
+#    echo "${GREEN}Creating a vim folder...${WHITE}"
+#    mkdir .vim
+#    mkdir .vim/bundle
+#fi
+
 # Symlink all the files
 echo "${GREEN}Symlinking dotfiles into ${HOME}${WHITE}"
 ln -sf $HOME/.dotfiles/files/.[!.]* $HOME
 
-echo "${GREEN}Creating a vim directory.${WHITE}"
-if [ ! -d "$HOME/.vim" ]; then 
-    echo "${GREEN}Creating a vim folder...${WHITE}"
-    mkdir .vim
-    mkdir .vim/bundle
-fi
+echo "Moving all vim colorschemes to newly created .vim folder."
+
 
 if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
