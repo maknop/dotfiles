@@ -70,7 +70,6 @@ call vundle#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible                " vim, not vi
 set encoding=utf-8
 set scrolloff=5             
 set showmode                    " Displays current mode
@@ -135,7 +134,7 @@ map <C-n> :NERDTreeToggle<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   General/Plugin Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax on
+syntax enable on
 filetype plugin indent on
 filetype plugin on
 
@@ -158,7 +157,6 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set t_Co=256
 set termguicolors
 
 set background=dark
