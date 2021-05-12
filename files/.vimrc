@@ -157,12 +157,14 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set termguicolors
+if has('termguicolors')
+    set termguicolors
+endif
 
 set background=dark
 
 let g:everforest_disable_italic_comment = 1
-let g:everforest_background = 'hard'
+let g:everforest_background = 'soft'
 let g:everforest_better_performance = 1
 colorscheme everforest
 let g:airline_theme = 'everforest'
