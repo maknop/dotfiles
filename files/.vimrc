@@ -151,19 +151,6 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 set wildignore+=*.class,*.o,*.a,*.pyc
 let g:ctrlp_custom_ignore= '\v(.*[\/](node_modules|doc|build|bin|gen|res)[\/].*)|(*.(o|class))'
 
-" FZF commands
-let g:fzf_action = {
-      \ 'ctrl-s': 'split',
-      \ 'ctrl-v': 'vsplit'
-      \ }
-nnoremap <c-p> :Files<cr>
-augroup fzf
-  autocmd!
-  autocmd! FileType fzf
-  autocmd  FileType fzf set laststatus=0 noshowmode noruler
-    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-augroup END
-
 " Vim markdown preview configurations
 let vim_markdown_preview_hotkey='<C-m>'
 let vim_markdown_preview_browser='Google Chrome'
@@ -177,9 +164,9 @@ endif
 
 set background=dark
 
-let g:everforest_enable_italic = 1
 let g:everforest_disable_italic_comment = 1
 let g:everforest_background = 'hard'
+let g:everforest_better_performance = 1
 colorscheme everforest
 let g:airline_theme = 'everforest'
 
