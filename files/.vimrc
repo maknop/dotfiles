@@ -177,10 +177,15 @@ endif
 
 set background=dark
 
+let g:everforest_enable_italic = 1
+let g:everforest_disable_italic_comment = 1let g:everforest_enable_italic = 1
+let g:everforest_disable_italic_comment = 1
+let g:everforest_background = 'hard'
+colorscheme everforest
+let g:airline_theme = 'everforest'
+
 "colorscheme solarized
 
-"colorscheme gruvbox
 "let g:gruvbox_contrast_dark="soft"
+"colorscheme gruvbox
 
-colorscheme everforest
-let g:everforest_background = 'hard'
