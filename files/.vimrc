@@ -66,9 +66,6 @@ Plugin 'fatih/vim-go'                   "Golang
 "Required for Vundle
 call vundle#end()    
 
-" :source %
-" Type PluginInstall
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   General
@@ -85,6 +82,7 @@ set backspace=indent,eol,start
 fixdel                          " Better functionality for delete key
 
 set mouse=a
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Indentation, column highlighting, Search/Replace
@@ -133,6 +131,7 @@ inoremap JK <ESC>
 " Open NERDTree with ctrl+n
 map <C-n> :NERDTreeToggle<CR>
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   General/Plugin Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -155,21 +154,23 @@ let g:ctrlp_custom_ignore= '\v(.*[\/](node_modules|doc|build|bin|gen|res)[\/].*)
 let vim_markdown_preview_hotkey='<C-m>'
 let vim_markdown_preview_browser='Google Chrome'
 
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set t_Co=256
 set termguicolors
 
 set background=dark
 
-"let g:everforest_disable_italic_comment = 1
-"let g:everforest_background = 'medium'
-"let g:everforest_better_performance = 1
-"colorscheme everforest
-"let g:airline_theme = 'everforest'
+let g:everforest_disable_italic_comment = 1
+let g:everforest_background = 'hard'
+let g:everforest_better_performance = 1
+colorscheme everforest
+let g:airline_theme = 'everforest'
 
 "colorscheme solarized
 
-let g:gruvbox_contrast_dark="hard"
-colorscheme gruvbox
-let g:airline_theme = 'gruvbox'
+"let g:gruvbox_contrast_dark="hard"
+"colorscheme gruvbox
+"let g:airline_theme = 'gruvbox'
