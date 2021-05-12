@@ -101,8 +101,9 @@ fi
 echo "${GREEN}Symlinking dotfiles into ${HOME}${WHITE}"
 ln -nsf $HOME/.dotfiles/files/.[!.]* $HOME
 
-#echo "Moving all vim colorschemes to newly created .vim folder."
-#mv ./.dotfiles/files/.vim/ ./.vim/
+echo "Copying all vim colorschemes to newly created .vim folder."
+cp -r ./.dotfiles/files/.vim/autoload/ ~/.vim/autoload/
+cp -r ./.dotfiles/files/.vim/colors/ ~/.vim/colors/
 
 if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim

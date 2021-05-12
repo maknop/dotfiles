@@ -171,9 +171,16 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has('termguicolors')
+  set termguicolors
+endif
+
 set background=dark
-"colorscheme onedark
+
 "colorscheme solarized
+
 "colorscheme gruvbox
 "let g:gruvbox_contrast_dark="soft"
+
 colorscheme everforest
+let g:everforest_background = 'hard'
