@@ -90,12 +90,12 @@ if [ -f ~/.functions ]; then
     . ~/.functions
 fi
 
-#echo "${GREEN}Creating a vim directory.${WHITE}"
-#if [ ! -d "$HOME/.vim" ]; then 
-#    echo "${GREEN}Creating a vim folder...${WHITE}"
-#    mkdir .vim
-#    mkdir .vim/bundle
-#fi
+echo "${GREEN}Creating a vim directory.${WHITE}"
+if [ ! -d "$HOME/.vim" ]; then 
+    echo "${GREEN}Creating a vim folder...${WHITE}"
+    mkdir .vim
+    mkdir .vim/bundle
+fi
 
 # Symlink all the files
 echo "${GREEN}Symlinking dotfiles into ${HOME}${WHITE}"

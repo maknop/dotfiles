@@ -13,6 +13,7 @@ Plugin 'VundleVim/Vundle.vim'
 " Color schemes
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'morhetz/gruvbox'
+Plugin 'sainnhe/everforest'
 
 " NERDTree -- File browser in vim
 Plugin 'scrooloose/nerdtree'
@@ -30,7 +31,6 @@ Plugin 'Rainbow-Parenthesis'
 
 " vim-airline
 Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
 
 " Markdown preview
 Plugin 'JamshedVesuna/vim-markdown-preview'
