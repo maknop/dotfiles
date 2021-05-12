@@ -158,9 +158,7 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-#if has('termguicolors')
-#  set termguicolors
-#endif
+set termguicolors
 
 set background=dark
 
