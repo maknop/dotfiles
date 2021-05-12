@@ -162,14 +162,14 @@ set termguicolors
 
 set background=dark
 
-let g:everforest_disable_italic_comment = 1
-let g:everforest_background = 'medium'
-let g:everforest_better_performance = 1
-colorscheme everforest
-let g:airline_theme = 'everforest'
+"let g:everforest_disable_italic_comment = 1
+"let g:everforest_background = 'medium'
+"let g:everforest_better_performance = 1
+"colorscheme everforest
+"let g:airline_theme = 'everforest'
 
 "colorscheme solarized
 
-"let g:gruvbox_contrast_dark="soft"
-"colorscheme gruvbox
-
+let g:gruvbox_contrast_dark="hard"
+colorscheme gruvbox
+let g:airline_theme = 'gruvbox'
