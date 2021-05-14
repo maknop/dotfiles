@@ -14,6 +14,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'morhetz/gruvbox'
 Plugin 'sainnhe/everforest'
+Plugin 'Rigellute/rigel'
 
 " NERDTree -- File browser in vim
 Plugin 'scrooloose/nerdtree'
@@ -61,7 +62,7 @@ Plugin 'mxw/vim-jsx'
 Plugin 'artur-shaik/vim-javacomplete2'  " Java
 
 " Go development plugin for Vim
-Plugin 'fatih/vim-go'                   "Golang
+Plugin 'fatih/vim-go'                   " Golang
 
 "Required for Vundle
 call vundle#end()    
@@ -157,20 +158,20 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has('termguicolors')
-    set termguicolors
-endif
+set termguicolors
 
 set background=dark
 
-let g:everforest_disable_italic_comment = 1
-let g:everforest_background = 'soft'
-let g:everforest_better_performance = 1
-colorscheme everforest
-let g:airline_theme = 'everforest'
+"let g:everforest_disable_italic_comment = 1
+"let g:everforest_background = 'soft'
+"let g:everforest_better_performance = 1
+"colorscheme everforest
+"let g:airline_theme = 'everforest'
 
 "colorscheme solarized
 
 "let g:gruvbox_contrast_dark="hard"
 "colorscheme gruvbox
 "let g:airline_theme = 'gruvbox'
+
+colorscheme rigel
