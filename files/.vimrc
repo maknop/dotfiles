@@ -175,3 +175,4 @@ set background=dark
 "let g:airline_theme = 'gruvbox'
 
 colorscheme rigel
+let g:airline_theme = 'rigel'
