@@ -165,11 +165,11 @@ set termguicolors
 
 set background=dark
 
-"let g:everforest_disable_italic_comment = 1
-"let g:everforest_background = 'soft'
-"let g:everforest_better_performance = 1
-"colorscheme everforest
-"let g:airline_theme = 'everforest'
+let g:everforest_disable_italic_comment = 1
+let g:everforest_background = 'soft'
+let g:everforest_better_performance = 1
+colorscheme everforest
+let g:airline_theme = 'everforest'
 
 "colorscheme solarized
 
@@ -177,8 +177,8 @@ set background=dark
 "colorscheme gruvbox
 "let g:airline_theme = 'gruvbox'
 
-let g:javascript_plugin_flow = 1
-colorscheme rigel
-let g:rigel_airline = 1
-let g:airline_theme = 'rigel'
+"let g:javascript_plugin_flow = 1
+"colorscheme rigel
+"let g:rigel_airline = 1
+"let g:airline_theme = 'rigel'
 
