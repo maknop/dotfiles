@@ -174,5 +174,8 @@ set background=dark
 "colorscheme gruvbox
 "let g:airline_theme = 'gruvbox'
 
+let g:javascript_plugin_flow = 1
 colorscheme rigel
+let g:rigel_airline = 1
 let g:airline_theme = 'rigel'
+
