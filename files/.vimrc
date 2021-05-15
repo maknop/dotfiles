@@ -13,8 +13,8 @@ Plugin 'VundleVim/Vundle.vim'
 " Color schemes
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'morhetz/gruvbox'
-Plugin 'sainnhe/everforest'
 Plugin 'Rigellute/rigel'
+Plugin 'embark-theme/vim'
 
 " NERDTree -- File browser in vim
 Plugin 'scrooloose/nerdtree'
@@ -165,12 +165,12 @@ set termguicolors
 
 set background=dark
 
-"let g:gruvbox_contrast_dark="hard"
-"colorscheme gruvbox
-"let g:airline_theme = 'gruvbox'
+let g:gruvbox_contrast_dark="hard"
+colorscheme gruvbox
+let g:airline_theme = 'gruvbox'
 
-let g:javascript_plugin_flow = 1
-colorscheme rigel
-let g:rigel_airline = 1
-let g:airline_theme = 'rigel'
+"let g:javascript_plugin_flow = 1
+"colorscheme rigel
+"let g:rigel_airline = 1
+"let g:airline_theme = 'rigel'
 
