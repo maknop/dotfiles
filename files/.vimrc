@@ -14,7 +14,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'morhetz/gruvbox'
 Plugin 'Rigellute/rigel'
-Plugin 'embark-theme/vim'
+Plugin 'sainnhe/everforest'
 
 " NERDTree -- File browser in vim
 Plugin 'scrooloose/nerdtree'
@@ -161,13 +161,23 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set termguicolors
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 
 set background=dark
+let g:everforest_background = 'hard'
 
-let g:gruvbox_contrast_dark="hard"
-colorscheme gruvbox
-let g:airline_theme = 'gruvbox'
+colorscheme everforest
+let g:airline_theme = 'everforest'
+let g:everforest_italic_comment = 1
+let g:everforest_better_performance = 1
+
+"let g:gruvbox_contrast_dark="hard"
+"colorscheme gruvbox
+"let g:airline_theme = 'gruvbox'
 
 "let g:javascript_plugin_flow = 1
 "colorscheme rigel
