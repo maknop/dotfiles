@@ -50,6 +50,13 @@ if [[ `uname` == "Darwin" ]]; then
 
 elif [[ `uname` == "Linux" ]]; then
     echo "${GREEN}Linux Operating System Detected!"
+
+    echo "${GREEN}Installing Git"
+    sudo apt-get install git
+
+    echo "${GREEN}Installing Vim"
+    sudo apt-get install vim
+
     echo "${GREEN}Installing Oh-My-Zsh as alternative to Bash${WHITE}"
     sudo apt-get install zsh
 
