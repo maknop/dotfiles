@@ -42,3 +42,4 @@ curl https://raw.githubusercontent.com/maknop/ansible-dot/main/install.sh | sh
 | tk <name>        | Kills tmux session                        |  
 | tl               | Lists all current tmux sessions           |  
 # dotfiles
+# dotfiles
