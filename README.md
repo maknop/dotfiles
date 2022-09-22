@@ -1,19 +1,10 @@
-# Install Dev Environment Using Ansible!
+# Install Dev Environment
 
 My dotfiles work specifically with a MacOS  development environment
 (Still working out issues downloading on Linux).
 
-- [Installation](https://github.com/maknop/ansible-dot#installation)
 - [Vim Commands](https://github.com/maknop/ansible-dot#vim-commands)
 - [Tmux Commands](https://github.com/maknop/ansible-dot#tmux-commands)
-- [Acknowledgements](https://github.com/maknop/ansible-dot#acknowledgements)
-
-## Installation
-Navigate to your root directory and copy/paste the following  
-into your favorite terminal.
-```
-curl https://raw.githubusercontent.com/maknop/ansible-dot/main/install.sh | sh
-```
 
 ## Vim Commands
 | Keyboard Command | Description                               |  
@@ -41,5 +32,3 @@ curl https://raw.githubusercontent.com/maknop/ansible-dot/main/install.sh | sh
 | ta <name>        | Reattaches to a previous tmux session     |  
 | tk <name>        | Kills tmux session                        |  
 | tl               | Lists all current tmux sessions           |  
-# dotfiles
-# dotfiles
