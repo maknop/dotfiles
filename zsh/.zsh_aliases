@@ -4,10 +4,16 @@ alias gc="git commit -m"
 alias gp="git push"
 alias gs="git status"
 
-# docker-compose
-alias upd="docker-compose up -d"
-alias up="docker-compose up"
-alias down="docker-compose down"
+# podman-compose
+alias upd="podman-compose up -d"
+alias up="podman-compose up"
+alias down="podman-compose down"
 
 # Vim
 alias v="vim"
+
+# Tmux
+alias ts="tmux new -s"
+alias tk="tmux kill-session -t"
+alias tka="tmux kill-session -a"
+alias tl="tmux ls"
