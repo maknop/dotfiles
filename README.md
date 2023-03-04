@@ -1,7 +1,6 @@
-# Install Dev Environment
+# Install Development Configurations
 
-My dotfiles work specifically with a MacOS  development environment
-(Still working out issues downloading on Linux).
+Compatible with MacOS and Linux systems.
 
 - [Vim Commands](https://github.com/maknop/ansible-dot#vim-commands)
 - [Tmux Commands](https://github.com/maknop/ansible-dot#tmux-commands)
@@ -26,7 +25,7 @@ My dotfiles work specifically with a MacOS  development environment
 | ctrl-a           | Redefined prefix command                  |  
 | ctrl-a -         | Vertical window                           |  
 | ctrl-a =         | Horizontal window                         |  
-| ctrl-a \[         | Enters copy mode                          |  
+| ctrl-a [         | Enters copy mode                          |  
 | ctrl-a ]         | Paste copied text                         |
 | ts <name>        | Create a tmux session                     |  
 | ta <name>        | Reattaches to a previous tmux session     |  
