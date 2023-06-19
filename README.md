@@ -17,8 +17,10 @@ My dotfiles work specifically with a MacOS  development environment
 | yy               | Copies line to buffer                     |  
 | dd               | Deletes line, stores line in buffer       |  
 | p                | Pastes contents stored in the buffer      |  
-| shift + v        | Visual mode, highlights entire line       |  
-| v                | Visual mode, highlights single character  |  
+| shift + v        | Visual mode, highlights entire line       |
+| v                | Visual mode, highlights single character  |
+| :vs <filename>   | Vertical split (filename optional)        |
+| :sp <filename>   | Horizontal split (filename optional)      |
 
 ## Tmux Commands
 | Keyboard Command | Description                               |  
