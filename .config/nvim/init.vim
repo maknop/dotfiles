@@ -16,6 +16,10 @@ Plug 'scrooloose/nerdtree'
 " NERDcommenter -- Auto comment out lines
 Plug 'scrooloose/nerdcommenter'
 
+" fzf - Fuzzy Finder
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 " Ctlr-P Stuff
 Plug 'kien/ctrlp.vim'
 
@@ -134,6 +138,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 set wildignore+=*.class,*.o,*.a,*.pyc
 let g:ctrlp_custom_ignore= '\v(.*[\/](node_modules|doc|build|bin|gen|res)[\/].*)|(*.(o|class))'
+let g:ctrlp_show_hidden=1
 
 " Vim markdown preview configurations
 let vim_markdown_preview_hotkey='<C-m>'
@@ -156,9 +161,4 @@ colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchia
 "let g:gruvbox_contrast_dark="hard"
 "colorscheme gruvbox
 "let g:airline_theme = 'gruvbox'
-
-"let g:javascript_plugin_flow = 1
-"colorscheme rigel
-"let g:rigel_airline = 1
-"let g:airline_theme = 'rigel'
 
