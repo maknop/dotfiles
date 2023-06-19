@@ -10,7 +10,7 @@ alias up="podman-compose up"
 alias down="podman-compose down"
 
 # Vim
-alias v="vim"
+alias v="nvim"
 
 # Tmux
 alias ts="tmux new -s"

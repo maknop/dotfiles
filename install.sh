@@ -6,28 +6,24 @@ printf   '##           Installing Dev Environment              ##\n'
 printf   '##                                                   ##\n'
 printf   '#######################################################\n'
 
+dotfiles_dir=$(pwd)
+
 if [ ! -f ~/.zshrc ]; then
-    printf '\nInstalling ZSH'
+    printf '\nInstalling ZSH\n'
+    sudo dnf -y install zsh
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-    printf '\nSetting default shell as ZSH'
+    printf '\nSetting default shell as ZSH\n'
     chsh -s $(which zsh)
 else
-    printf '\nZSH is already installed'
+    printf '\nZSH is already installed\n'
 fi
 
-if [ ! -d ~/.tmux ]; then
-    git clone https://github.com/tmux/tmux.git
-    cd tmux
-    sh autogen.sh
-    ./configure
-    make && sudo make install
+if [ ! -d /bin/tmux ]; then
+    sudo dnf -y install tmux
 else
     printf '\nTmux is already installed'
 fi
 
 #cp -rsf "$dotfiles_home"/. ~
-ln -sf git/* $HOME/
-ln -sf tmux/* $HOME/
-ln -sf vim/* $HOME/
-ln -sf zsh/* $HOME/
+ln -sf {dotfiles_dir}/.[!.]* $HOME
