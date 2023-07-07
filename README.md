@@ -28,9 +28,12 @@ My dotfiles work specifically with a MacOS  development environment
 | ctrl-a           | Redefined prefix command                  |  
 | ctrl-a -         | Vertical window                           |  
 | ctrl-a =         | Horizontal window                         |  
-| ctrl-a \[         | Enters copy mode                          |  
+| ctrl-a \[        | Enters copy mode                          |  
 | ctrl-a ]         | Paste copied text                         |
 | ts <name>        | Create a tmux session                     |  
 | ta <name>        | Reattaches to a previous tmux session     |  
 | tk <name>        | Kills tmux session                        |  
 | tl               | Lists all current tmux sessions           |  
+| ctrl-a i         | Install addons using TPM                  |  
+| ctrl-a y         | Copy text from tmux to system clipboard   |  
+
