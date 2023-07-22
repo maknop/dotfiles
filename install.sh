@@ -26,6 +26,9 @@ else if [ OS_NAME == "Darwin" ]; then
     echo OS identified as MacOS
     ./scripts/macos_install.sh
 
+else
+    echo "Cannot identify OS of this system"
+    exit 0
 fi
 
 # # Symlink dotfiles
