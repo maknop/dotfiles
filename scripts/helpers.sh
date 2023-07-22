@@ -13,13 +13,16 @@ function set_linux_package_installer() {
 }
 
 # function install_zsh() {
+#    LINUX_PACKAGE_MANAGER_COMMAND install zsh
 #     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-# }
 
-# function install_tmux() {
-
+#    chsh -s $(which zsh)
 # }
 
 # function install_neovim() {
+
+# }
+
+# function install_tmux() {
 
 # }
