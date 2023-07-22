@@ -7,23 +7,19 @@ printf   '##                                                   ##\n'
 printf   '#######################################################\n'
 
 dotfiles_dir=$(pwd)
+OS_NAME=$(uname)
 
-if [ ! -f ~/.zshrc ]; then
-    printf '\nInstalling ZSH\n'
-    sudo dnf -y install zsh
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+if [ OS_NAME == "Linux" ]; then
+    echo "OS identified as Linux"
+    ./scripts/linux_install.sh
 
-    printf '\nSetting default shell as ZSH\n'
-    chsh -s $(which zsh)
-else
-    printf '\nZSH is already installed\n'
+else if [ OS_NAME == "Darwin" ]; then
+    echo OS identified as MacOS
+    ./scripts/macos_install.sh
+
 fi
 
-if [ ! -d /bin/tmux ]; then
-    sudo dnf -y install tmux
-else
-    printf '\nTmux is already installed'
-fi
-
-#cp -rsf "$dotfiles_home"/. ~
+# Symlink dotfiles
 ln -sf {dotfiles_dir}/.[!.]* $HOME
+
+echo "Dotfiles successfully installed for ${OS_NAME}"
