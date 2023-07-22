@@ -23,7 +23,7 @@ if [ OS_NAME == "Linux" ]; then
     ./scripts/linux_install.sh
 
 else if [ OS_NAME == "Darwin" ]; then
-    echo OS identified as MacOS
+    echo "OS identified as MacOS"
     ./scripts/macos_install.sh
 
 else
