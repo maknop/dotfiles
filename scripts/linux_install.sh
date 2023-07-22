@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 if [ ! -f ~/.zshrc ]; then
     printf '\nInstalling ZSH\n'
     sudo dnf -y install zsh
