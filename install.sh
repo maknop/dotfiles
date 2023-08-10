@@ -1,29 +1,37 @@
 #!/bin/bash
 
-printf '\n#######################################################\n'
-printf   '##                                                   ##\n'
-printf   '##           Installing Dev Environment              ##\n'
-printf   '##                                                   ##\n'
-printf   '#######################################################\n'
+echo '''
+#######################################################
+##                                                   ##
+##           Installing Dev Environment              ##
+##                                                   ##
+#######################################################
+'''
 
 dotfiles_dir=$(pwd)
+OS_NAME=$(uname)
 
-if [ ! -f ~/.zshrc ]; then
-    printf '\nInstalling ZSH\n'
-    sudo dnf -y install zsh
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+source ./scripts/helpers.sh
 
-    printf '\nSetting default shell as ZSH\n'
-    chsh -s $(which zsh)
+set_linux_package_installer
+
+echo "Linux command is: ${LINUX_PACKAGE_INSTALL_COMMAND}"
+
+echo "Installing OS specific programs"
+if [ OS_NAME == "Linux" ]; then
+    echo "OS identified as Linux"
+    ./scripts/linux_install.sh
+
+else if [ OS_NAME == "Darwin" ]; then
+    echo "OS identified as MacOS"
+    ./scripts/macos_install.sh
+
 else
-    printf '\nZSH is already installed\n'
+    echo "Cannot identify OS of this system"
+    exit 0
 fi
 
-if [ ! -d /bin/tmux ]; then
-    sudo dnf -y install tmux
-else
-    printf '\nTmux is already installed'
-fi
+# # Symlink dotfiles
+# ln -sf {dotfiles_dir}/.[!.]* $HOME
 
-#cp -rsf "$dotfiles_home"/. ~
-ln -sf {dotfiles_dir}/.[!.]* $HOME
+echo "Dotfiles successfully installed for ${OS_NAME}. Happy Hacking :D"

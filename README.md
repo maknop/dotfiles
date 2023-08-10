@@ -1,7 +1,11 @@
 # Install Dev Environment
 
-My dotfiles work specifically with a MacOS  development environment
-(Still working out issues downloading on Linux).
+Compatible with MacOS and both Ubuntu/Fedora based Linux distrobutions.
+
+## Installation
+```
+curl https://raw.githubusercontent.com/maknop/dotfiles/main/install.sh | sh
+```
 
 - [Vim Commands](https://github.com/maknop/ansible-dot#vim-commands)
 - [Tmux Commands](https://github.com/maknop/ansible-dot#tmux-commands)
