@@ -9,25 +9,7 @@ call plug#begin()
 " Color schemes
 Plug 'morhetz/gruvbox'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
-
-" NERDTree -- File browser in vim
-Plug 'scrooloose/nerdtree'
-
-" NERDcommenter -- Auto comment out lines
-Plug 'scrooloose/nerdcommenter'
-
-" fzf - Fuzzy Finder
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
-" Ctlr-P Stuff
-Plug 'kien/ctrlp.vim'
-
-" Insert or delete brackets, parens, quotes in pair
-Plug 'jiangmiao/auto-pairs'
-
-" vim-airline
-Plug 'vim-airline/vim-airline'
+Plug 'navarasu/onedark.nvim'
 
 " Markdown preview
 Plug 'JamshedVesuna/vim-markdown-preview'
@@ -35,28 +17,34 @@ Plug 'JamshedVesuna/vim-markdown-preview'
 " Vim Personal Wiki
 Plug 'vimwiki/vimwiki'
 
-" Proper pep8 indents for python
-Plug 'hynek/vim-python-pep8-indent'   " Python 
+" Python
+Plug 'hynek/vim-python-pep8-indent'   " Proper PEP8 indents
 
-" Auto-complete tags in html
-Plug 'alvan/vim-closetag'             " HTML
+" HTML
+Plug 'alvan/vim-closetag'             " Auto-complete tags
 
-" Better CSS Highlighting for Vim
-Plug 'hail2u/vim-css3-syntax'         " CSS
+" CSS
+Plug 'hail2u/vim-css3-syntax'         " Better highlighting for nvim
 
-"Beautifier for JavaScript
-Plug 'beautify-web/js-beautify'       " JavaScript
+" JavaScript
+Plug 'beautify-web/js-beautify'       " Beautifier
+Plug 'pangloss/vim-javascript'        " Better syntax highlighting
+Plug 'mxw/vim-jsx'                    " JSX syntax highlighting (ReactJS)
 
-" Better JS syntax highlighting
-Plug 'pangloss/vim-javascript'        " JavaScript
+" Golang
+Plug 'fatih/vim-go'                   " Go development plugin for nvim
 
-" JSX Syntax Highlighting
-Plug 'mxw/vim-jsx'                    " React JS
+" nvim goodies
+Plug 'nvim-lua/completion-nvim'       " Autocomplete for nvim
+Plug 'scrooloose/nerdtree'            " File browser for nvim
+Plug 'scrooloose/nerdcommenter'       " Auto comment out lines
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'               " Fuzzy finder
+Plug 'kien/ctrlp.vim'                 " Browse files
+Plug 'jiangmiao/auto-pairs'           " Insert or delete brackets, parents, quotes in pair
+Plug 'vim-airline/vim-airline'        "Vim airline
 
-" Go development plugin for Vim
-Plug 'fatih/vim-go'                   " Golang
-
-"Required for Vundle
+" Required for Vundle
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
