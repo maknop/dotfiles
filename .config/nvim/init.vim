@@ -150,3 +150,8 @@ colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchia
 "colorscheme gruvbox
 "let g:airline_theme = 'gruvbox'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"   Other Configurations
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Syntax highlighting for groovy (Jenkinsfiles)
+autocmd BufNewFile,BufRead Jenkinsfile set syntax=groovy
