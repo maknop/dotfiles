@@ -9,7 +9,8 @@ call plug#begin()
 " Color schemes
 Plug 'morhetz/gruvbox'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
-Plug 'navarasu/onedark.nvim'
+Plug 'neanias/everforest-nvim', { 'branch': 'main' }
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 
 " Markdown preview
 Plug 'JamshedVesuna/vim-markdown-preview'
@@ -144,7 +145,10 @@ endif
 
 set background=dark
 
-colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
+"colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
+let g:material_terminal_italics = 1
+let g:material_theme_style = 'ocean'
+colorscheme material
 
 "let g:gruvbox_contrast_dark="hard"
 "colorscheme gruvbox
