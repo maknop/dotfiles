@@ -4,7 +4,7 @@ Compatible with MacOS and both Ubuntu/Fedora based Linux distrobutions.
 
 ## Installation
 ```
-curl https://raw.githubusercontent.com/maknop/dotfiles/main/install.sh | sh
+./install.sh
 ```
 
 - [Vim Commands](https://github.com/maknop/ansible-dot#vim-commands)
