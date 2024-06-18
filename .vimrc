@@ -96,6 +96,7 @@ set autoindent
 set smartindent
 set wrap                        " Lines wrap
 set cursorcolumn                " Column cursorline
+set relativenumber
 
 set ignorecase                  " Ignores case when searching
 
