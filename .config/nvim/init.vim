@@ -39,11 +39,11 @@ Plug 'fatih/vim-go'                   " Go development plugin for nvim
 Plug 'nvim-lua/completion-nvim'       " Autocomplete for nvim
 Plug 'scrooloose/nerdtree'            " File browser for nvim
 Plug 'scrooloose/nerdcommenter'       " Auto comment out lines
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'               " Fuzzy finder
-Plug 'kien/ctrlp.vim'                 " Browse files
 Plug 'jiangmiao/auto-pairs'           " Insert or delete brackets, parents, quotes in pair
 Plug 'vim-airline/vim-airline'        "Vim airline
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+" or                                , { 'branch': '0.1.x' }
 
 " Required for Vundle
 call plug#end()
@@ -58,6 +58,7 @@ set ruler                       " Shows line and column of position
 set number                  
 set backspace=indent,eol,start
 set noswapfile                  " Disables swap files
+set relativenumber
 
 set mouse=a
 
@@ -78,6 +79,9 @@ set ignorecase                  " Ignores case when searching
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Key Bindings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Rebind for sourcing nvim config
+nnoremap <Leader>sv :source $MYVIMRC<CR>
+
 " Rebind line navigation keys
 nnoremap j gj
 nnoremap k gk
@@ -108,6 +112,12 @@ inoremap JK <ESC>
 
 " Open NERDTree with ctrl+n
 map <C-n> :NERDTreeToggle<CR>
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -146,9 +156,11 @@ endif
 set background=dark
 
 "colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
+
 let g:material_terminal_italics = 1
 let g:material_theme_style = 'ocean'
 colorscheme material
+let g:airline_theme = 'material'
 
 "let g:gruvbox_contrast_dark="hard"
 "colorscheme gruvbox
