@@ -147,31 +147,23 @@ let vim_markdown_preview_browser='Google Chrome'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   ColorScheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
-
-set background=dark
-
-"colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
-
-let g:material_terminal_italics = 1
-let g:material_theme_style = 'ocean'
-colorscheme material
-let g:airline_theme = 'material'
-
-"let g:gruvbox_contrast_dark="hard"
-"colorscheme gruvbox
-"let g:airline_theme = 'gruvbox'
-
 if has('termguicolors')
   set termguicolors
 endif
 
 " For dark version.
 set background=dark
+
+"colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
+
+"let g:material_terminal_italics = 1
+"let g:material_theme_style = 'ocean'
+"colorscheme material
+"let g:airline_theme = 'material'
+
+"let g:gruvbox_contrast_dark="hard"
+"colorscheme gruvbox
+"let g:airline_theme = 'gruvbox'
 
 " Set contrast.
 " This configuration option should be placed before `colorscheme everforest`.
