@@ -87,6 +87,9 @@ set ignorecase                  " Ignores case when searching
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Key Bindings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Change <Leader> key
+let mapleader = ","
+
 " Rebind line navigation keys
 nnoremap j gj
 nnoremap k gk
