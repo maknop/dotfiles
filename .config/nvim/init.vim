@@ -87,9 +87,6 @@ set ignorecase                  " Ignores case when searching
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Key Bindings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Rebind for sourcing nvim config
-nnoremap <Leader>sv :source $MYVIMRC<CR>
-
 " Rebind line navigation keys
 nnoremap j gj
 nnoremap k gk
@@ -120,6 +117,7 @@ inoremap JK <ESC>
 
 " Open NERDTree with ctrl+n
 map <C-n> :NERDTreeToggle<CR>
+map <C-m> :NERDTreeFind<CR>
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -164,24 +162,11 @@ set background=dark
 
 "colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
 
-"let g:material_terminal_italics = 1
-"let g:material_theme_style = 'ocean'
-"colorscheme material
-"let g:airline_theme = 'material'
+let g:material_terminal_italics = 1
+let g:material_theme_style = 'ocean'
+colorscheme material
+let g:airline_theme = 'material'
 
-"let g:gruvbox_contrast_dark="hard"
-"colorscheme gruvbox
-"let g:airline_theme = 'gruvbox'
-
-" Set contrast.
-" This configuration option should be placed before `colorscheme everforest`.
-" Available values: 'hard', 'medium'(default), 'soft'
-let g:everforest_background = 'hard'
-
-" For better performance
-let g:everforest_better_performance = 1
-
-colorscheme everforest
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 " nvim-cmp Configurations
