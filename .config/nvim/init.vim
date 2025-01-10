@@ -41,6 +41,7 @@ Plug 'scrooloose/nerdtree'            " File browser for nvim
 Plug 'scrooloose/nerdcommenter'       " Auto comment out lines
 Plug 'jiangmiao/auto-pairs'           " Insert or delete brackets, parents, quotes in pair
 Plug 'vim-airline/vim-airline'        "Vim airline
+Plug 'jdhao/whitespace.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 " or                                , { 'branch': '0.1.x' }
