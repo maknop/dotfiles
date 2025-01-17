@@ -11,6 +11,7 @@ Plug 'morhetz/gruvbox'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'sainnhe/everforest'
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+Plug 'AlexvZyl/nordic.nvim', { 'branch': 'main' }
 
 " Markdown preview
 Plug 'JamshedVesuna/vim-markdown-preview'
@@ -155,7 +156,7 @@ let vim_markdown_preview_browser='Google Chrome'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
-"   ColorScheme and Their Settings
+"   Colorscheme and Their Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has('termguicolors')
   set termguicolors
@@ -166,10 +167,12 @@ set background=dark
 
 "colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
 
-let g:material_terminal_italics = 1
-let g:material_theme_style = 'ocean'
-colorscheme material
-let g:airline_theme = 'material'
+"let g:material_terminal_italics = 1
+"let g:material_theme_style = 'ocean'
+"colorscheme material
+"let g:airline_theme = 'material'
+
+colorscheme nordic
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
