@@ -1,0 +1,21 @@
+# Git
+alias ga="git add"
+alias gc="git commit -m"
+alias gp="git push"
+alias gs="git status"
+
+# podman-compose
+alias upd="podman-compose up -d"
+alias up="podman-compose up"
+alias down="podman-compose down"
+
+# Vim
+alias v="nvim"
+
+# Tmux
+alias ts="tmux new -s"
+alias ta="tmux attach -t"
+alias tk="tmux kill-session -t"
+alias tka="tmux kill-session -a"
+alias tl="tmux ls"
+alias tr="tmux rename-window -t"
