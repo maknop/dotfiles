@@ -1,16 +1,13 @@
-"""
-Script to install configuration environment on Linux and MacOS (WIP)
-"""
+#!/bin/bash
 
-# TODO: Figure out Linux distro or if MacOS
+# Linux or Darwin (MacOS)
+local os_name=$(uname)
 
-# TODO: Install zsh
-
-# TODO: Install nvim
-# TODO: Install Plug 
-
-# TODO: Install TMUX
-# TODO: Install TPM
-
-# TODO: Source all files
+if [ $os_name == "Linux" ]; then
+    ./scripts/linux.sh
+elif [ $os_name == "Darwin" ]; then
+    ./scripts/macos.sh
+else
+    echo "could not determine OS"
+fi
 
