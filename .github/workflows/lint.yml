@@ -1,0 +1,13 @@
+name: Shell Linter
+
+# Run this workflow every time a new commit pushed to your repository
+on: push
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run ShellCheck
+        uses: Azbagheri/shell-linter@latest
