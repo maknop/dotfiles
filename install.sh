@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Linux or Darwin (MacOS)
-os_name=$(uname)
+OS_NAME=$(uname)
 
-if [ "$os_name" == "Linux" ]; then
+if [ "$OS_NAME" == "Linux" ]; then
     ./scripts/linux.sh
-elif [ "$os_name" == "Darwin" ]; then
+elif [ "$OS_NAME" == "Darwin" ]; then
     ./scripts/macos.sh
 else
     echo "could not determine OS"
