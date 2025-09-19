@@ -1,12 +1,17 @@
+# Homebrew setup (must be first to ensure proper PATH)
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# Oh My Zsh configuration (must be set before sourcing)
 export ZSH=$HOME/.oh-my-zsh
-source $ZSH/oh-my-zsh.sh
+ZSH_THEME="af-magic"
+ZSH_DISABLE_COMPFIX=true
 
 export TERM="xterm-256color"
 
-# Ignore insecure completion-dependent directory warning
-ZSH_DISABLE_COMPFIX=true
-
-ZSH_THEME="af-magic"
+# Source Oh My Zsh
+source $ZSH/oh-my-zsh.sh
 
 # Plugins loaded
 plugins=(
@@ -42,6 +47,8 @@ if [ -f ~/functions ]; then
     source ~/functions
 fi
 
-if [ "$TMUX" = "" ]; then tmux; fi
-tmux source-file ~/.config/tmux/tmux.conf
+# Auto-start tmux (commented out to prevent infinite loops)
+# if [ "$TMUX" = "" ]; then tmux; fi
+
+# Tmux will automatically source ~/.config/tmux/tmux.conf when it starts
 
