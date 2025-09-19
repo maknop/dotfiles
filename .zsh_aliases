@@ -1,13 +1,9 @@
 # Git
 alias ga="git add"
-alias gc="git commit -m"
+alias gc="git commit -S -m"
 alias gp="git push"
 alias gs="git status"
-
-# podman-compose
-alias upd="podman-compose up -d"
-alias up="podman-compose up"
-alias down="podman-compose down"
+alias gd="git diff"
 
 # Vim
 alias v="nvim"
@@ -19,3 +15,20 @@ alias tk="tmux kill-session -t"
 alias tka="tmux kill-session -a"
 alias tl="tmux ls"
 alias tr="tmux rename-window -t"
+
+# Kubectl
+alias k="kubectl"
+
+# Docker
+alias d="docker"
+alias di="docker images"
+alias dps="docker ps"
+alias dpsa="docker ps -a"
+
+# Podman
+alias p="podman"
+alias pi="podman images"
+alias pps="podman ps"
+alias ppsa="podman ps -a"
+alias ppsf="podman ps -f"
+alias ppsfa="podman ps -f -a"
