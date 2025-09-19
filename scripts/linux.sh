@@ -7,6 +7,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Source shared functions
+# shellcheck source=functions.sh disable=SC1091
 source "$SCRIPT_DIR/functions.sh"
 
 log_info "Starting Linux installation..."
@@ -19,9 +20,9 @@ fi
 
 # Detect Linux distribution
 if [ -f /etc/os-release ]; then
+    # shellcheck source=/dev/null
     . /etc/os-release
     DISTRO=$ID
-    VERSION=$VERSION_ID
     log_info "Detected Linux distribution: $PRETTY_NAME"
 else
     log_warning "Could not detect Linux distribution"
@@ -43,7 +44,7 @@ case "$DISTRO" in
         sudo apt-get update
         
         # Additional useful tools
-        local debian_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "build-essential")
+        debian_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "build-essential")
         
         for tool in "${debian_tools[@]}"; do
             if ! dpkg -l | grep -q "^ii  $tool "; then
@@ -65,7 +66,7 @@ case "$DISTRO" in
         log_info "Installing Red Hat-based distribution tools..."
         
         # Additional useful tools
-        local rhel_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "gcc" "gcc-c++" "make")
+        rhel_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "gcc" "gcc-c++" "make")
         
         for tool in "${rhel_tools[@]}"; do
             if ! rpm -qa | grep -q "$tool"; then
@@ -84,7 +85,7 @@ case "$DISTRO" in
         sudo pacman -Sy
         
         # Additional useful tools
-        local arch_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "base-devel")
+        arch_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "base-devel")
         
         for tool in "${arch_tools[@]}"; do
             if ! pacman -Qi "$tool" >/dev/null 2>&1; then
@@ -115,17 +116,22 @@ if [[ -n "$shell_profile" ]]; then
     
     # Add useful aliases if they don't exist
     if ! grep -q "# Neovim alias" "$shell_profile" 2>/dev/null; then
-        echo '' >> "$shell_profile"
-        echo '# Neovim alias' >> "$shell_profile"
-        echo 'alias vim=nvim' >> "$shell_profile"
-        echo 'alias vi=nvim' >> "$shell_profile"
+        {
+            echo ''
+            echo '# Neovim alias'
+            echo 'alias vim=nvim'
+            echo 'alias vi=nvim'
+        } >> "$shell_profile"
     fi
     
     # Add local bin to PATH if it exists
     if [[ -d "$HOME/.local/bin" ]] && ! grep -q ".local/bin" "$shell_profile" 2>/dev/null; then
-        echo '' >> "$shell_profile"
-        echo '# Local bin path' >> "$shell_profile"
-        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$shell_profile"
+        {
+            echo ''
+            echo '# Local bin path'
+            # shellcheck disable=SC2016
+            echo 'export PATH="$HOME/.local/bin:$PATH"'
+        } >> "$shell_profile"
     fi
 fi
 

@@ -11,17 +11,23 @@ cd ~/dotfiles
 
 # Run the installation script
 ./start.sh
+
+# Or use the Makefile
+make install
 ```
 
 ## 📁 Structure
 
 ```
 dotfiles/
-├── start.sh                    # Main installation script
+├── Makefile                   # Build automation and linting
+├── start.sh                   # Main installation script
+├── test-tmux.sh              # Tmux configuration test script
+├── fix-tmux.sh               # Tmux troubleshooting script
 ├── scripts/
-│   ├── functions.sh           # Shared installation functions
-│   ├── macos.sh              # macOS-specific installation
-│   └── linux.sh              # Linux-specific installation
+│   ├── functions.sh          # Shared installation functions
+│   ├── macos.sh             # macOS-specific installation
+│   └── linux.sh             # Linux-specific installation
 ├── .zshrc                     # Zsh configuration
 ├── .zsh_aliases               # Zsh aliases
 ├── .zsh_profile               # Zsh profile
@@ -114,6 +120,40 @@ Edit `~/.config/nvim/lua/config/lazy.lua` and add your plugins following the laz
 The configuration includes several color schemes. Change the active one in `options.lua`:
 ```lua
 vim.cmd("colorscheme catppuccin")  -- or gruvbox, everforest, etc.
+```
+
+## 🛠 Development & Maintenance
+
+### Makefile Targets
+
+The repository includes a Makefile for common development tasks:
+
+```bash
+# Show all available targets
+make help
+
+# Run linting checks
+make lint                # Run all linting (shellcheck)
+make shellcheck         # Run only shellcheck on shell scripts
+
+# Installation and testing
+make install            # Run the installation script
+make test              # Run configuration tests
+make check             # Run basic validation checks
+
+# Maintenance
+make clean             # Clean up temporary files
+make fix-permissions   # Fix script permissions
+make list              # List all shell scripts
+```
+
+### Code Quality
+
+All shell scripts are linted with shellcheck:
+```bash
+make shellcheck         # Check all scripts
+make shellcheck-verbose # Detailed output
+make pre-commit        # Run before committing changes
 ```
 
 ## 🔧 Troubleshooting

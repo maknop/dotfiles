@@ -33,7 +33,8 @@ command_exists() {
 backup_if_exists() {
     local target="$1"
     if [ -e "$target" ]; then
-        local backup="${target}.backup.$(date +%Y%m%d_%H%M%S)"
+        local backup
+        backup="${target}.backup.$(date +%Y%m%d_%H%M%S)"
         log_warning "Backing up existing $target to $backup"
         mv "$target" "$backup"
         return 0
@@ -52,7 +53,8 @@ create_symlink() {
     fi
     
     # Create target directory if it doesn't exist
-    local target_dir=$(dirname "$target")
+    local target_dir
+    target_dir=$(dirname "$target")
     if [ ! -d "$target_dir" ]; then
         log_info "Creating directory $target_dir"
         mkdir -p "$target_dir"
@@ -63,9 +65,7 @@ create_symlink() {
     
     # Create symlink
     log_info "Creating symlink: $target -> $source"
-    ln -sf "$source" "$target"
-    
-    if [ $? -eq 0 ]; then
+    if ln -sf "$source" "$target"; then
         log_success "Successfully created symlink for $(basename "$target")"
         return 0
     else
@@ -138,6 +138,7 @@ install_package_manager() {
                 
                 # Add Homebrew to PATH for Apple Silicon Macs
                 if [[ $(uname -m) == "arm64" ]]; then
+                    # shellcheck disable=SC2016
                     echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
                     eval "$(/opt/homebrew/bin/brew shellenv)"
                 fi
@@ -337,7 +338,8 @@ install_tmux_setup() {
 # Main installation function
 run_installation() {
     local os_name="$1"
-    local dotfiles_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+    local dotfiles_dir
+    dotfiles_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
     
     log_info "Starting dotfiles installation for $os_name"
     log_info "Dotfiles directory: $dotfiles_dir"

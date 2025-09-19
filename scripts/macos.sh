@@ -7,6 +7,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Source shared functions
+# shellcheck source=functions.sh disable=SC1091
 source "$SCRIPT_DIR/functions.sh"
 
 log_info "Starting macOS installation..."
@@ -40,9 +41,12 @@ if command_exists brew; then
     if [[ -n "$shell_profile" ]]; then
         if ! grep -q "brew shellenv" "$shell_profile" 2>/dev/null; then
             log_info "Adding Homebrew to shell profile: $shell_profile"
-            echo '' >> "$shell_profile"
-            echo '# Homebrew' >> "$shell_profile"
-            echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "$shell_profile"
+            {
+                echo ''
+                echo '# Homebrew'
+                # shellcheck disable=SC2016
+                echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+            } >> "$shell_profile"
         fi
     fi
 fi
@@ -52,7 +56,7 @@ if command_exists brew; then
     log_info "Installing macOS-specific development tools..."
     
     # Useful tools for development
-    local macos_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "delta")
+    macos_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "delta")
     
     for tool in "${macos_tools[@]}"; do
         if ! command_exists "$tool"; then
