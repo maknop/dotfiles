@@ -25,7 +25,7 @@ echo "4. light-soft"
 echo ""
 
 # Get user choice
-read -p "Enter theme number (1-4): " choice
+read -rp "Enter theme number (1-4): " choice
 
 case $choice in
     1)
