@@ -28,19 +28,15 @@ require("lazy").setup({
     lazy = true,
   },
   {
-    "neanias/everforest-nvim",
-    priority = 1000,
-    config = function()
-      require("config.colorscheme").setup()
-    end,
-  },
-  {
     "kaicataldo/material.vim",
     lazy = true,
   },
   {
     "AlexvZyl/nordic.nvim",
-    lazy = true,
+    priority = 1000,
+    config = function()
+      require("config.colorscheme").setup()
+    end,
   },
   {
     "glepnir/oceanic-material",
