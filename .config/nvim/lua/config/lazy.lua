@@ -25,18 +25,7 @@ require("lazy").setup({
   {
     "catppuccin/nvim",
     name = "catppuccin",
-<<<<<<< Updated upstream
-    priority = 1000,
-    config = function()
-      require("config.colorscheme").setup()
-    end,
-=======
     lazy = true,
-  },
-  {
-    "neanias/everforest-nvim",
-    lazy = true,
->>>>>>> Stashed changes
   },
   {
     "neanias/everforest-nvim",
