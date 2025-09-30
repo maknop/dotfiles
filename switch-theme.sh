@@ -247,7 +247,7 @@ main() {
     echo "2. Everforest (warm, green-toned)"
     echo ""
     
-    read -p "Enter theme number (1-2): " choice
+    read -rp "Enter theme number (1-2): " choice
     
     case $choice in
         1)
