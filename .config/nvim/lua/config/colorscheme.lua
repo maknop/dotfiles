@@ -5,9 +5,9 @@ local M = {}
 
 -- Set colorscheme with fallback
 function M.setup()
-  local colorscheme = "catppuccin"
+  local colorscheme = "everforest"
   
-  -- Try to set the colorscheme
+  -- Try to set the colorscheme directly
   local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
   if not status_ok then
     -- Fallback to default if colorscheme not found

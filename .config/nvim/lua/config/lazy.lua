@@ -25,14 +25,14 @@ require("lazy").setup({
   {
     "catppuccin/nvim",
     name = "catppuccin",
+    lazy = true,
+  },
+  {
+    "neanias/everforest-nvim",
     priority = 1000,
     config = function()
       require("config.colorscheme").setup()
     end,
-  },
-  {
-    "neanias/everforest-nvim",
-    lazy = true,
   },
   {
     "kaicataldo/material.vim",
