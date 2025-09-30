@@ -28,10 +28,6 @@ require("lazy").setup({
     lazy = true,
   },
   {
-    "neanias/everforest-nvim",
-    lazy = true,
-  },
-  {
     "kaicataldo/material.vim",
     lazy = true,
   },
