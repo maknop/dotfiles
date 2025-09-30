@@ -25,10 +25,18 @@ require("lazy").setup({
   {
     "catppuccin/nvim",
     name = "catppuccin",
+<<<<<<< Updated upstream
     priority = 1000,
     config = function()
       require("config.colorscheme").setup()
     end,
+=======
+    lazy = true,
+  },
+  {
+    "neanias/everforest-nvim",
+    lazy = true,
+>>>>>>> Stashed changes
   },
   {
     "neanias/everforest-nvim",
@@ -40,7 +48,10 @@ require("lazy").setup({
   },
   {
     "AlexvZyl/nordic.nvim",
-    lazy = true,
+    priority = 1000,
+    config = function()
+      require("config.colorscheme").setup()
+    end,
   },
   {
     "glepnir/oceanic-material",
