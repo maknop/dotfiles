@@ -42,6 +42,10 @@ require("lazy").setup({
     "glepnir/oceanic-material",
     lazy = true,
   },
+  {
+    "neanias/everforest-nvim",
+    lazy = true,
+  },
 
   -- Markdown preview
   {
