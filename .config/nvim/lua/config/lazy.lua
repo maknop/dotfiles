@@ -40,10 +40,17 @@ require("lazy").setup({
   },
   {
     "AlexvZyl/nordic.nvim",
-    lazy = true,
+    priority = 1000,
+    config = function()
+      require("config.colorscheme").setup()
+    end,
   },
   {
     "glepnir/oceanic-material",
+    lazy = true,
+  },
+  {
+    "neanias/everforest-nvim",
     lazy = true,
   },
 
