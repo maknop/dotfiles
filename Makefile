@@ -2,7 +2,7 @@
 # Provides convenient targets for linting, testing, and installation
 
 # Variables
-SHELL_SCRIPTS := start.sh test-tmux.sh fix-tmux.sh $(wildcard scripts/*.sh)
+SHELL_SCRIPTS := start.sh $(wildcard scripts/*.sh)
 NVIM_CONFIG := .config/nvim
 SHELLCHECK := shellcheck
 
@@ -88,8 +88,8 @@ install:
 # Test configurations
 test:
 	@echo "$(BLUE)Running configuration tests...$(NC)"
-	@if [ -f test-tmux.sh ]; then \
-		./test-tmux.sh; \
+	@if [ -f scripts/test-tmux.sh ]; then \
+		./scripts/test-tmux.sh; \
 	else \
 		echo "$(YELLOW)No test script found$(NC)"; \
 	fi
