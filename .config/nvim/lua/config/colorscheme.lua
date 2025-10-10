@@ -5,11 +5,6 @@ local M = {}
 
 -- Set colorscheme with fallback
 function M.setup()
-<<<<<<< Updated upstream
-  local colorscheme = "catppuccin"
-  
-  -- Try to set the colorscheme
-=======
   local colorscheme = "everforest"
   
   -- Configure everforest before setting it
@@ -46,21 +41,17 @@ function M.setup()
   end
   
   -- Try to set the colorscheme directly
->>>>>>> Stashed changes
   local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
   if not status_ok then
     -- Fallback to default if colorscheme not found
     vim.notify("Colorscheme " .. colorscheme .. " not found! Using default.", vim.log.levels.WARN)
     vim.cmd("colorscheme default")
-<<<<<<< Updated upstream
-=======
   end
   
   -- Configure statusline to reflect current theme
   local statusline_ok, statusline = pcall(require, "config.statusline")
   if statusline_ok then
     statusline.setup()
->>>>>>> Stashed changes
   end
 end
 
