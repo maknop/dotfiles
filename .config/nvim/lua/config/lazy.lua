@@ -25,13 +25,6 @@ require("lazy").setup({
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    priority = 1000,
-    config = function()
-      require("config.colorscheme").setup()
-    end,
-  },
-  {
-    "neanias/everforest-nvim",
     lazy = true,
   },
   {
@@ -40,7 +33,10 @@ require("lazy").setup({
   },
   {
     "AlexvZyl/nordic.nvim",
-    lazy = true,
+    priority = 1000,
+    config = function()
+      require("config.colorscheme").setup()
+    end,
   },
   {
     "glepnir/oceanic-material",
