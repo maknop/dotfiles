@@ -22,12 +22,12 @@ make install
 dotfiles/
 ├── Makefile                   # Build automation and linting
 ├── start.sh                   # Main installation script
-├── test-tmux.sh              # Tmux configuration test script
-├── fix-tmux.sh               # Tmux troubleshooting script
 ├── scripts/
 │   ├── functions.sh          # Shared installation functions
 │   ├── macos.sh             # macOS-specific installation
-│   └── linux.sh             # Linux-specific installation
+│   ├── linux.sh             # Linux-specific installation
+│   ├── test-tmux.sh         # Tmux configuration test script
+│   └── fix-tmux.sh          # Tmux troubleshooting script
 ├── .zshrc                     # Zsh configuration
 ├── .zsh_aliases               # Zsh aliases
 ├── .zsh_profile               # Zsh profile

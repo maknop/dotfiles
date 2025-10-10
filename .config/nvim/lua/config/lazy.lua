@@ -28,6 +28,13 @@ require("lazy").setup({
     lazy = true,
   },
   {
+    "neanias/everforest-nvim",
+    priority = 1000,
+    config = function()
+      require("config.colorscheme").setup()
+    end,
+  },
+  {
     "kaicataldo/material.vim",
     lazy = true,
   },
