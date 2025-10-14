@@ -11,7 +11,7 @@ function M.setup()
   if colorscheme == "everforest" then
     -- Set everforest options for better terminal compatibility
     vim.g.everforest_better_performance = 1
-    vim.g.everforest_background = "soft"  -- soft, medium, hard
+    vim.g.everforest_background = "hard"  -- soft, medium, hard
     vim.g.everforest_ui = "auto"  -- auto, dark, light
     vim.g.everforest_transparent_background = 0
     vim.g.everforest_show_eob = 1
