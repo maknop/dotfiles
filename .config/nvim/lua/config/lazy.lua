@@ -139,11 +139,38 @@ require("lazy").setup({
 
   -- Noice and dependencies
   {
+    "MunifTanjim/nui.nvim",
+    lazy = true,
+  },
+  {
+    "rcarriga/nvim-notify",
+    lazy = true,
+  },
+  {
     "folke/noice.nvim",
     event = "VeryLazy",
     dependencies = {
       "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
     },
+    config = function()
+      require("config.noice")
+    end,
+  },
+
+  -- Treesitter for better syntax highlighting
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = { "vim", "regex", "lua", "bash", "markdown", "markdown_inline" },
+        highlight = {
+          enable = true,
+        },
+      })
+    end,
   },
 
   -- LSP and completion
