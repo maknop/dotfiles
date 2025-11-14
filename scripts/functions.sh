@@ -36,10 +36,14 @@ backup_if_exists() {
         local backup
         backup="${target}.backup.$(date +%Y%m%d_%H%M%S)"
         log_warning "Backing up existing $target to $backup"
-        mv "$target" "$backup"
-        return 0
+        if mv "$target" "$backup" 2>/dev/null; then
+            return 0
+        else
+            log_error "Failed to backup $target to $backup"
+            return 1
+        fi
     fi
-    return 1
+    return 0
 }
 
 # Create symlink with backup
@@ -57,11 +61,14 @@ create_symlink() {
     target_dir=$(dirname "$target")
     if [ ! -d "$target_dir" ]; then
         log_info "Creating directory $target_dir"
-        mkdir -p "$target_dir"
+        mkdir -p "$target_dir" || {
+            log_error "Failed to create directory $target_dir"
+            return 1
+        }
     fi
     
     # Backup existing file/directory
-    backup_if_exists "$target"
+    backup_if_exists "$target" || log_warning "Could not backup existing $target, continuing anyway"
     
     # Create symlink
     log_info "Creating symlink: $target -> $source"
@@ -78,14 +85,25 @@ create_symlink() {
 install_dotfiles_config() {
     local dotfiles_dir="$1"
     
+    if [ -z "$dotfiles_dir" ]; then
+        log_error "Dotfiles directory not provided"
+        return 1
+    fi
+    
+    if [ ! -d "$dotfiles_dir" ]; then
+        log_error "Dotfiles directory does not exist: $dotfiles_dir"
+        return 1
+    fi
+    
     log_info "Installing dotfiles configurations..."
+    log_info "Source directory: $dotfiles_dir"
     
     # Install Neovim configuration
     local nvim_config_source="$dotfiles_dir/.config/nvim"
     local nvim_config_target="$HOME/.config/nvim"
     
     if [ -d "$nvim_config_source" ]; then
-        create_symlink "$nvim_config_source" "$nvim_config_target"
+        create_symlink "$nvim_config_source" "$nvim_config_target" || log_warning "Failed to create Neovim config symlink"
         
         # Check if Neovim is installed
         if command_exists nvim; then
@@ -104,7 +122,7 @@ install_dotfiles_config() {
     local tmux_config_target="$HOME/.config/tmux"
     
     if [ -d "$tmux_config_source" ]; then
-        create_symlink "$tmux_config_source" "$tmux_config_target"
+        create_symlink "$tmux_config_source" "$tmux_config_target" || log_warning "Failed to create tmux config symlink"
         log_success "Tmux configuration linked"
     else
         log_warning "Tmux config source directory not found: $tmux_config_source"
@@ -118,7 +136,7 @@ install_dotfiles_config() {
         local target_file="$HOME/$config"
         
         if [ -f "$source_file" ]; then
-            create_symlink "$source_file" "$target_file"
+            create_symlink "$source_file" "$target_file" || log_warning "Failed to create symlink for $config"
             log_success "Linked $config"
         else
             log_info "Config file not found: $source_file (skipping)"
@@ -339,10 +357,29 @@ install_tmux_setup() {
 run_installation() {
     local os_name="$1"
     local dotfiles_dir
-    dotfiles_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+    
+    # Try to get dotfiles directory from BASH_SOURCE, falling back to script location
+    # When sourced, BASH_SOURCE[0] points to functions.sh, so we need to go up one level
+    local script_path="${BASH_SOURCE[0]}"
+    if [ -z "$script_path" ]; then
+        # Fallback: try to find the script directory
+        script_path="${0}"
+    fi
+    
+    # Get the directory containing functions.sh (scripts/), then go up one level
+    dotfiles_dir="$(cd "$(dirname "$script_path")/.." && pwd)" || {
+        log_error "Failed to determine dotfiles directory"
+        return 1
+    }
     
     log_info "Starting dotfiles installation for $os_name"
     log_info "Dotfiles directory: $dotfiles_dir"
+    
+    # Verify the dotfiles directory exists and has expected structure
+    if [ ! -d "$dotfiles_dir" ]; then
+        log_error "Dotfiles directory does not exist: $dotfiles_dir"
+        return 1
+    fi
     
     # Install package manager
     install_package_manager "$os_name"
