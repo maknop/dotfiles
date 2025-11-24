@@ -43,18 +43,35 @@ log_info "Installing macOS-specific development tools..."
 # Useful tools for development
 macos_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "delta")
 
+# Check which tools are already installed
+to_install_tools=()
+already_installed_tools=()
+
 for tool in "${macos_tools[@]}"; do
-    if ! command_exists "$tool"; then
-        log_info "Installing $tool..."
-        if brew install "$tool"; then
-            log_success "$tool installed successfully"
-        else
-            log_warning "Failed to install $tool (continuing anyway)"
-        fi
+    if brew_is_installed "$tool" || command_exists "$tool"; then
+        already_installed_tools+=("$tool")
     else
-        log_success "$tool is already installed"
+        to_install_tools+=("$tool")
     fi
 done
+
+# Report already installed tools
+if [ ${#already_installed_tools[@]} -gt 0 ]; then
+    log_success "Already installed: ${already_installed_tools[*]}"
+fi
+
+# Batch install tools that need installation
+if [ ${#to_install_tools[@]} -gt 0 ]; then
+    log_info "Installing: ${to_install_tools[*]}"
+    log_info "This may take a few minutes..."
+    if brew install "${to_install_tools[@]}"; then
+        log_success "macOS tools installed successfully"
+    else
+        log_warning "Some tools failed to install (continuing anyway)"
+    fi
+else
+    log_success "All macOS tools are already installed"
+fi
 
 log_success "macOS installation completed successfully!"
 log_info ""

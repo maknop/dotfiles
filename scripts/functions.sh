@@ -223,36 +223,87 @@ install_neovim() {
     fi
 }
 
+# Check if a brew package is installed (faster than command_exists for brew packages)
+brew_is_installed() {
+    local package="$1"
+    brew list "$package" &>/dev/null
+}
+
 # Install additional dependencies
 install_dependencies() {
     local os_name="$1"
     
     log_info "Installing additional dependencies..."
     
-    # Dependencies for LSP servers and tools
-    local deps=()
-    
     case "$os_name" in
         "Darwin")
-            if command_exists brew; then
-                # Add common dependencies
-                deps+=("git" "curl" "wget" "ripgrep" "fd" "node" "python3" "go")
-
-                for dep in "${deps[@]}"; do
-                    if ! command_exists "$dep"; then
-                        log_info "Installing $dep..."
-                        if brew install "$dep"; then
-                            log_success "$dep installed successfully"
-                        else
-                            log_warning "Failed to install $dep (continuing anyway)"
-                        fi
-                    else
-                        log_success "$dep is already installed"
-                    fi
-                done
-            else
+            if ! command_exists brew; then
                 log_error "Homebrew not available. Cannot install dependencies."
                 return 1
+            fi
+            
+            # Essential quick-install packages (small, fast)
+            local essential_deps=("git" "curl" "wget" "ripgrep" "fd")
+            
+            # Large/slow packages (install separately with better feedback)
+            local large_deps=("node" "python3" "go")
+            
+            # Check and collect packages that need installation
+            local to_install=()
+            local already_installed=()
+            
+            log_info "Checking which packages are already installed..."
+            for dep in "${essential_deps[@]}"; do
+                if brew_is_installed "$dep" || command_exists "$dep"; then
+                    already_installed+=("$dep")
+                else
+                    to_install+=("$dep")
+                fi
+            done
+            
+            # Report already installed packages
+            if [ ${#already_installed[@]} -gt 0 ]; then
+                log_success "Already installed: ${already_installed[*]}"
+            fi
+            
+            # Batch install essential packages
+            if [ ${#to_install[@]} -gt 0 ]; then
+                log_info "Installing essential packages: ${to_install[*]}"
+                log_info "This may take a few minutes..."
+                if brew install "${to_install[@]}"; then
+                    log_success "Essential packages installed successfully"
+                else
+                    log_warning "Some essential packages failed to install (continuing anyway)"
+                fi
+            else
+                log_success "All essential packages are already installed"
+            fi
+            
+            # Install large packages separately with progress feedback
+            # Note: These can take 5-15 minutes each, so we install them one at a time
+            # with clear feedback
+            local large_to_install=()
+            for dep in "${large_deps[@]}"; do
+                if brew_is_installed "$dep" || command_exists "$dep"; then
+                    log_success "$dep is already installed"
+                else
+                    large_to_install+=("$dep")
+                fi
+            done
+            
+            if [ ${#large_to_install[@]} -gt 0 ]; then
+                log_info "Installing large packages: ${large_to_install[*]}"
+                log_warning "These packages can take 5-15 minutes each to install"
+                log_info "Brew will show progress during installation..."
+                
+                for dep in "${large_to_install[@]}"; do
+                    log_info "Installing $dep (this may take 5-15 minutes)..."
+                    if brew install "$dep"; then
+                        log_success "$dep installed successfully"
+                    else
+                        log_warning "Failed to install $dep (you can install it manually later with: brew install $dep)"
+                    fi
+                done
             fi
             ;;
         "Linux")
