@@ -129,19 +129,31 @@ install_dotfiles_config() {
 # Install package manager (if not exists)
 install_package_manager() {
     local os_name="$1"
-    
+
     case "$os_name" in
         "Darwin")
             if ! command_exists brew; then
                 log_info "Installing Homebrew..."
                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-                
-                # Add Homebrew to PATH for Apple Silicon Macs
+
+                # Add Homebrew to PATH for current shell session
                 if [[ $(uname -m) == "arm64" ]]; then
-                    # shellcheck disable=SC2016
-                    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+                    # Apple Silicon
+                    log_info "Detected Apple Silicon, setting up Homebrew path..."
                     eval "$(/opt/homebrew/bin/brew shellenv)"
+                else
+                    # Intel Mac
+                    log_info "Detected Intel Mac, setting up Homebrew path..."
+                    eval "$(/usr/local/bin/brew shellenv)"
                 fi
+
+                # Verify brew is now available
+                if ! command_exists brew; then
+                    log_error "Homebrew installation failed or not in PATH"
+                    return 1
+                fi
+
+                log_success "Homebrew installed and configured successfully"
             else
                 log_success "Homebrew is already installed"
             fi
@@ -177,7 +189,12 @@ install_neovim() {
     case "$os_name" in
         "Darwin")
             if command_exists brew; then
-                brew install neovim
+                if brew install neovim; then
+                    log_success "Neovim installed successfully via Homebrew"
+                else
+                    log_error "Failed to install Neovim via Homebrew"
+                    return 1
+                fi
             else
                 log_error "Homebrew not found. Please install Homebrew first."
                 return 1
@@ -220,15 +237,22 @@ install_dependencies() {
             if command_exists brew; then
                 # Add common dependencies
                 deps+=("git" "curl" "wget" "ripgrep" "fd" "node" "python3" "go")
-                
+
                 for dep in "${deps[@]}"; do
                     if ! command_exists "$dep"; then
                         log_info "Installing $dep..."
-                        brew install "$dep"
+                        if brew install "$dep"; then
+                            log_success "$dep installed successfully"
+                        else
+                            log_warning "Failed to install $dep (continuing anyway)"
+                        fi
                     else
                         log_success "$dep is already installed"
                     fi
                 done
+            else
+                log_error "Homebrew not available. Cannot install dependencies."
+                return 1
             fi
             ;;
         "Linux")
@@ -296,7 +320,12 @@ install_tmux_setup() {
             if ! command_exists tmux; then
                 if command_exists brew; then
                     log_info "Installing tmux..."
-                    brew install tmux
+                    if brew install tmux; then
+                        log_success "tmux installed successfully via Homebrew"
+                    else
+                        log_error "Failed to install tmux via Homebrew"
+                        return 1
+                    fi
                 else
                     log_error "Homebrew not found. Please install tmux manually."
                     return 1

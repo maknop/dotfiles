@@ -28,45 +28,33 @@ run_installation "Darwin"
 # macOS-specific post-installation steps
 log_info "Running macOS-specific configurations..."
 
-# Set up shell integration for Homebrew (if needed)
-if command_exists brew; then
-    # Check if Homebrew path is in shell profile
-    shell_profile=""
-    if [[ $SHELL == *"zsh"* ]]; then
-        shell_profile="$HOME/.zshrc"
-    elif [[ $SHELL == *"bash"* ]]; then
-        shell_profile="$HOME/.bash_profile"
-    fi
-    
-    if [[ -n "$shell_profile" ]]; then
-        if ! grep -q "brew shellenv" "$shell_profile" 2>/dev/null; then
-            log_info "Adding Homebrew to shell profile: $shell_profile"
-            {
-                echo ''
-                echo '# Homebrew'
-                # shellcheck disable=SC2016
-                echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
-            } >> "$shell_profile"
-        fi
-    fi
+# Verify Homebrew is available after dotfiles installation
+if ! command_exists brew; then
+    log_error "Homebrew is not available. Installation may have failed."
+    log_error "Please check the installation logs above."
+    exit 1
 fi
 
+log_success "Homebrew is configured (initialized via dotfiles)"
+
 # Install additional macOS-specific tools
-if command_exists brew; then
-    log_info "Installing macOS-specific development tools..."
-    
-    # Useful tools for development
-    macos_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "delta")
-    
-    for tool in "${macos_tools[@]}"; do
-        if ! command_exists "$tool"; then
-            log_info "Installing $tool..."
-            brew install "$tool" 2>/dev/null || log_warning "Failed to install $tool"
+log_info "Installing macOS-specific development tools..."
+
+# Useful tools for development
+macos_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "delta")
+
+for tool in "${macos_tools[@]}"; do
+    if ! command_exists "$tool"; then
+        log_info "Installing $tool..."
+        if brew install "$tool"; then
+            log_success "$tool installed successfully"
         else
-            log_success "$tool is already installed"
+            log_warning "Failed to install $tool (continuing anyway)"
         fi
-    done
-fi
+    else
+        log_success "$tool is already installed"
+    fi
+done
 
 log_success "macOS installation completed successfully!"
 log_info ""
