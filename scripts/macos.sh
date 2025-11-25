@@ -28,44 +28,49 @@ run_installation "Darwin"
 # macOS-specific post-installation steps
 log_info "Running macOS-specific configurations..."
 
-# Set up shell integration for Homebrew (if needed)
-if command_exists brew; then
-    # Check if Homebrew path is in shell profile
-    shell_profile=""
-    if [[ $SHELL == *"zsh"* ]]; then
-        shell_profile="$HOME/.zshrc"
-    elif [[ $SHELL == *"bash"* ]]; then
-        shell_profile="$HOME/.bash_profile"
-    fi
-    
-    if [[ -n "$shell_profile" ]]; then
-        if ! grep -q "brew shellenv" "$shell_profile" 2>/dev/null; then
-            log_info "Adding Homebrew to shell profile: $shell_profile"
-            {
-                echo ''
-                echo '# Homebrew'
-                # shellcheck disable=SC2016
-                echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
-            } >> "$shell_profile"
-        fi
-    fi
+# Verify Homebrew is available after dotfiles installation
+if ! command_exists brew; then
+    log_error "Homebrew is not available. Installation may have failed."
+    log_error "Please check the installation logs above."
+    exit 1
 fi
 
+log_success "Homebrew is configured (initialized via dotfiles)"
+
 # Install additional macOS-specific tools
-if command_exists brew; then
-    log_info "Installing macOS-specific development tools..."
-    
-    # Useful tools for development
-    macos_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "delta")
-    
-    for tool in "${macos_tools[@]}"; do
-        if ! command_exists "$tool"; then
-            log_info "Installing $tool..."
-            brew install "$tool" 2>/dev/null || log_warning "Failed to install $tool"
-        else
-            log_success "$tool is already installed"
-        fi
-    done
+log_info "Installing macOS-specific development tools..."
+
+# Useful tools for development
+macos_tools=("tree" "htop" "jq" "fzf" "bat" "exa" "delta")
+
+# Check which tools are already installed
+to_install_tools=()
+already_installed_tools=()
+
+for tool in "${macos_tools[@]}"; do
+    if brew_is_installed "$tool" || command_exists "$tool"; then
+        already_installed_tools+=("$tool")
+    else
+        to_install_tools+=("$tool")
+    fi
+done
+
+# Report already installed tools
+if [ ${#already_installed_tools[@]} -gt 0 ]; then
+    log_success "Already installed: ${already_installed_tools[*]}"
+fi
+
+# Batch install tools that need installation
+if [ ${#to_install_tools[@]} -gt 0 ]; then
+    log_info "Installing: ${to_install_tools[*]}"
+    log_info "This may take a few minutes..."
+    if brew install "${to_install_tools[@]}"; then
+        log_success "macOS tools installed successfully"
+    else
+        log_warning "Some tools failed to install (continuing anyway)"
+    fi
+else
+    log_success "All macOS tools are already installed"
 fi
 
 log_success "macOS installation completed successfully!"

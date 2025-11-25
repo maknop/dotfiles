@@ -1,6 +1,11 @@
 # Homebrew setup (must be first to ensure proper PATH)
+# Support both Apple Silicon and Intel Macs
 if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    # Apple Silicon
     eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f "/usr/local/bin/brew" ]]; then
+    # Intel Mac
+    eval "$(/usr/local/bin/brew shellenv)"
 fi
 
 # Oh My Zsh configuration (must be set before sourcing)
