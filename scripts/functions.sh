@@ -77,53 +77,72 @@ create_symlink() {
 # Install all dotfiles configurations
 install_dotfiles_config() {
     local dotfiles_dir="$1"
-    
+
     log_info "Installing dotfiles configurations..."
-    
+
+    local config_failed=0
+
     # Install Neovim configuration
     local nvim_config_source="$dotfiles_dir/.config/nvim"
     local nvim_config_target="$HOME/.config/nvim"
-    
+
     if [ -d "$nvim_config_source" ]; then
-        create_symlink "$nvim_config_source" "$nvim_config_target"
-        
-        # Check if Neovim is installed
-        if command_exists nvim; then
-            log_success "Neovim is installed"
-            log_info "Configuration will be loaded on next Neovim startup"
-            log_info "Lazy.nvim will automatically install plugins on first run"
+        if create_symlink "$nvim_config_source" "$nvim_config_target"; then
+            # Check if Neovim is installed
+            if command_exists nvim; then
+                log_success "Neovim is installed"
+                log_info "Configuration will be loaded on next Neovim startup"
+                log_info "Lazy.nvim will automatically install plugins on first run"
+            else
+                log_warning "Neovim is not installed. Please install it first."
+            fi
         else
-            log_warning "Neovim is not installed. Please install it first."
+            log_error "Failed to link Neovim configuration"
+            config_failed=1
         fi
     else
         log_warning "Neovim config source directory not found: $nvim_config_source"
+        config_failed=1
     fi
-    
+
     # Install tmux configuration
     local tmux_config_source="$dotfiles_dir/.config/tmux"
     local tmux_config_target="$HOME/.config/tmux"
-    
+
     if [ -d "$tmux_config_source" ]; then
-        create_symlink "$tmux_config_source" "$tmux_config_target"
-        log_success "Tmux configuration linked"
+        if create_symlink "$tmux_config_source" "$tmux_config_target"; then
+            log_success "Tmux configuration linked"
+        else
+            log_error "Failed to link tmux configuration"
+            config_failed=1
+        fi
     else
         log_warning "Tmux config source directory not found: $tmux_config_source"
     fi
-    
+
     # Install shell configuration files
     local shell_configs=(".zshrc" ".zsh_aliases" ".zsh_profile" ".gitconfig")
-    
+
     for config in "${shell_configs[@]}"; do
         local source_file="$dotfiles_dir/$config"
         local target_file="$HOME/$config"
-        
+
         if [ -f "$source_file" ]; then
-            create_symlink "$source_file" "$target_file"
-            log_success "Linked $config"
+            if create_symlink "$source_file" "$target_file"; then
+                log_success "Linked $config"
+            else
+                log_error "Failed to link $config"
+                config_failed=1
+            fi
         else
             log_info "Config file not found: $source_file (skipping)"
         fi
     done
+
+    if [ $config_failed -ne 0 ]; then
+        return 1
+    fi
+    return 0
 }
 
 # Install package manager (if not exists)
@@ -337,26 +356,53 @@ install_dependencies() {
 # Install LSP servers
 install_lsp_servers() {
     log_info "Installing LSP servers..."
-    
+
+    local lsp_failed=0
+
     # Python LSP servers
     if command_exists pip3; then
         log_info "Installing Python LSP servers..."
-        pip3 install --user pyright ruff-lsp 2>/dev/null || log_warning "Failed to install some Python LSP servers"
+        if pip3 install --user pyright ruff-lsp 2>&1; then
+            log_success "Python LSP servers installed successfully"
+        else
+            log_warning "Failed to install some Python LSP servers"
+            lsp_failed=1
+        fi
+    else
+        log_warning "pip3 not found, skipping Python LSP servers"
     fi
-    
+
     # TypeScript LSP server
     if command_exists npm; then
         log_info "Installing TypeScript LSP server..."
-        npm install -g typescript typescript-language-server 2>/dev/null || log_warning "Failed to install TypeScript LSP server"
+        if npm install -g typescript typescript-language-server 2>&1; then
+            log_success "TypeScript LSP server installed successfully"
+        else
+            log_warning "Failed to install TypeScript LSP server"
+            lsp_failed=1
+        fi
+    else
+        log_warning "npm not found, skipping TypeScript LSP server"
     fi
-    
+
     # Go LSP server (gopls is usually installed with Go)
     if command_exists go; then
         log_info "Installing Go LSP server..."
-        go install golang.org/x/tools/gopls@latest 2>/dev/null || log_warning "Failed to install gopls"
+        if go install golang.org/x/tools/gopls@latest 2>&1; then
+            log_success "Go LSP server (gopls) installed successfully"
+        else
+            log_warning "Failed to install gopls"
+            lsp_failed=1
+        fi
+    else
+        log_warning "go not found, skipping Go LSP server"
     fi
-    
-    log_success "LSP server installation completed"
+
+    if [ $lsp_failed -eq 0 ]; then
+        log_success "LSP server installation completed successfully"
+    else
+        log_warning "LSP server installation completed with some warnings"
+    fi
 }
 
 # Install tmux and TPM (Tmux Plugin Manager)
@@ -407,9 +453,14 @@ install_tmux_setup() {
     local tpm_dir="$HOME/.tmux/plugins/tpm"
     if [ ! -d "$tpm_dir" ]; then
         log_info "Installing TPM (Tmux Plugin Manager)..."
-        git clone https://github.com/tmux-plugins/tpm "$tpm_dir"
-        log_success "TPM installed successfully"
-        log_info "Run 'tmux source ~/.config/tmux/tmux.conf' and then 'prefix + I' to install plugins"
+        if git clone https://github.com/tmux-plugins/tpm "$tpm_dir" 2>&1; then
+            log_success "TPM installed successfully"
+            log_info "Run 'tmux source ~/.config/tmux/tmux.conf' and then 'prefix + I' to install plugins"
+        else
+            log_error "Failed to clone TPM repository"
+            log_warning "You can manually install TPM later with: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm"
+            return 1
+        fi
     else
         log_success "TPM is already installed"
     fi
@@ -420,29 +471,75 @@ run_installation() {
     local os_name="$1"
     local dotfiles_dir
     dotfiles_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-    
+
     log_info "Starting dotfiles installation for $os_name"
     log_info "Dotfiles directory: $dotfiles_dir"
-    
+
+    local install_failed=0
+
     # Install package manager
-    install_package_manager "$os_name"
-    
+    log_info "Step 1/6: Installing package manager..."
+    if install_package_manager "$os_name"; then
+        log_success "Package manager setup completed"
+    else
+        log_error "Package manager setup failed"
+        install_failed=1
+        return 1
+    fi
+
     # Install Neovim
-    install_neovim "$os_name"
-    
+    log_info "Step 2/6: Installing Neovim..."
+    if install_neovim "$os_name"; then
+        log_success "Neovim installation completed"
+    else
+        log_warning "Neovim installation failed (continuing anyway)"
+        install_failed=1
+    fi
+
     # Install dependencies
-    install_dependencies "$os_name"
-    
+    log_info "Step 3/6: Installing dependencies..."
+    if install_dependencies "$os_name"; then
+        log_success "Dependencies installation completed"
+    else
+        log_warning "Dependencies installation failed (continuing anyway)"
+        install_failed=1
+    fi
+
     # Install dotfiles configurations
-    install_dotfiles_config "$dotfiles_dir"
-    
+    log_info "Step 4/6: Installing dotfiles configurations..."
+    if install_dotfiles_config "$dotfiles_dir"; then
+        log_success "Dotfiles configuration completed"
+    else
+        log_warning "Dotfiles configuration failed (continuing anyway)"
+        install_failed=1
+    fi
+
     # Install tmux and TPM
-    install_tmux_setup "$os_name"
-    
+    log_info "Step 5/6: Installing tmux and TPM..."
+    if install_tmux_setup "$os_name"; then
+        log_success "Tmux setup completed"
+    else
+        log_warning "Tmux setup failed (continuing anyway)"
+        install_failed=1
+    fi
+
     # Install LSP servers
-    install_lsp_servers
-    
-    log_success "Installation completed!"
+    log_info "Step 6/6: Installing LSP servers..."
+    if install_lsp_servers; then
+        log_success "LSP servers installation completed"
+    else
+        log_warning "LSP servers installation failed (continuing anyway)"
+        install_failed=1
+    fi
+
+    if [ $install_failed -eq 0 ]; then
+        log_success "Installation completed successfully!"
+    else
+        log_warning "Installation completed with some warnings/errors"
+        log_info "Please review the log messages above for details"
+    fi
+
+    log_info ""
     log_info "You can now start Neovim with 'nvim'"
     log_info "On first startup, lazy.nvim will automatically install all plugins"
 }
