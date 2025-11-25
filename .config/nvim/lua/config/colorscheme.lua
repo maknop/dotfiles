@@ -5,39 +5,33 @@ local M = {}
 
 -- Set colorscheme with fallback
 function M.setup()
-  local colorscheme = "everforest"
-  
-  -- Configure everforest before setting it
-  if colorscheme == "everforest" then
-    -- Set everforest options for better terminal compatibility
-    vim.g.everforest_better_performance = 1
-    vim.g.everforest_background = "hard"  -- soft, medium, hard
-    vim.g.everforest_ui = "auto"  -- auto, dark, light
-    vim.g.everforest_transparent_background = 0
-    vim.g.everforest_show_eob = 1
-    vim.g.everforest_diagnostic_text_highlight = 0
-    vim.g.everforest_diagnostic_line_highlight = 1
-    vim.g.everforest_diagnostic_virtual_text = "colored"
-    vim.g.everforest_current_word = "grey background"
-    vim.g.everforest_spell_foreground = "colored"
-    vim.g.everforest_cursor = "auto"
-    vim.g.everforest_lsp = 1
-    vim.g.everforest_pumblend = 0
-    vim.g.everforest_float_style = "dim"
-    vim.g.everforest_italic_keywords = 1
-    vim.g.everforest_italic_functions = 0
-    vim.g.everforest_italic_comments = 1
-    vim.g.everforest_italic_loops = 0
-    vim.g.everforest_italic_conditionals = 0
-    vim.g.everforest_italic_variables = 0
-    vim.g.everforest_italic_math = 0
-    vim.g.everforest_italic_emphasis = 1
-    vim.g.everforest_italic_operators = 0
-    vim.g.everforest_italic_strings = 0
-    vim.g.everforest_italic_vectors = 0
-    vim.g.everforest_italic_parameters = 0
-    vim.g.everforest_italic_types = 0
-    vim.g.everforest_italic_fields = 0
+  local colorscheme = "nordic"
+
+  -- Configure nordic before setting it
+  if colorscheme == "nordic" then
+    require('nordic').setup({
+      -- Use a more prominent cursorline
+      cursorline = {
+        bold = false,
+        bold_number = true,
+        theme = 'dark',
+        blend = 0.85,
+      },
+      -- Configure bold and italic styles
+      bold_keywords = false,
+      italic_comments = true,
+      -- Reduce overall brightness
+      reduced_blue = false,
+      -- Use brighter colors for syntax
+      bright_border = false,
+      -- Styling options
+      noice = {
+        style = 'classic',
+      },
+      telescope = {
+        style = 'classic',
+      },
+    })
   end
   
   -- Try to set the colorscheme directly
