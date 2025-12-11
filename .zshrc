@@ -29,9 +29,6 @@ plugins=(
     postgres
 )
 
-# Adding Neovim to path
-#export PATH="$PATH:/opt/nvim-linux64/bin"
-
 # Set global .gitignore file.
 git config --global core.excludesfile ~/.global_gitignore
 
@@ -52,8 +49,5 @@ if [ -f ~/functions ]; then
     source ~/functions
 fi
 
-# Auto-start tmux (commented out to prevent infinite loops)
-# if [ "$TMUX" = "" ]; then tmux; fi
-
 # Tmux will automatically source ~/.config/tmux/tmux.conf when it starts
-
+echo 'export PATH="$PATH:/snap/bin"' >> ~/.zshrc

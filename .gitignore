@@ -19,9 +19,6 @@ Thumbs.db
 .idea/
 *.sublime-*
 
-# Backup files created by installation script
-*.backup.*
-
 # Log files
 *.log
 

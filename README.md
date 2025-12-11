@@ -70,7 +70,7 @@ dotfiles/
 ### Installation Script Features
 - **Cross-platform** - Supports macOS and Linux
 - **Automatic dependency installation** - Installs Neovim, tmux, LSP servers, and tools
-- **Safe symlinking** - Backs up existing configurations before linking
+- **Safe symlinking** - Automatically replaces existing configurations
 - **Package manager detection** - Uses Homebrew on macOS, apt/yum/pacman on Linux
 - **Colored output** - Clear progress indicators and error messages
 
@@ -101,7 +101,7 @@ dotfiles/
 If you prefer to install manually:
 
 1. **Install Neovim** (version 0.8+)
-2. **Backup existing config**: `mv ~/.config/nvim ~/.config/nvim.backup`
+2. **Remove existing config** (if any): `rm -rf ~/.config/nvim`
 3. **Symlink configuration**: `ln -sf /path/to/dotfiles/.config/nvim ~/.config/nvim`
 4. **Install dependencies**: See the installation script for your OS
 5. **Start Neovim**: `nvim` (plugins will install automatically)
