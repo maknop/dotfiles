@@ -56,4 +56,14 @@ fi
 # if [ "$TMUX" = "" ]; then tmux; fi
 
 # Tmux will automatically source ~/.config/tmux/tmux.conf when it starts
+echo 'export PATH="$PATH:/snap/bin"' >> ~/.zshrc
 
+# Neovim alias
+alias vim=nvim
+alias vi=nvim
+export PATH="$PATH:/snap/bin"
+export PATH="$PATH:/snap/bin"
+export PATH="$PATH:/snap/bin"
+export PATH="$PATH:/snap/bin"
+export PATH="$PATH:/snap/bin"
+export PATH="$PATH:/snap/bin"

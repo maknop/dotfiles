@@ -29,20 +29,7 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Create backup of existing file/directory
-backup_if_exists() {
-    local target="$1"
-    if [ -e "$target" ]; then
-        local backup
-        backup="${target}.backup.$(date +%Y%m%d_%H%M%S)"
-        log_warning "Backing up existing $target to $backup"
-        mv "$target" "$backup"
-        return 0
-    fi
-    return 1
-}
-
-# Create symlink with backup
+# Create symlink
 create_symlink() {
     local source="$1"
     local target="$2"
@@ -60,9 +47,12 @@ create_symlink() {
         mkdir -p "$target_dir"
     fi
     
-    # Backup existing file/directory
-    backup_if_exists "$target"
-    
+    # Remove existing file/directory if it exists
+    if [ -e "$target" ] || [ -L "$target" ]; then
+        log_info "Removing existing $target"
+        rm -rf "$target"
+    fi
+
     # Create symlink
     log_info "Creating symlink: $target -> $source"
     if ln -sf "$source" "$target"; then
