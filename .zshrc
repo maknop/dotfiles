@@ -49,5 +49,3 @@ if [ -f ~/functions ]; then
     source ~/functions
 fi
 
-# Tmux will automatically source ~/.config/tmux/tmux.conf when it starts
-echo 'export PATH="$PATH:/snap/bin"' >> ~/.zshrc
