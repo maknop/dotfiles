@@ -9,11 +9,9 @@ elif [[ -f "/usr/local/bin/brew" ]]; then
 fi
 
 # Oh My Zsh configuration (must be set before sourcing)
-export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="af-magic"
 ZSH_DISABLE_COMPFIX=true
 
-export TERM="xterm-256color"
 
 # Source Oh My Zsh
 source $ZSH/oh-my-zsh.sh
@@ -32,22 +30,12 @@ plugins=(
 # Set global .gitignore file.
 git config --global core.excludesfile ~/.global_gitignore
 
-# Golang
-export PATH=$PATH:$GOROOT/bin
-export PATH=$PATH:/usr/local/go/bin
+# Load Profile Settings
+[[ -f ~/.zsh_profile ]] && source ~/.zsh_profile
 
-if [ -f ~/.zsh_profile ]; then
-    source ~/.zsh_profile
-fi
-
-if [ -f ~/.zsh_aliases ]; then
-    source ~/.zsh_aliases
-fi
+# Load Aliases
+[[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 
 # Source custom functions
-if [ -f ~/functions ]; then
-    source ~/functions
-fi
+[[ -f ~/functions ]] && source ~/functions
 
-# Tmux will automatically source ~/.config/tmux/tmux.conf when it starts
-echo 'export PATH="$PATH:/snap/bin"' >> ~/.zshrc
