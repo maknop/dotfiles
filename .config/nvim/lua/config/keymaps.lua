@@ -30,9 +30,9 @@ keymap("n", ";", ":", opts)
 keymap("i", "jk", "<ESC>", opts)
 keymap("i", "JK", "<ESC>", opts)
 
--- NERDTree mappings (will work when plugin is loaded)
-keymap("n", "<C-n>", ":NERDTreeToggle<CR>", opts)
-keymap("n", "<C-m>", ":NERDTreeFind<CR>", opts)
+-- NvimTree mappings (will work when plugin is loaded)
+keymap("n", "<C-n>", "<cmd>NvimTreeToggle<cr>", opts)
+keymap("n", "<C-m>", "<cmd>NvimTreeFindFile<cr>", opts)
 
 -- Telescope mappings
 keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts)

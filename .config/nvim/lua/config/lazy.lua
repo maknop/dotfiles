@@ -98,8 +98,46 @@ require("lazy").setup({
 
   -- Core plugins
   {
-    "scrooloose/nerdtree",
-    cmd = { "NERDTree", "NERDTreeToggle", "NERDTreeFind" },
+    "nvim-tree/nvim-web-devicons",
+    lazy = true,
+  },
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = {
+      { "<C-n>", "<cmd>NvimTreeToggle<cr>", desc = "Toggle NvimTree" },
+      { "<C-m>", "<cmd>NvimTreeFindFile<cr>", desc = "Find file in NvimTree" },
+    },
+    config = function()
+      require("nvim-tree").setup({
+        view = {
+          width = 30,
+        },
+        renderer = {
+          group_empty = true,
+          icons = {
+            show = {
+              file = true,
+              folder = true,
+              folder_arrow = true,
+              git = true,
+            },
+          },
+        },
+        filters = {
+          dotfiles = false,
+        },
+        git = {
+          enable = true,
+          ignore = false,
+        },
+        actions = {
+          open_file = {
+            quit_on_open = false,
+          },
+        },
+      })
+    end,
   },
   {
     "scrooloose/nerdcommenter",
