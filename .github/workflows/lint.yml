@@ -1,7 +1,9 @@
 name: Shell Linter
 
-# Run this workflow every time a new commit pushed to your repository
-on: push
+# Run this workflow on pushes and pull requests
+on:
+  push:
+  pull_request:
 
 jobs:
   lint:
