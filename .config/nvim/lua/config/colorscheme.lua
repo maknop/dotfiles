@@ -5,32 +5,19 @@ local M = {}
 
 -- Set colorscheme with fallback
 function M.setup()
-  local colorscheme = "nordic"
+  local colorscheme = "everforest"
 
-  -- Configure nordic before setting it
-  if colorscheme == "nordic" then
-    require('nordic').setup({
-      -- Use a more prominent cursorline
-      cursorline = {
-        bold = false,
-        bold_number = true,
-        theme = 'dark',
-        blend = 0.85,
-      },
-      -- Configure bold and italic styles
-      bold_keywords = false,
-      italic_comments = true,
-      -- Reduce overall brightness
-      reduced_blue = false,
-      -- Use brighter colors for syntax
-      bright_border = false,
-      -- Styling options
-      noice = {
-        style = 'classic',
-      },
-      telescope = {
-        style = 'classic',
-      },
+  -- Configure everforest before setting it
+  if colorscheme == "everforest" then
+    require('everforest').setup({
+      -- Control the "hardness" of the background (soft, medium, hard)
+      background = "medium",
+      -- How much of the background should be transparent
+      transparent_background_level = 0,
+      -- Use italic for comments
+      italics = true,
+      -- Disable italic for keywords
+      disable_italic_comments = false,
     })
   end
   
