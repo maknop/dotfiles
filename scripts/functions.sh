@@ -29,6 +29,26 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+# Compare version strings (returns 0 if $1 >= $2)
+version_gte() {
+    local version1="$1"
+    local version2="$2"
+
+    # Use sort -V for version comparison
+    local lower
+    lower=$(printf '%s\n%s' "$version1" "$version2" | sort -V | head -n1)
+
+    # If the lower version equals version2, then version1 >= version2
+    [[ "$lower" == "$version2" ]]
+}
+
+# Get installed Neovim version (returns empty string if not installed)
+get_nvim_version() {
+    if command_exists nvim; then
+        nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?'
+    fi
+}
+
 # Create symlink
 create_symlink() {
     local source="$1"
@@ -184,25 +204,92 @@ install_package_manager() {
 }
 
 # Install Neovim
+# Requires Neovim >= 0.11 for full feature support (macOS and Ubuntu only)
+REQUIRED_NVIM_VERSION="0.11"
+
+# Check if we should enforce version requirements (macOS and Ubuntu only)
+should_enforce_nvim_version() {
+    local os_name="$1"
+
+    if [[ "$os_name" == "Darwin" ]]; then
+        return 0  # Enforce on macOS
+    fi
+
+    if [[ "$os_name" == "Linux" ]]; then
+        # Check if Ubuntu
+        if [ -f /etc/os-release ]; then
+            # shellcheck source=/dev/null
+            . /etc/os-release
+            if [[ "$ID" == "ubuntu" ]]; then
+                return 0  # Enforce on Ubuntu
+            fi
+        fi
+    fi
+
+    return 1  # Don't enforce on other systems
+}
+
 install_neovim() {
     local os_name="$1"
-    
-    if command_exists nvim; then
-        log_success "Neovim is already installed"
-        nvim --version | head -1
-        return 0
+    local current_version
+    local needs_install=false
+    local needs_upgrade=false
+    local enforce_version=false
+
+    # Determine if we should enforce version requirements
+    if should_enforce_nvim_version "$os_name"; then
+        enforce_version=true
     fi
-    
-    log_info "Installing Neovim..."
-    
+
+    current_version=$(get_nvim_version)
+
+    if [[ -n "$current_version" ]]; then
+        log_info "Found Neovim version: $current_version"
+        if [[ "$enforce_version" == true ]]; then
+            if version_gte "$current_version" "$REQUIRED_NVIM_VERSION"; then
+                log_success "Neovim $current_version meets minimum requirement (>= $REQUIRED_NVIM_VERSION)"
+                return 0
+            else
+                log_warning "Neovim $current_version is below minimum required version $REQUIRED_NVIM_VERSION"
+                needs_upgrade=true
+            fi
+        else
+            log_success "Neovim is already installed"
+            return 0
+        fi
+    else
+        log_info "Neovim is not installed"
+        needs_install=true
+    fi
+
+    if [[ "$enforce_version" == true ]]; then
+        if [[ "$needs_install" == true ]]; then
+            log_info "Installing Neovim >= $REQUIRED_NVIM_VERSION..."
+        else
+            log_info "Upgrading Neovim to >= $REQUIRED_NVIM_VERSION..."
+        fi
+    else
+        log_info "Installing Neovim..."
+    fi
+
     case "$os_name" in
         "Darwin")
             if command_exists brew; then
-                if brew install neovim; then
-                    log_success "Neovim installed successfully via Homebrew"
+                if [[ "$needs_upgrade" == true ]]; then
+                    log_info "Upgrading Neovim via Homebrew..."
+                    if brew upgrade neovim; then
+                        log_success "Neovim upgraded successfully via Homebrew"
+                    else
+                        log_error "Failed to upgrade Neovim via Homebrew"
+                        return 1
+                    fi
                 else
-                    log_error "Failed to install Neovim via Homebrew"
-                    return 1
+                    if brew install neovim; then
+                        log_success "Neovim installed successfully via Homebrew"
+                    else
+                        log_error "Failed to install Neovim via Homebrew"
+                        return 1
+                    fi
                 fi
             else
                 log_error "Homebrew not found. Please install Homebrew first."
@@ -210,24 +297,183 @@ install_neovim() {
             fi
             ;;
         "Linux")
-            if command_exists apt-get; then
-                sudo apt-get install -y neovim
-            elif command_exists yum; then
-                sudo yum install -y neovim
-            elif command_exists pacman; then
-                sudo pacman -S neovim
-            else
-                log_error "Could not install Neovim. Please install manually."
-                return 1
-            fi
+            install_neovim_linux "$needs_upgrade"
             ;;
     esac
-    
-    if command_exists nvim; then
-        log_success "Neovim installed successfully"
-        nvim --version | head -1
+
+    # Verify installation
+    current_version=$(get_nvim_version)
+    if [[ -n "$current_version" ]]; then
+        if [[ "$enforce_version" == true ]]; then
+            if version_gte "$current_version" "$REQUIRED_NVIM_VERSION"; then
+                log_success "Neovim $current_version installed successfully"
+                return 0
+            else
+                log_error "Neovim $current_version was installed but does not meet minimum version $REQUIRED_NVIM_VERSION"
+                log_info "You may need to install from source or use a different method"
+                return 1
+            fi
+        else
+            log_success "Neovim $current_version installed successfully"
+            return 0
+        fi
     else
         log_error "Failed to install Neovim"
+        return 1
+    fi
+}
+
+# Install Neovim on Linux with version >= 0.11 (Ubuntu only)
+# For other distros, use standard package manager without version requirements
+install_neovim_linux() {
+    local needs_upgrade="$1"
+
+    # Detect Linux distribution
+    local distro=""
+    if [ -f /etc/os-release ]; then
+        # shellcheck source=/dev/null
+        . /etc/os-release
+        distro="$ID"
+    fi
+
+    # Only enforce version requirements for Ubuntu
+    if [[ "$distro" == "ubuntu" ]]; then
+        install_neovim_ubuntu "$needs_upgrade"
+        return $?
+    fi
+
+    # For other distros, use standard package manager (no version requirements)
+    log_info "Installing Neovim via system package manager..."
+
+    if command_exists dnf; then
+        if [[ "$needs_upgrade" == true ]]; then
+            sudo dnf upgrade -y neovim
+        else
+            sudo dnf install -y neovim
+        fi
+    elif command_exists yum; then
+        if [[ "$needs_upgrade" == true ]]; then
+            sudo yum update -y neovim
+        else
+            sudo yum install -y neovim
+        fi
+    elif command_exists pacman; then
+        if [[ "$needs_upgrade" == true ]]; then
+            sudo pacman -Syu --noconfirm neovim
+        else
+            sudo pacman -S --noconfirm neovim
+        fi
+    elif command_exists apt-get; then
+        # Non-Ubuntu Debian-based distros
+        if [[ "$needs_upgrade" == true ]]; then
+            sudo apt-get update && sudo apt-get upgrade -y neovim
+        else
+            sudo apt-get update && sudo apt-get install -y neovim
+        fi
+    else
+        log_error "No supported package manager found"
+        return 1
+    fi
+}
+
+# Install Neovim >= 0.11 on Ubuntu
+install_neovim_ubuntu() {
+    local needs_upgrade="$1"
+
+    # Detect architecture
+    local arch
+    arch=$(uname -m)
+    case "$arch" in
+        x86_64) arch="linux64" ;;
+        aarch64|arm64) arch="linux-arm64" ;;
+        *)
+            log_error "Unsupported architecture: $arch"
+            return 1
+            ;;
+    esac
+
+    log_info "Attempting to install Neovim >= $REQUIRED_NVIM_VERSION via PPA (Ubuntu)..."
+
+    # Check if add-apt-repository is available
+    if command_exists add-apt-repository; then
+        # Remove old neovim if upgrading
+        if [[ "$needs_upgrade" == true ]]; then
+            log_info "Removing old Neovim version..."
+            sudo apt-get remove -y neovim neovim-runtime 2>/dev/null || true
+        fi
+
+        # Add Neovim unstable PPA for latest versions
+        if ! grep -q "neovim-ppa/unstable" /etc/apt/sources.list.d/*.list 2>/dev/null; then
+            log_info "Adding Neovim unstable PPA..."
+            sudo add-apt-repository -y ppa:neovim-ppa/unstable
+        fi
+        sudo apt-get update
+
+        if sudo apt-get install -y neovim; then
+            return 0
+        fi
+    fi
+
+    # Fallback: Install from GitHub releases
+    log_info "PPA method failed, trying GitHub releases..."
+    install_neovim_from_github "$arch"
+    return $?
+}
+
+# Install Neovim from GitHub releases (for getting latest version)
+install_neovim_from_github() {
+    local arch="$1"
+    local install_dir="/opt/nvim"
+    local bin_link="/usr/local/bin/nvim"
+
+    log_info "Downloading Neovim from GitHub releases..."
+
+    # Get the latest stable release URL
+    local download_url="https://github.com/neovim/neovim/releases/latest/download/nvim-${arch}.tar.gz"
+    local temp_dir
+    temp_dir=$(mktemp -d)
+
+    # Download and extract
+    if ! curl -L -o "$temp_dir/nvim.tar.gz" "$download_url"; then
+        log_error "Failed to download Neovim from GitHub"
+        rm -rf "$temp_dir"
+        return 1
+    fi
+
+    # Remove old installation if exists
+    if [[ -d "$install_dir" ]]; then
+        log_info "Removing old Neovim installation..."
+        sudo rm -rf "$install_dir"
+    fi
+
+    # Extract to /opt/nvim
+    log_info "Extracting Neovim to $install_dir..."
+    sudo mkdir -p "$install_dir"
+    if ! sudo tar -xzf "$temp_dir/nvim.tar.gz" -C /opt --transform='s/^nvim-linux[^/]*/nvim/' 2>/dev/null; then
+        # Try without transform for different archive structures
+        sudo tar -xzf "$temp_dir/nvim.tar.gz" -C /opt
+        # Find and rename the extracted directory
+        local extracted_dir
+        extracted_dir=$(find /opt -maxdepth 1 -name "nvim-*" -type d | head -1)
+        if [[ -n "$extracted_dir" && "$extracted_dir" != "$install_dir" ]]; then
+            sudo rm -rf "$install_dir"
+            sudo mv "$extracted_dir" "$install_dir"
+        fi
+    fi
+
+    # Create symlink
+    log_info "Creating symlink at $bin_link..."
+    sudo ln -sf "$install_dir/bin/nvim" "$bin_link"
+
+    # Cleanup
+    rm -rf "$temp_dir"
+
+    # Verify installation
+    if [[ -x "$bin_link" ]]; then
+        log_success "Neovim installed from GitHub releases"
+        return 0
+    else
+        log_error "Failed to install Neovim from GitHub"
         return 1
     fi
 }
