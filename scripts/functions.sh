@@ -111,7 +111,7 @@ install_dotfiles_config() {
     fi
 
     # Install shell configuration files
-    local shell_configs=(".zshrc" ".zsh_aliases" ".zsh_profile" ".gitconfig")
+    local shell_configs=(".zshrc" ".zsh_aliases" ".zprofile" ".gitconfig")
 
     for config in "${shell_configs[@]}"; do
         local source_file="$dotfiles_dir/$config"

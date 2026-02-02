@@ -31,7 +31,7 @@ plugins=(
 git config --global core.excludesfile ~/.global_gitignore
 
 # Load Profile Settings
-[[ -f ~/.zsh_profile ]] && source ~/.zsh_profile
+[[ -f ~/.zprofile ]] && source ~/.zprofile
 
 # Load Aliases
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
@@ -39,3 +39,11 @@ git config --global core.excludesfile ~/.global_gitignore
 # Source custom functions
 [[ -f ~/functions ]] && source ~/functions
 
+
+# Neovim alias
+alias vim=nvim
+alias vi=nvim
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
