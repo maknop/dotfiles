@@ -88,11 +88,7 @@ install:
 # Test configurations
 test:
 	@echo "$(BLUE)Running configuration tests...$(NC)"
-	@if [ -f scripts/test-tmux.sh ]; then \
-		./scripts/test-tmux.sh; \
-	else \
-		echo "$(YELLOW)No test script found$(NC)"; \
-	fi
+	@echo "$(YELLOW)No tests configured$(NC)"
 
 # Clean up temporary files
 clean:

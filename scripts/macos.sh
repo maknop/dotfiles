@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # macOS-specific installation script
-# Note: We handle errors explicitly, so we don't use 'set -e'
+set -e
 
 # Get the directory of this script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

@@ -16,4 +16,3 @@ autocmd("BufEnter", {
 
 -- Markdown preview settings
 vim.g.vim_markdown_preview_hotkey = '<C-m>'
-vim.g.vim_markdown_preview_browser = 'Google Chrome'

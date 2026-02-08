@@ -21,11 +21,11 @@ function M.setup()
     vim.g.airline_disable_statusline = 1
     return
   end
-  
+
   -- Enable statusline when not in tmux
   vim.opt.laststatus = 2
   vim.g.airline_disable_statusline = 0
-  
+
   local theme = M.get_current_theme()
   
   if theme == "nordic" then
@@ -61,7 +61,7 @@ function M.setup()
     vim.g.airline_theme = "default"
     vim.g.airline_powerline_fonts = 1
   end
-  
+
   -- Common airline settings
   vim.g["airline#extensions#tabline#enabled"] = 1
   vim.g["airline#extensions#tabline#left_sep"] = ' '
