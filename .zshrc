@@ -12,11 +12,6 @@ fi
 ZSH_THEME="af-magic"
 ZSH_DISABLE_COMPFIX=true
 
-
-# Source Oh My Zsh
-source $ZSH/oh-my-zsh.sh
-
-# Plugins loaded
 plugins=(
     git
     docker
@@ -27,8 +22,8 @@ plugins=(
     postgres
 )
 
-# Set global .gitignore file.
-git config --global core.excludesfile ~/.global_gitignore
+# Source Oh My Zsh
+source $ZSH/oh-my-zsh.sh
 
 # Load Profile Settings
 [[ -f ~/.zprofile ]] && source ~/.zprofile
