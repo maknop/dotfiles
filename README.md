@@ -25,12 +25,10 @@ dotfiles/
 ├── scripts/
 │   ├── functions.sh          # Shared installation functions
 │   ├── macos.sh             # macOS-specific installation
-│   ├── linux.sh             # Linux-specific installation
-│   ├── test-tmux.sh         # Tmux configuration test script
-│   └── fix-tmux.sh          # Tmux troubleshooting script
+│   └── linux.sh             # Linux-specific installation
 ├── .zshrc                     # Zsh configuration
 ├── .zsh_aliases               # Zsh aliases
-├── .zsh_profile               # Zsh profile
+├── .zprofile                  # Zsh profile
 ├── .gitconfig                 # Git configuration
 └── .config/
     ├── nvim/                  # Neovim configuration
@@ -63,7 +61,7 @@ dotfiles/
 
 ### Shell & Terminal Configuration
 - **Zsh configuration** - Oh My Zsh integration with custom theme and plugins
-- **Tmux setup** - Modern terminal multiplexer with catppuccin theme
+- **Tmux setup** - Modern terminal multiplexer with everforest theme
 - **Custom aliases** - Convenient shortcuts for git, tmux, and development
 - **TPM integration** - Tmux Plugin Manager for extensibility
 

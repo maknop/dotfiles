@@ -20,7 +20,7 @@ function M.setup()
       disable_italic_comments = false,
     })
   end
-  
+
   -- Try to set the colorscheme directly
   local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
   if not status_ok then
@@ -28,7 +28,7 @@ function M.setup()
     vim.notify("Colorscheme " .. colorscheme .. " not found! Using default.", vim.log.levels.WARN)
     vim.cmd("colorscheme default")
   end
-  
+
   -- Configure statusline to reflect current theme
   local statusline_ok, statusline = pcall(require, "config.statusline")
   if statusline_ok then
