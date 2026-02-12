@@ -26,11 +26,12 @@ dotfiles/
 │   ├── functions.sh          # Shared installation functions
 │   ├── macos.sh             # macOS-specific installation
 │   └── linux.sh             # Linux-specific installation
-├── .zshrc                     # Zsh configuration
-├── .zsh_aliases               # Zsh aliases
-├── .zprofile                  # Zsh profile
 ├── .gitconfig                 # Git configuration
 └── .config/
+    ├── fish/                  # Fish shell configuration
+    │   ├── config.fish       # Main fish configuration
+    │   ├── fish_plugins      # Fisher plugin list
+    │   └── functions/        # Fish function definitions (aliases)
     ├── nvim/                  # Neovim configuration
     │   ├── init.lua          # Main Neovim configuration
     │   └── lua/config/
@@ -60,9 +61,13 @@ dotfiles/
 - **Multiple color schemes** - catppuccin, gruvbox, everforest, and more
 
 ### Shell & Terminal Configuration
-- **Zsh configuration** - Oh My Zsh integration with custom theme and plugins
+- **Fish shell** - Modern shell with excellent defaults and completions
+  - Automatically installed and set as default shell
+  - Fisher plugin manager with modern prompt (Tide theme)
+  - All aliases converted to native fish functions
+  - Enhanced completions for git, docker, kubectl, and more
 - **Tmux setup** - Modern terminal multiplexer with everforest theme
-- **Custom aliases** - Convenient shortcuts for git, tmux, and development
+- **Custom aliases/functions** - Convenient shortcuts for git, tmux, docker, kubectl, and development
 - **TPM integration** - Tmux Plugin Manager for extensibility
 
 ### Installation Script Features
@@ -77,6 +82,11 @@ dotfiles/
 ### Core Tools
 - **Neovim** - Latest version via package manager
 - **Tmux** - Terminal multiplexer with TPM (Tmux Plugin Manager)
+- **Fish Shell** - Modern shell with excellent defaults (NEW!)
+  - Fisher plugin manager
+  - Tide prompt theme
+  - nvm.fish for Node version management
+  - All aliases converted to fish functions
 - **Git** - Version control
 - **Node.js & npm** - For TypeScript LSP and tools
 - **Python 3 & pip** - For Python LSP servers
@@ -103,6 +113,33 @@ If you prefer to install manually:
 3. **Symlink configuration**: `ln -sf /path/to/dotfiles/.config/nvim ~/.config/nvim`
 4. **Install dependencies**: See the installation script for your OS
 5. **Start Neovim**: `nvim` (plugins will install automatically)
+
+## 🐚 Fish Shell
+
+The installation script automatically:
+- ✅ Installs fish shell
+- ✅ Configures fish with all environment variables
+- ✅ Installs Fisher plugin manager
+- ✅ Installs all fish plugins (Tide theme, nvm.fish, bass)
+- ✅ Converts all aliases to fish functions
+- ✅ Sets fish as your default shell
+
+After installation, **simply restart your terminal** and you'll be using fish!
+
+### Customizing Fish
+
+**Configure the Tide prompt:**
+```bash
+tide configure
+```
+
+**Add custom functions:**
+Create new files in `~/.config/fish/functions/` - fish automatically loads them.
+
+**Install additional plugins:**
+```bash
+fisher install <plugin-name>
+```
 
 ## ⚙️ Customization
 

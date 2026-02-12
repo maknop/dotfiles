@@ -103,42 +103,47 @@ case "$DISTRO" in
         ;;
 esac
 
-# Set up shell configuration
-shell_profile=""
-if [[ $SHELL == *"zsh"* ]]; then
-    shell_profile="$HOME/.zshrc"
-elif [[ $SHELL == *"bash"* ]]; then
-    shell_profile="$HOME/.bashrc"
-fi
-
-if [[ -n "$shell_profile" ]]; then
-    log_info "Setting up shell configuration in $shell_profile"
-    
-    # Add useful aliases if they don't exist
-    if ! grep -q "# Neovim alias" "$shell_profile" 2>/dev/null; then
-        {
-            echo ''
-            echo '# Neovim alias'
-            echo 'alias vim=nvim'
-            echo 'alias vi=nvim'
-        } >> "$shell_profile"
-    fi
-    
-    # Add local bin to PATH if it exists
-    if [[ -d "$HOME/.local/bin" ]] && ! grep -q ".local/bin" "$shell_profile" 2>/dev/null; then
-        {
-            echo ''
-            echo '# Local bin path'
-            # shellcheck disable=SC2016
-            echo 'export PATH="$HOME/.local/bin:$PATH"'
-        } >> "$shell_profile"
-    fi
-fi
+# Note: Fish shell is now configured automatically via config.fish
+# No need for legacy shell profile setup since fish is the default shell
 
 log_success "Linux installation completed successfully!"
 log_info ""
-log_info "Next steps:"
-log_info "1. Restart your terminal or run: source ~/.bashrc (or ~/.zshrc)"
-log_info "2. Start Neovim with: nvim"
-log_info "3. Wait for plugins to install automatically"
-log_info "4. Enjoy your new Lua-based Neovim configuration!"
+log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_info "🎉 Installation Complete!"
+log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_info ""
+log_info "📌 What's Been Configured:"
+log_info ""
+if command_exists fish; then
+    log_success "   ✓ Fish shell installed and set as default"
+    log_success "   ✓ Fisher plugin manager installed"
+    log_success "   ✓ All fish plugins installed (Tide, nvm.fish, bass)"
+    log_success "   ✓ All aliases converted to fish functions"
+else
+    log_warning "   ✗ Fish shell installation may have failed"
+fi
+if command_exists nvim; then
+    log_success "   ✓ Neovim $(nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')"
+else
+    log_warning "   ✗ Neovim installation may have failed"
+fi
+if command_exists tmux; then
+    log_success "   ✓ Tmux with TPM (Tmux Plugin Manager)"
+else
+    log_warning "   ✗ Tmux installation may have failed"
+fi
+log_info ""
+log_info "📌 Next Steps:"
+log_info ""
+log_info "1️⃣  Restart your terminal to start using fish shell"
+log_info ""
+log_info "2️⃣  Customize your prompt (optional):"
+log_info "   → Run: tide configure"
+log_info ""
+log_info "3️⃣  Start using Neovim:"
+log_info "   → Run: nvim"
+log_info "   → Plugins will install automatically on first launch"
+log_info ""
+log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_success "🚀 All done! Enjoy your new development environment!"
+log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

@@ -130,24 +130,35 @@ install_dotfiles_config() {
         log_warning "Tmux config source directory not found: $tmux_config_source"
     fi
 
-    # Install shell configuration files
-    local shell_configs=(".zshrc" ".zsh_aliases" ".zprofile" ".gitconfig")
+    # Install fish configuration
+    local fish_config_source="$dotfiles_dir/.config/fish"
+    local fish_config_target="$HOME/.config/fish"
 
-    for config in "${shell_configs[@]}"; do
-        local source_file="$dotfiles_dir/$config"
-        local target_file="$HOME/$config"
-
-        if [ -f "$source_file" ]; then
-            if create_symlink "$source_file" "$target_file"; then
-                log_success "Linked $config"
-            else
-                log_error "Failed to link $config"
-                config_failed=1
-            fi
+    if [ -d "$fish_config_source" ]; then
+        if create_symlink "$fish_config_source" "$fish_config_target"; then
+            log_success "Fish shell configuration linked"
         else
-            log_info "Config file not found: $source_file (skipping)"
+            log_error "Failed to link fish configuration"
+            config_failed=1
         fi
-    done
+    else
+        log_warning "Fish config source directory not found: $fish_config_source"
+    fi
+
+    # Install gitconfig
+    local gitconfig_source="$dotfiles_dir/.gitconfig"
+    local gitconfig_target="$HOME/.gitconfig"
+
+    if [ -f "$gitconfig_source" ]; then
+        if create_symlink "$gitconfig_source" "$gitconfig_target"; then
+            log_success "Linked .gitconfig"
+        else
+            log_error "Failed to link .gitconfig"
+            config_failed=1
+        fi
+    else
+        log_info "Config file not found: $gitconfig_source (skipping)"
+    fi
 
     if [ $config_failed -ne 0 ]; then
         return 1
@@ -644,9 +655,9 @@ install_lsp_servers() {
 # Install tmux and TPM (Tmux Plugin Manager)
 install_tmux_setup() {
     local os_name="$1"
-    
+
     log_info "Setting up tmux..."
-    
+
     # Install tmux if not present
     case "$os_name" in
         "Darwin")
@@ -684,7 +695,7 @@ install_tmux_setup() {
             fi
             ;;
     esac
-    
+
     # Install TPM (Tmux Plugin Manager)
     local tpm_dir="$HOME/.tmux/plugins/tpm"
     if [ ! -d "$tpm_dir" ]; then
@@ -699,6 +710,184 @@ install_tmux_setup() {
         fi
     else
         log_success "TPM is already installed"
+    fi
+}
+
+# Install fish shell
+install_fish_shell() {
+    local os_name="$1"
+
+    log_info "Setting up fish shell..."
+
+    # Check if fish is already installed
+    if command_exists fish; then
+        local fish_version
+        fish_version=$(fish --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+        log_success "Fish shell is already installed (version $fish_version)"
+        return 0
+    fi
+
+    # Install fish based on OS
+    case "$os_name" in
+        "Darwin")
+            if command_exists brew; then
+                log_info "Installing fish shell via Homebrew..."
+                if brew install fish; then
+                    log_success "Fish shell installed successfully"
+                else
+                    log_error "Failed to install fish via Homebrew"
+                    return 1
+                fi
+            else
+                log_error "Homebrew not found. Please install fish manually."
+                return 1
+            fi
+            ;;
+        "Linux")
+            if command_exists apt-get; then
+                log_info "Installing fish shell via apt..."
+                sudo apt-get update
+                if sudo apt-get install -y fish; then
+                    log_success "Fish shell installed successfully"
+                else
+                    log_error "Failed to install fish via apt"
+                    return 1
+                fi
+            elif command_exists yum; then
+                log_info "Installing fish shell via yum..."
+                if sudo yum install -y fish; then
+                    log_success "Fish shell installed successfully"
+                else
+                    log_error "Failed to install fish via yum"
+                    return 1
+                fi
+            elif command_exists pacman; then
+                log_info "Installing fish shell via pacman..."
+                if sudo pacman -S --noconfirm fish; then
+                    log_success "Fish shell installed successfully"
+                else
+                    log_error "Failed to install fish via pacman"
+                    return 1
+                fi
+            elif command_exists dnf; then
+                log_info "Installing fish shell via dnf..."
+                if sudo dnf install -y fish; then
+                    log_success "Fish shell installed successfully"
+                else
+                    log_error "Failed to install fish via dnf"
+                    return 1
+                fi
+            else
+                log_error "No supported package manager found for fish installation"
+                return 1
+            fi
+            ;;
+    esac
+
+    # Verify installation
+    if command_exists fish; then
+        local fish_version
+        fish_version=$(fish --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+        log_success "Fish shell version $fish_version installed successfully"
+
+        # Add fish to /etc/shells if not already there
+        if ! grep -q "$(command -v fish)" /etc/shells 2>/dev/null; then
+            log_info "Adding fish to /etc/shells..."
+            command -v fish | sudo tee -a /etc/shells >/dev/null
+            log_success "Fish added to /etc/shells"
+        fi
+
+        return 0
+    else
+        log_error "Fish installation verification failed"
+        return 1
+    fi
+}
+
+# Install Fisher plugin manager and fish plugins
+install_fisher_and_plugins() {
+    log_info "Setting up Fisher plugin manager..."
+
+    # Check if fish is installed
+    if ! command_exists fish; then
+        log_warning "Fish shell is not installed. Skipping Fisher setup."
+        return 1
+    fi
+
+    # Check if Fisher is already installed
+    if fish -c "type -q fisher" 2>/dev/null; then
+        log_success "Fisher is already installed"
+    else
+        log_info "Installing Fisher plugin manager..."
+
+        # Install Fisher
+        if fish -c "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher" 2>&1; then
+            log_success "Fisher installed successfully"
+        else
+            log_warning "Failed to install Fisher automatically"
+            log_info "You can install Fisher manually by running in fish shell:"
+            log_info "  curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher"
+            return 1
+        fi
+    fi
+
+    # Install plugins from fish_plugins file
+    local fish_plugins_file="$HOME/.config/fish/fish_plugins"
+    if [ -f "$fish_plugins_file" ]; then
+        log_info "Installing fish plugins from fish_plugins file..."
+
+        # Fisher will automatically read from fish_plugins file
+        if fish -c "fisher update" 2>&1; then
+            log_success "Fish plugins installed successfully"
+            log_info "Installed plugins:"
+            fish -c "fisher list" 2>/dev/null || true
+        else
+            log_warning "Some fish plugins may have failed to install"
+            log_info "You can manually install plugins later with: fisher update"
+        fi
+    else
+        log_warning "fish_plugins file not found at $fish_plugins_file"
+        log_info "You can manually install plugins later"
+    fi
+
+    return 0
+}
+
+# Set fish as default shell
+set_fish_as_default_shell() {
+    log_info "Setting fish as default shell..."
+
+    # Check if fish is installed
+    if ! command_exists fish; then
+        log_warning "Fish shell is not installed. Cannot set as default."
+        return 1
+    fi
+
+    local fish_path
+    fish_path=$(command -v fish)
+
+    # Check if already using fish
+    if [[ "$SHELL" == "$fish_path" ]]; then
+        log_success "Fish is already your default shell"
+        return 0
+    fi
+
+    # Ensure fish is in /etc/shells
+    if ! grep -q "$fish_path" /etc/shells 2>/dev/null; then
+        log_info "Adding fish to /etc/shells..."
+        echo "$fish_path" | sudo tee -a /etc/shells >/dev/null
+    fi
+
+    # Change default shell to fish
+    log_info "Changing default shell to fish..."
+    if chsh -s "$fish_path"; then
+        log_success "Default shell changed to fish!"
+        log_info "Please restart your terminal for changes to take effect"
+        return 0
+    else
+        log_warning "Failed to change default shell automatically"
+        log_info "You can manually set fish as default with: chsh -s $fish_path"
+        return 1
     fi
 }
 
@@ -760,11 +949,38 @@ run_installation() {
     fi
 
     # Install LSP servers
-    log_info "Step 6/6: Installing LSP servers..."
+    log_info "Step 6/8: Installing LSP servers..."
     if install_lsp_servers; then
         log_success "LSP servers installation completed"
     else
         log_warning "LSP servers installation failed (continuing anyway)"
+        install_failed=1
+    fi
+
+    # Install fish shell
+    log_info "Step 7/8: Installing fish shell..."
+    if install_fish_shell "$os_name"; then
+        log_success "Fish shell installation completed"
+    else
+        log_warning "Fish shell installation failed (continuing anyway)"
+        install_failed=1
+    fi
+
+    # Install Fisher and fish plugins
+    log_info "Step 8/9: Installing Fisher plugin manager and fish plugins..."
+    if install_fisher_and_plugins; then
+        log_success "Fisher and fish plugins installation completed"
+    else
+        log_warning "Fisher and fish plugins installation failed (continuing anyway)"
+        install_failed=1
+    fi
+
+    # Set fish as default shell
+    log_info "Step 9/9: Setting fish as default shell..."
+    if set_fish_as_default_shell; then
+        log_success "Fish set as default shell"
+    else
+        log_warning "Failed to set fish as default shell (continuing anyway)"
         install_failed=1
     fi
 
