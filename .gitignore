@@ -24,3 +24,6 @@ Thumbs.db
 
 # Tmux Plugins
 .config/tmux/plugins/*
+
+# Git
+.gitconfig
