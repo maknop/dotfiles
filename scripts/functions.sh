@@ -572,6 +572,7 @@ _filter_uninstalled_packages() {
 
     eval "local packages_to_check=(\"\${${packages_to_check_name}[@]}\")"
 
+    # shellcheck disable=SC2154
     for pkg in "${packages_to_check[@]}"; do
         if brew_is_installed "$pkg" || command_exists "$pkg"; then
             eval "${installed_array_name}+=(\"$pkg\")"
@@ -588,6 +589,7 @@ _install_brew_packages() {
 
     eval "local packages=(\"\${${packages_name}[@]}\")"
 
+    # shellcheck disable=SC2154
     if [ ${#packages[@]} -eq 0 ]; then
         log_success "All $package_type packages are already installed"
         return 0
@@ -629,13 +631,14 @@ _install_macos_dependencies() {
         return 1
     fi
 
+    # shellcheck disable=SC2034
     local essential_to_install=()
     local essential_installed=()
     local large_to_install=()
-    local large_installed=()
 
     # Check essential packages
     log_info "Checking which packages are already installed..."
+    # shellcheck disable=SC2034
     local essential_deps=("${MACOS_ESSENTIAL_DEPS[@]}")
     _filter_uninstalled_packages essential_deps essential_to_install essential_installed
 

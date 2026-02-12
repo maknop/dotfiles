@@ -8,7 +8,8 @@
 # Setup
 # -----------------------------------------------------------------------------
 
-readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly SCRIPT_DIR
 
 # shellcheck source=functions.sh disable=SC1091
 source "$SCRIPT_DIR/functions.sh"
