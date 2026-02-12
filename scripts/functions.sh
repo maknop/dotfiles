@@ -1,13 +1,38 @@
 #!/bin/bash
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+# =============================================================================
+# Dotfiles Installation Functions
+# =============================================================================
 
-# Logging functions
+# -----------------------------------------------------------------------------
+# Constants
+# -----------------------------------------------------------------------------
+
+# Colors for output
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly BLUE='\033[0;34m'
+readonly NC='\033[0m'
+
+# Version requirements
+readonly REQUIRED_NVIM_VERSION="0.11"
+
+# Installation paths
+readonly NVIM_INSTALL_DIR="/opt/nvim"
+readonly NVIM_BIN_LINK="/usr/local/bin/nvim"
+readonly TPM_DIR="$HOME/.tmux/plugins/tpm"
+
+# Package lists
+readonly MACOS_ESSENTIAL_DEPS=("git" "curl" "wget" "ripgrep" "fd")
+readonly MACOS_LARGE_DEPS=("node" "python3" "go")
+readonly LINUX_APT_DEPS=("git" "curl" "wget" "ripgrep" "fd-find" "nodejs" "npm" "python3" "python3-pip" "golang-go")
+readonly LINUX_YUM_DEPS=("git" "curl" "wget" "ripgrep" "fd-find" "nodejs" "npm" "python3" "python3-pip" "golang")
+
+# -----------------------------------------------------------------------------
+# Logging Functions
+# -----------------------------------------------------------------------------
+
 log_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
@@ -23,6 +48,10 @@ log_warning() {
 log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
+
+# -----------------------------------------------------------------------------
+# Utility Functions
+# -----------------------------------------------------------------------------
 
 # Check if command exists
 command_exists() {
@@ -49,39 +78,53 @@ get_nvim_version() {
     fi
 }
 
-# Create symlink
-create_symlink() {
-    local source="$1"
-    local target="$2"
-    
-    if [ ! -e "$source" ]; then
-        log_error "Source $source does not exist"
-        return 1
+# -----------------------------------------------------------------------------
+# Dotfiles Configuration Functions
+# -----------------------------------------------------------------------------
+
+# Create target directory for symlink if needed
+_ensure_target_directory() {
+    local -r target_dir=$(dirname "$1")
+
+    if [ -d "$target_dir" ]; then
+        return 0
     fi
-    
-    # Create target directory if it doesn't exist
-    local target_dir
-    target_dir=$(dirname "$target")
-    if [ ! -d "$target_dir" ]; then
-        log_info "Creating directory $target_dir"
-        mkdir -p "$target_dir"
-    fi
-    
-    # Remove existing file/directory if it exists
+
+    log_info "Creating directory $target_dir"
+    mkdir -p "$target_dir"
+}
+
+# Remove existing file/symlink at target location
+_remove_existing_target() {
+    local -r target="$1"
+
     if [ -e "$target" ] || [ -L "$target" ]; then
         log_info "Removing existing $target"
         rm -rf "$target"
     fi
+}
 
-    # Create symlink
+# Create symlink
+create_symlink() {
+    local -r source="$1"
+    local -r target="$2"
+
+    if [ ! -e "$source" ]; then
+        log_error "Source $source does not exist"
+        return 1
+    fi
+
+    _ensure_target_directory "$target"
+    _remove_existing_target "$target"
+
     log_info "Creating symlink: $target -> $source"
     if ln -sf "$source" "$target"; then
         log_success "Successfully created symlink for $(basename "$target")"
         return 0
-    else
-        log_error "Failed to create symlink for $(basename "$target")"
-        return 1
     fi
+
+    log_error "Failed to create symlink for $(basename "$target")"
+    return 1
 }
 
 # Install all dotfiles configurations
@@ -130,24 +173,35 @@ install_dotfiles_config() {
         log_warning "Tmux config source directory not found: $tmux_config_source"
     fi
 
-    # Install shell configuration files
-    local shell_configs=(".zshrc" ".zsh_aliases" ".zprofile" ".gitconfig")
+    # Install fish configuration
+    local fish_config_source="$dotfiles_dir/.config/fish"
+    local fish_config_target="$HOME/.config/fish"
 
-    for config in "${shell_configs[@]}"; do
-        local source_file="$dotfiles_dir/$config"
-        local target_file="$HOME/$config"
-
-        if [ -f "$source_file" ]; then
-            if create_symlink "$source_file" "$target_file"; then
-                log_success "Linked $config"
-            else
-                log_error "Failed to link $config"
-                config_failed=1
-            fi
+    if [ -d "$fish_config_source" ]; then
+        if create_symlink "$fish_config_source" "$fish_config_target"; then
+            log_success "Fish shell configuration linked"
         else
-            log_info "Config file not found: $source_file (skipping)"
+            log_error "Failed to link fish configuration"
+            config_failed=1
         fi
-    done
+    else
+        log_warning "Fish config source directory not found: $fish_config_source"
+    fi
+
+    # Install gitconfig
+    local gitconfig_source="$dotfiles_dir/.gitconfig"
+    local gitconfig_target="$HOME/.gitconfig"
+
+    if [ -f "$gitconfig_source" ]; then
+        if create_symlink "$gitconfig_source" "$gitconfig_target"; then
+            log_success "Linked .gitconfig"
+        else
+            log_error "Failed to link .gitconfig"
+            config_failed=1
+        fi
+    else
+        log_info "Config file not found: $gitconfig_source (skipping)"
+    fi
 
     if [ $config_failed -ne 0 ]; then
         return 1
@@ -203,9 +257,9 @@ install_package_manager() {
     esac
 }
 
-# Install Neovim
-# Requires Neovim >= 0.11 for full feature support (macOS and Ubuntu only)
-REQUIRED_NVIM_VERSION="0.11"
+# -----------------------------------------------------------------------------
+# Neovim Installation Functions
+# -----------------------------------------------------------------------------
 
 # Check if we should enforce version requirements (macOS and Ubuntu only)
 should_enforce_nvim_version() {
@@ -420,62 +474,84 @@ install_neovim_ubuntu() {
     return $?
 }
 
-# Install Neovim from GitHub releases (for getting latest version)
-install_neovim_from_github() {
-    local arch="$1"
-    local install_dir="/opt/nvim"
-    local bin_link="/usr/local/bin/nvim"
+# Download Neovim tarball from GitHub
+_download_neovim_tarball() {
+    local -r download_url="$1"
+    local -r temp_dir="$2"
 
-    log_info "Downloading Neovim from GitHub releases..."
-
-    # Get the latest stable release URL
-    local download_url="https://github.com/neovim/neovim/releases/latest/download/nvim-${arch}.tar.gz"
-    local temp_dir
-    temp_dir=$(mktemp -d)
-
-    # Download and extract
     if ! curl -L -o "$temp_dir/nvim.tar.gz" "$download_url"; then
         log_error "Failed to download Neovim from GitHub"
         rm -rf "$temp_dir"
         return 1
     fi
+    return 0
+}
 
-    # Remove old installation if exists
-    if [[ -d "$install_dir" ]]; then
-        log_info "Removing old Neovim installation..."
-        sudo rm -rf "$install_dir"
-    fi
+# Extract Neovim tarball to installation directory
+_extract_neovim_tarball() {
+    local -r temp_dir="$1"
+    local -r install_dir="$2"
 
-    # Extract to /opt/nvim
     log_info "Extracting Neovim to $install_dir..."
     sudo mkdir -p "$install_dir"
+
+    # Try with transform first, fallback to manual rename
     if ! sudo tar -xzf "$temp_dir/nvim.tar.gz" -C /opt --transform='s/^nvim-linux[^/]*/nvim/' 2>/dev/null; then
-        # Try without transform for different archive structures
         sudo tar -xzf "$temp_dir/nvim.tar.gz" -C /opt
-        # Find and rename the extracted directory
+
         local extracted_dir
         extracted_dir=$(find /opt -maxdepth 1 -name "nvim-*" -type d | head -1)
+
         if [[ -n "$extracted_dir" && "$extracted_dir" != "$install_dir" ]]; then
             sudo rm -rf "$install_dir"
             sudo mv "$extracted_dir" "$install_dir"
         fi
     fi
+    return 0
+}
+
+# Install Neovim from GitHub releases (for getting latest version)
+install_neovim_from_github() {
+    local -r arch="$1"
+    local -r download_url="https://github.com/neovim/neovim/releases/latest/download/nvim-${arch}.tar.gz"
+    local temp_dir
+
+    log_info "Downloading Neovim from GitHub releases..."
+
+    temp_dir=$(mktemp -d)
+
+    # Download tarball
+    if ! _download_neovim_tarball "$download_url" "$temp_dir"; then
+        return 1
+    fi
+
+    # Remove old installation if exists
+    if [[ -d "$NVIM_INSTALL_DIR" ]]; then
+        log_info "Removing old Neovim installation..."
+        sudo rm -rf "$NVIM_INSTALL_DIR"
+    fi
+
+    # Extract tarball
+    if ! _extract_neovim_tarball "$temp_dir" "$NVIM_INSTALL_DIR"; then
+        rm -rf "$temp_dir"
+        return 1
+    fi
 
     # Create symlink
-    log_info "Creating symlink at $bin_link..."
-    sudo ln -sf "$install_dir/bin/nvim" "$bin_link"
+    log_info "Creating symlink at $NVIM_BIN_LINK..."
+    sudo ln -sf "$NVIM_INSTALL_DIR/bin/nvim" "$NVIM_BIN_LINK"
 
     # Cleanup
     rm -rf "$temp_dir"
 
     # Verify installation
-    if [[ -x "$bin_link" ]]; then
+    if [[ -x "$NVIM_BIN_LINK" ]]; then
         log_success "Neovim installed from GitHub releases"
         return 0
-    else
-        log_error "Failed to install Neovim from GitHub"
-        return 1
     fi
+
+    log_error "Failed to install Neovim from GitHub"
+    return 1
 }
 
 # Check if a brew package is installed (faster than command_exists for brew packages)
@@ -484,109 +560,226 @@ brew_is_installed() {
     brew list "$package" &>/dev/null
 }
 
+# -----------------------------------------------------------------------------
+# Dependency Installation Functions
+# -----------------------------------------------------------------------------
+
+# Check which packages need installation
+_filter_uninstalled_packages() {
+    local packages_to_check_name=$1
+    local result_array_name=$2
+    local installed_array_name=$3
+
+    eval "local packages_to_check=(\"\${${packages_to_check_name}[@]}\")"
+
+    # shellcheck disable=SC2154
+    for pkg in "${packages_to_check[@]}"; do
+        if brew_is_installed "$pkg" || command_exists "$pkg"; then
+            eval "${installed_array_name}+=(\"$pkg\")"
+        else
+            eval "${result_array_name}+=(\"$pkg\")"
+        fi
+    done
+}
+
+# Install packages via Homebrew
+_install_brew_packages() {
+    local packages_name=$1
+    local package_type="$2"
+
+    eval "local packages=(\"\${${packages_name}[@]}\")"
+
+    # shellcheck disable=SC2154
+    if [ ${#packages[@]} -eq 0 ]; then
+        log_success "All $package_type packages are already installed"
+        return 0
+    fi
+
+    log_info "Installing $package_type packages: ${packages[*]}"
+
+    if brew install "${packages[@]}"; then
+        log_success "$package_type packages installed successfully"
+        return 0
+    fi
+
+    log_warning "Some $package_type packages failed to install (continuing anyway)"
+    return 1
+}
+
+# Install large packages individually with progress feedback
+_install_large_packages_individually() {
+    local packages_name=$1
+
+    eval "local packages=(\"\${${packages_name}[@]}\")"
+
+    for pkg in "${packages[@]}"; do
+        log_info "Installing $pkg..."
+        log_warning "This may take several minutes..."
+
+        if brew install "$pkg"; then
+            log_success "$pkg installed successfully"
+        else
+            log_warning "Failed to install $pkg (you can install it manually later with: brew install $pkg)"
+        fi
+    done
+}
+
+# Install dependencies on macOS
+_install_macos_dependencies() {
+    if ! command_exists brew; then
+        log_error "Homebrew not available. Cannot install dependencies."
+        return 1
+    fi
+
+    # shellcheck disable=SC2034
+    local essential_to_install=()
+    local essential_installed=()
+    local large_to_install=()
+
+    # Check essential packages
+    log_info "Checking which packages are already installed..."
+    # shellcheck disable=SC2034
+    local essential_deps=("${MACOS_ESSENTIAL_DEPS[@]}")
+    _filter_uninstalled_packages essential_deps essential_to_install essential_installed
+
+    if [ ${#essential_installed[@]} -gt 0 ]; then
+        log_success "Already installed: ${essential_installed[*]}"
+    fi
+
+    # Batch install essential packages
+    _install_brew_packages essential_to_install "essential"
+
+    # Check large packages
+    local large_deps=("${MACOS_LARGE_DEPS[@]}")
+    for pkg in "${large_deps[@]}"; do
+        if brew_is_installed "$pkg" || command_exists "$pkg"; then
+            log_success "$pkg is already installed"
+        else
+            large_to_install+=("$pkg")
+        fi
+    done
+
+    # Install large packages individually
+    if [ ${#large_to_install[@]} -gt 0 ]; then
+        _install_large_packages_individually large_to_install
+    fi
+}
+
+# Install a single package via apt-get
+_install_apt_package() {
+    local -r package="$1"
+
+    if dpkg -l | grep -q "^ii  $package "; then
+        log_success "$package is already installed"
+        return 0
+    fi
+
+    log_info "Installing $package..."
+    sudo apt-get install -y "$package"
+}
+
+# Install a single package via yum
+_install_yum_package() {
+    local -r package="$1"
+
+    if rpm -qa | grep -q "$package"; then
+        log_success "$package is already installed"
+        return 0
+    fi
+
+    log_info "Installing $package..."
+    sudo yum install -y "$package"
+}
+
+# Install dependencies on Linux
+_install_linux_dependencies() {
+    if command_exists apt-get; then
+        for pkg in "${LINUX_APT_DEPS[@]}"; do
+            _install_apt_package "$pkg"
+        done
+    elif command_exists yum; then
+        for pkg in "${LINUX_YUM_DEPS[@]}"; do
+            _install_yum_package "$pkg"
+        done
+    else
+        log_warning "No supported package manager found"
+        return 1
+    fi
+}
+
 # Install additional dependencies
 install_dependencies() {
-    local os_name="$1"
-    
+    local -r os_name="$1"
+
     log_info "Installing additional dependencies..."
-    
+
     case "$os_name" in
         "Darwin")
-            if ! command_exists brew; then
-                log_error "Homebrew not available. Cannot install dependencies."
-                return 1
-            fi
-            
-            # Essential quick-install packages (small, fast)
-            local essential_deps=("git" "curl" "wget" "ripgrep" "fd")
-            
-            # Large/slow packages (install separately with better feedback)
-            local large_deps=("node" "python3" "go")
-            
-            # Check and collect packages that need installation
-            local to_install=()
-            local already_installed=()
-            
-            log_info "Checking which packages are already installed..."
-            for dep in "${essential_deps[@]}"; do
-                if brew_is_installed "$dep" || command_exists "$dep"; then
-                    already_installed+=("$dep")
-                else
-                    to_install+=("$dep")
-                fi
-            done
-            
-            # Report already installed packages
-            if [ ${#already_installed[@]} -gt 0 ]; then
-                log_success "Already installed: ${already_installed[*]}"
-            fi
-            
-            # Batch install essential packages
-            if [ ${#to_install[@]} -gt 0 ]; then
-                log_info "Installing essential packages: ${to_install[*]}"
-                log_info "This may take a few minutes..."
-                if brew install "${to_install[@]}"; then
-                    log_success "Essential packages installed successfully"
-                else
-                    log_warning "Some essential packages failed to install (continuing anyway)"
-                fi
-            else
-                log_success "All essential packages are already installed"
-            fi
-            
-            # Install large packages separately with progress feedback
-            # Note: These can take 5-15 minutes each, so we install them one at a time
-            # with clear feedback
-            local large_to_install=()
-            for dep in "${large_deps[@]}"; do
-                if brew_is_installed "$dep" || command_exists "$dep"; then
-                    log_success "$dep is already installed"
-                else
-                    large_to_install+=("$dep")
-                fi
-            done
-            
-            if [ ${#large_to_install[@]} -gt 0 ]; then
-                log_info "Installing large packages: ${large_to_install[*]}"
-                log_warning "These packages can take 5-15 minutes each to install"
-                log_info "Brew will show progress during installation..."
-                
-                for dep in "${large_to_install[@]}"; do
-                    log_info "Installing $dep (this may take 5-15 minutes)..."
-                    if brew install "$dep"; then
-                        log_success "$dep installed successfully"
-                    else
-                        log_warning "Failed to install $dep (you can install it manually later with: brew install $dep)"
-                    fi
-                done
-            fi
+            _install_macos_dependencies
             ;;
         "Linux")
-            if command_exists apt-get; then
-                deps+=("git" "curl" "wget" "ripgrep" "fd-find" "nodejs" "npm" "python3" "python3-pip" "golang-go")
-                
-                for dep in "${deps[@]}"; do
-                    if ! dpkg -l | grep -q "^ii  $dep "; then
-                        log_info "Installing $dep..."
-                        sudo apt-get install -y "$dep"
-                    else
-                        log_success "$dep is already installed"
-                    fi
-                done
-            elif command_exists yum; then
-                deps+=("git" "curl" "wget" "ripgrep" "fd-find" "nodejs" "npm" "python3" "python3-pip" "golang")
-                
-                for dep in "${deps[@]}"; do
-                    if ! rpm -qa | grep -q "$dep"; then
-                        log_info "Installing $dep..."
-                        sudo yum install -y "$dep"
-                    else
-                        log_success "$dep is already installed"
-                    fi
-                done
-            fi
+            _install_linux_dependencies
+            ;;
+        *)
+            log_error "Unsupported OS: $os_name"
+            return 1
             ;;
     esac
+}
+
+# -----------------------------------------------------------------------------
+# LSP Server Installation Functions
+# -----------------------------------------------------------------------------
+
+# Install Python LSP servers
+_install_python_lsp() {
+    if ! command_exists pip3; then
+        log_warning "pip3 not found, skipping Python LSP servers"
+        return 1
+    fi
+
+    log_info "Installing Python LSP servers..."
+    if pip3 install --user pyright ruff-lsp 2>&1; then
+        log_success "Python LSP servers installed successfully"
+        return 0
+    fi
+
+    log_warning "Failed to install some Python LSP servers"
+    return 1
+}
+
+# Install TypeScript LSP server
+_install_typescript_lsp() {
+    if ! command_exists npm; then
+        log_warning "npm not found, skipping TypeScript LSP server"
+        return 1
+    fi
+
+    log_info "Installing TypeScript LSP server..."
+    if npm install -g typescript typescript-language-server 2>&1; then
+        log_success "TypeScript LSP server installed successfully"
+        return 0
+    fi
+
+    log_warning "Failed to install TypeScript LSP server"
+    return 1
+}
+
+# Install Go LSP server
+_install_go_lsp() {
+    if ! command_exists go; then
+        log_warning "go not found, skipping Go LSP server"
+        return 1
+    fi
+
+    log_info "Installing Go LSP server..."
+    if go install golang.org/x/tools/gopls@latest 2>&1; then
+        log_success "Go LSP server (gopls) installed successfully"
+        return 0
+    fi
+
+    log_warning "Failed to install gopls"
+    return 1
 }
 
 # Install LSP servers
@@ -595,116 +788,331 @@ install_lsp_servers() {
 
     local lsp_failed=0
 
-    # Python LSP servers
-    if command_exists pip3; then
-        log_info "Installing Python LSP servers..."
-        if pip3 install --user pyright ruff-lsp 2>&1; then
-            log_success "Python LSP servers installed successfully"
-        else
-            log_warning "Failed to install some Python LSP servers"
-            lsp_failed=1
-        fi
-    else
-        log_warning "pip3 not found, skipping Python LSP servers"
-    fi
-
-    # TypeScript LSP server
-    if command_exists npm; then
-        log_info "Installing TypeScript LSP server..."
-        if npm install -g typescript typescript-language-server 2>&1; then
-            log_success "TypeScript LSP server installed successfully"
-        else
-            log_warning "Failed to install TypeScript LSP server"
-            lsp_failed=1
-        fi
-    else
-        log_warning "npm not found, skipping TypeScript LSP server"
-    fi
-
-    # Go LSP server (gopls is usually installed with Go)
-    if command_exists go; then
-        log_info "Installing Go LSP server..."
-        if go install golang.org/x/tools/gopls@latest 2>&1; then
-            log_success "Go LSP server (gopls) installed successfully"
-        else
-            log_warning "Failed to install gopls"
-            lsp_failed=1
-        fi
-    else
-        log_warning "go not found, skipping Go LSP server"
-    fi
+    _install_python_lsp || lsp_failed=1
+    _install_typescript_lsp || lsp_failed=1
+    _install_go_lsp || lsp_failed=1
 
     if [ $lsp_failed -eq 0 ]; then
         log_success "LSP server installation completed successfully"
-    else
-        log_warning "LSP server installation completed with some warnings"
+        return 0
     fi
+
+    log_warning "LSP server installation completed with some warnings"
+    return 1
+}
+
+# -----------------------------------------------------------------------------
+# Tmux Setup Functions
+# -----------------------------------------------------------------------------
+
+# Install tmux on macOS
+_install_tmux_macos() {
+    if command_exists tmux; then
+        log_success "tmux is already installed"
+        return 0
+    fi
+
+    if ! command_exists brew; then
+        log_error "Homebrew not found. Please install tmux manually."
+        return 1
+    fi
+
+    log_info "Installing tmux..."
+    if brew install tmux; then
+        log_success "tmux installed successfully via Homebrew"
+        return 0
+    fi
+
+    log_error "Failed to install tmux via Homebrew"
+    return 1
+}
+
+# Install tmux on Linux
+_install_tmux_linux() {
+    if command_exists tmux; then
+        log_success "tmux is already installed"
+        return 0
+    fi
+
+    if command_exists apt-get; then
+        sudo apt-get install -y tmux
+    elif command_exists yum; then
+        sudo yum install -y tmux
+    elif command_exists pacman; then
+        sudo pacman -S --noconfirm tmux
+    else
+        log_error "Could not install tmux. Please install manually."
+        return 1
+    fi
+}
+
+# Install TPM (Tmux Plugin Manager)
+_install_tpm() {
+    if [ -d "$TPM_DIR" ]; then
+        log_success "TPM is already installed"
+        return 0
+    fi
+
+    log_info "Installing TPM (Tmux Plugin Manager)..."
+
+    if git clone https://github.com/tmux-plugins/tpm "$TPM_DIR" 2>&1; then
+        log_success "TPM installed successfully"
+        log_info "Run 'tmux source ~/.config/tmux/tmux.conf' and then 'prefix + I' to install plugins"
+        return 0
+    fi
+
+    log_error "Failed to clone TPM repository"
+    log_warning "You can manually install TPM later with: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm"
+    return 1
 }
 
 # Install tmux and TPM (Tmux Plugin Manager)
 install_tmux_setup() {
-    local os_name="$1"
-    
+    local -r os_name="$1"
+
     log_info "Setting up tmux..."
-    
-    # Install tmux if not present
+
     case "$os_name" in
         "Darwin")
-            if ! command_exists tmux; then
-                if command_exists brew; then
-                    log_info "Installing tmux..."
-                    if brew install tmux; then
-                        log_success "tmux installed successfully via Homebrew"
-                    else
-                        log_error "Failed to install tmux via Homebrew"
-                        return 1
-                    fi
-                else
-                    log_error "Homebrew not found. Please install tmux manually."
-                    return 1
-                fi
-            else
-                log_success "tmux is already installed"
-            fi
+            _install_tmux_macos || return 1
             ;;
         "Linux")
-            if ! command_exists tmux; then
-                if command_exists apt-get; then
-                    sudo apt-get install -y tmux
-                elif command_exists yum; then
-                    sudo yum install -y tmux
-                elif command_exists pacman; then
-                    sudo pacman -S tmux
-                else
-                    log_error "Could not install tmux. Please install manually."
-                    return 1
-                fi
-            else
-                log_success "tmux is already installed"
-            fi
+            _install_tmux_linux || return 1
+            ;;
+        *)
+            log_error "Unsupported OS: $os_name"
+            return 1
             ;;
     esac
-    
-    # Install TPM (Tmux Plugin Manager)
-    local tpm_dir="$HOME/.tmux/plugins/tpm"
-    if [ ! -d "$tpm_dir" ]; then
-        log_info "Installing TPM (Tmux Plugin Manager)..."
-        if git clone https://github.com/tmux-plugins/tpm "$tpm_dir" 2>&1; then
-            log_success "TPM installed successfully"
-            log_info "Run 'tmux source ~/.config/tmux/tmux.conf' and then 'prefix + I' to install plugins"
+
+    _install_tpm
+}
+
+# -----------------------------------------------------------------------------
+# Fish Shell Setup Functions
+# -----------------------------------------------------------------------------
+
+# Get fish version
+_get_fish_version() {
+    fish --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
+}
+
+# Add fish to /etc/shells if not present
+_add_fish_to_shells() {
+    local -r fish_path=$(command -v fish)
+
+    if grep -q "$fish_path" /etc/shells 2>/dev/null; then
+        return 0
+    fi
+
+    log_info "Adding fish to /etc/shells..."
+    echo "$fish_path" | sudo tee -a /etc/shells >/dev/null
+    log_success "Fish added to /etc/shells"
+}
+
+# Install fish on macOS
+_install_fish_macos() {
+    if ! command_exists brew; then
+        log_error "Homebrew not found. Please install fish manually."
+        return 1
+    fi
+
+    log_info "Installing fish shell via Homebrew..."
+    if brew install fish; then
+        log_success "Fish shell installed successfully"
+        return 0
+    fi
+
+    log_error "Failed to install fish via Homebrew"
+    return 1
+}
+
+# Install fish on Linux
+_install_fish_linux() {
+    if command_exists apt-get; then
+        log_info "Installing fish shell via apt..."
+        sudo apt-get update
+        sudo apt-get install -y fish
+    elif command_exists yum; then
+        log_info "Installing fish shell via yum..."
+        sudo yum install -y fish
+    elif command_exists pacman; then
+        log_info "Installing fish shell via pacman..."
+        sudo pacman -S --noconfirm fish
+    elif command_exists dnf; then
+        log_info "Installing fish shell via dnf..."
+        sudo dnf install -y fish
+    else
+        log_error "No supported package manager found for fish installation"
+        return 1
+    fi
+}
+
+# Verify fish installation
+_verify_fish_installation() {
+    if ! command_exists fish; then
+        log_error "Fish installation verification failed"
+        return 1
+    fi
+
+    local fish_version
+    fish_version=$(_get_fish_version)
+    log_success "Fish shell version $fish_version installed successfully"
+
+    _add_fish_to_shells
+    return 0
+}
+
+# Install fish shell
+install_fish_shell() {
+    local -r os_name="$1"
+
+    log_info "Setting up fish shell..."
+
+    # Check if already installed
+    if command_exists fish; then
+        local fish_version
+        fish_version=$(_get_fish_version)
+        log_success "Fish shell is already installed (version $fish_version)"
+        return 0
+    fi
+
+    # Install based on OS
+    case "$os_name" in
+        "Darwin")
+            _install_fish_macos || return 1
+            ;;
+        "Linux")
+            _install_fish_linux || return 1
+            ;;
+        *)
+            log_error "Unsupported OS: $os_name"
+            return 1
+            ;;
+    esac
+
+    _verify_fish_installation
+}
+
+# Install Fisher plugin manager and fish plugins
+install_fisher_and_plugins() {
+    log_info "Setting up Fisher plugin manager..."
+
+    # Check if fish is installed
+    if ! command_exists fish; then
+        log_warning "Fish shell is not installed. Skipping Fisher setup."
+        return 1
+    fi
+
+    # Check if Fisher is already installed
+    if fish -c "type -q fisher" 2>/dev/null; then
+        log_success "Fisher is already installed"
+    else
+        log_info "Installing Fisher plugin manager..."
+
+        # Install Fisher
+        if fish -c "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher" 2>&1; then
+            log_success "Fisher installed successfully"
         else
-            log_error "Failed to clone TPM repository"
-            log_warning "You can manually install TPM later with: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm"
+            log_warning "Failed to install Fisher automatically"
+            log_info "You can install Fisher manually by running in fish shell:"
+            log_info "  curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher"
             return 1
         fi
-    else
-        log_success "TPM is already installed"
     fi
+
+    # Install plugins from fish_plugins file
+    local fish_plugins_file="$HOME/.config/fish/fish_plugins"
+    if [ -f "$fish_plugins_file" ]; then
+        log_info "Installing fish plugins from fish_plugins file..."
+
+        # Fisher will automatically read from fish_plugins file
+        if fish -c "fisher update" 2>&1; then
+            log_success "Fish plugins installed successfully"
+            log_info "Installed plugins:"
+            fish -c "fisher list" 2>/dev/null || true
+        else
+            log_warning "Some fish plugins may have failed to install"
+            log_info "You can manually install plugins later with: fisher update"
+        fi
+    else
+        log_warning "fish_plugins file not found at $fish_plugins_file"
+        log_info "You can manually install plugins later"
+    fi
+
+    return 0
+}
+
+# Set fish as default shell
+set_fish_as_default_shell() {
+    log_info "Setting fish as default shell..."
+
+    # Check if fish is installed
+    if ! command_exists fish; then
+        log_warning "Fish shell is not installed. Cannot set as default."
+        return 1
+    fi
+
+    local fish_path
+    fish_path=$(command -v fish)
+
+    # Check if already using fish
+    if [[ "$SHELL" == "$fish_path" ]]; then
+        log_success "Fish is already your default shell"
+        return 0
+    fi
+
+    # Ensure fish is in /etc/shells
+    if ! grep -q "$fish_path" /etc/shells 2>/dev/null; then
+        log_info "Adding fish to /etc/shells..."
+        echo "$fish_path" | sudo tee -a /etc/shells >/dev/null
+    fi
+
+    # Change default shell to fish
+    log_info "Changing default shell to fish..."
+    if chsh -s "$fish_path"; then
+        log_success "Default shell changed to fish!"
+        log_info "Please restart your terminal for changes to take effect"
+        return 0
+    else
+        log_warning "Failed to change default shell automatically"
+        log_info "You can manually set fish as default with: chsh -s $fish_path"
+        return 1
+    fi
+}
+
+# -----------------------------------------------------------------------------
+# Main Installation Function
+# -----------------------------------------------------------------------------
+
+# Execute installation step with error handling
+_execute_step() {
+    local -r step_number="$1"
+    local -r step_name="$2"
+    local -r step_function="$3"
+    shift 3
+    local -a step_args=("$@")
+
+    log_info "Step $step_number: $step_name..."
+
+    if "$step_function" "${step_args[@]}"; then
+        log_success "$step_name completed"
+        return 0
+    fi
+
+    # Only return error for critical steps
+    if [[ "$step_number" == "1/9" ]]; then
+        log_error "$step_name failed"
+        return 1
+    fi
+
+    log_warning "$step_name failed (continuing anyway)"
+    return 2  # Non-critical failure
 }
 
 # Main installation function
 run_installation() {
-    local os_name="$1"
+    local -r os_name="$1"
     local dotfiles_dir
     dotfiles_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
@@ -713,61 +1121,18 @@ run_installation() {
 
     local install_failed=0
 
-    # Install package manager
-    log_info "Step 1/6: Installing package manager..."
-    if install_package_manager "$os_name"; then
-        log_success "Package manager setup completed"
-    else
-        log_error "Package manager setup failed"
-        install_failed=1
-        return 1
-    fi
+    # Execute all installation steps
+    _execute_step "1/9" "Installing package manager" install_package_manager "$os_name" || return 1
+    _execute_step "2/9" "Installing Neovim" install_neovim "$os_name" || install_failed=1
+    _execute_step "3/9" "Installing dependencies" install_dependencies "$os_name" || install_failed=1
+    _execute_step "4/9" "Installing dotfiles configurations" install_dotfiles_config "$dotfiles_dir" || install_failed=1
+    _execute_step "5/9" "Installing tmux and TPM" install_tmux_setup "$os_name" || install_failed=1
+    _execute_step "6/9" "Installing LSP servers" install_lsp_servers || install_failed=1
+    _execute_step "7/9" "Installing fish shell" install_fish_shell "$os_name" || install_failed=1
+    _execute_step "8/9" "Installing Fisher plugin manager and fish plugins" install_fisher_and_plugins || install_failed=1
+    _execute_step "9/9" "Setting fish as default shell" set_fish_as_default_shell || install_failed=1
 
-    # Install Neovim
-    log_info "Step 2/6: Installing Neovim..."
-    if install_neovim "$os_name"; then
-        log_success "Neovim installation completed"
-    else
-        log_warning "Neovim installation failed (continuing anyway)"
-        install_failed=1
-    fi
-
-    # Install dependencies
-    log_info "Step 3/6: Installing dependencies..."
-    if install_dependencies "$os_name"; then
-        log_success "Dependencies installation completed"
-    else
-        log_warning "Dependencies installation failed (continuing anyway)"
-        install_failed=1
-    fi
-
-    # Install dotfiles configurations
-    log_info "Step 4/6: Installing dotfiles configurations..."
-    if install_dotfiles_config "$dotfiles_dir"; then
-        log_success "Dotfiles configuration completed"
-    else
-        log_warning "Dotfiles configuration failed (continuing anyway)"
-        install_failed=1
-    fi
-
-    # Install tmux and TPM
-    log_info "Step 5/6: Installing tmux and TPM..."
-    if install_tmux_setup "$os_name"; then
-        log_success "Tmux setup completed"
-    else
-        log_warning "Tmux setup failed (continuing anyway)"
-        install_failed=1
-    fi
-
-    # Install LSP servers
-    log_info "Step 6/6: Installing LSP servers..."
-    if install_lsp_servers; then
-        log_success "LSP servers installation completed"
-    else
-        log_warning "LSP servers installation failed (continuing anyway)"
-        install_failed=1
-    fi
-
+    # Report final status
     if [ $install_failed -eq 0 ]; then
         log_success "Installation completed successfully!"
     else

@@ -1,5 +1,0 @@
-[core]
-	excludesfile = $HOME/.global_gitignore
-[user]
-	email = knopmatthew93@gmail.com
-	name = Matt Knop
