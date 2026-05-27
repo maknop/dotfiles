@@ -207,13 +207,6 @@ require("lazy").setup({
 
   -- LSP and completion
   {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      require("config.lsp")
-    end,
-  },
-  {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     dependencies = {

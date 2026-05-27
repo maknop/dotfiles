@@ -739,7 +739,7 @@ _install_python_lsp() {
     fi
 
     log_info "Installing Python LSP servers..."
-    if pip3 install --user pyright ruff-lsp 2>&1; then
+    if pip3 install --user pyright 2>&1; then
         log_success "Python LSP servers installed successfully"
         return 0
     fi
@@ -1011,7 +1011,7 @@ install_fisher_and_plugins() {
         log_info "Installing Fisher plugin manager..."
 
         # Install Fisher
-        if fish -c "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher" 2>&1; then
+        if fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher" 2>&1; then
             log_success "Fisher installed successfully"
         else
             log_warning "Failed to install Fisher automatically"
@@ -1086,11 +1086,13 @@ set_fish_as_default_shell() {
 # -----------------------------------------------------------------------------
 
 # Execute installation step with error handling
+# Usage: _execute_step <step_number> <step_name> <critical:true|false> <function> [args...]
 _execute_step() {
     local -r step_number="$1"
     local -r step_name="$2"
-    local -r step_function="$3"
-    shift 3
+    local -r critical="$3"
+    local -r step_function="$4"
+    shift 4
     local -a step_args=("$@")
 
     log_info "Step $step_number: $step_name..."
@@ -1100,14 +1102,13 @@ _execute_step() {
         return 0
     fi
 
-    # Only return error for critical steps
-    if [[ "$step_number" == "1/9" ]]; then
+    if [[ "$critical" == "true" ]]; then
         log_error "$step_name failed"
         return 1
     fi
 
     log_warning "$step_name failed (continuing anyway)"
-    return 2  # Non-critical failure
+    return 2
 }
 
 # Main installation function
@@ -1122,15 +1123,15 @@ run_installation() {
     local install_failed=0
 
     # Execute all installation steps
-    _execute_step "1/9" "Installing package manager" install_package_manager "$os_name" || return 1
-    _execute_step "2/9" "Installing Neovim" install_neovim "$os_name" || install_failed=1
-    _execute_step "3/9" "Installing dependencies" install_dependencies "$os_name" || install_failed=1
-    _execute_step "4/9" "Installing dotfiles configurations" install_dotfiles_config "$dotfiles_dir" || install_failed=1
-    _execute_step "5/9" "Installing tmux and TPM" install_tmux_setup "$os_name" || install_failed=1
-    _execute_step "6/9" "Installing LSP servers" install_lsp_servers || install_failed=1
-    _execute_step "7/9" "Installing fish shell" install_fish_shell "$os_name" || install_failed=1
-    _execute_step "8/9" "Installing Fisher plugin manager and fish plugins" install_fisher_and_plugins || install_failed=1
-    _execute_step "9/9" "Setting fish as default shell" set_fish_as_default_shell || install_failed=1
+    _execute_step "1/9" "Installing package manager" true  install_package_manager "$os_name" || return 1
+    _execute_step "2/9" "Installing Neovim" false install_neovim "$os_name" || install_failed=1
+    _execute_step "3/9" "Installing dependencies" false install_dependencies "$os_name" || install_failed=1
+    _execute_step "4/9" "Installing dotfiles configurations" false install_dotfiles_config "$dotfiles_dir" || install_failed=1
+    _execute_step "5/9" "Installing tmux and TPM" false install_tmux_setup "$os_name" || install_failed=1
+    _execute_step "6/9" "Installing LSP servers" false install_lsp_servers || install_failed=1
+    _execute_step "7/9" "Installing fish shell" false install_fish_shell "$os_name" || install_failed=1
+    _execute_step "8/9" "Installing Fisher plugin manager and fish plugins" false install_fisher_and_plugins || install_failed=1
+    _execute_step "9/9" "Setting fish as default shell" false set_fish_as_default_shell || install_failed=1
 
     # Report final status
     if [ $install_failed -eq 0 ]; then
