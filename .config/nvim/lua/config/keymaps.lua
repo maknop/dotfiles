@@ -30,13 +30,3 @@ keymap("n", ";", ":", opts)
 keymap("i", "jk", "<ESC>", opts)
 keymap("i", "JK", "<ESC>", opts)
 
--- NvimTree mappings (will work when plugin is loaded)
-keymap("n", "<C-n>", "<cmd>NvimTreeToggle<cr>", opts)
-keymap("n", "<C-m>", "<cmd>NvimTreeFindFile<cr>", opts)
-
--- Telescope mappings
-keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts)
-keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts)
-keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", opts)
-keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", opts)
-keymap("n", "<leader>r", "<cmd>lua require('telescope.builtin').oldfiles()<cr>", opts)

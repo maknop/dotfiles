@@ -31,16 +31,3 @@ if set -q GOROOT
     fish_add_path $GOROOT/bin
 end
 
-# NVM setup for fish
-# Note: nvm.fish plugin is installed via Fisher
-# It will be available automatically after fisher update
-if test -d $HOME/.nvm
-    # If using bass (allows running bash scripts in fish)
-    if type -q bass
-        bass source $HOME/.nvm/nvm.sh
-    end
-end
-
-# Load custom functions directory
-# Fish automatically loads functions from ~/.config/fish/functions/
-set -gx fish_function_path $fish_function_path ~/.config/fish/functions

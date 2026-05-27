@@ -179,7 +179,7 @@ check:
 		fi; \
 	done
 	@echo "Checking for required files..."
-	@required_files="start.sh scripts/functions.sh .zshrc .config/nvim/init.lua"; \
+	@required_files="start.sh scripts/functions.sh .config/nvim/init.lua"; \
 	for file in $$required_files; do \
 		if [ ! -f "$$file" ]; then \
 			echo "$(RED)Error: Required file $$file not found$(NC)"; \
