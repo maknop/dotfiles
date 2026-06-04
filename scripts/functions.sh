@@ -95,7 +95,19 @@ install_package_manager() {
             fi
             ;;
         Linux)
-            command_exists apt-get && sudo apt-get update
+            local distro
+            distro=$(get_linux_distro)
+            case "$distro" in
+                ubuntu|debian)      sudo apt-get update || true ;;
+                fedora)             sudo dnf check-update || true ;;
+                rhel|centos)        sudo yum check-update || true ;;
+                arch|manjaro)       sudo pacman -Sy || true ;;
+                *)
+                    if command_exists dnf; then sudo dnf check-update || true
+                    elif command_exists apt-get; then sudo apt-get update || true
+                    elif command_exists yum; then sudo yum check-update || true
+                    fi ;;
+            esac
             ;;
     esac
 }
@@ -210,11 +222,26 @@ install_dependencies() {
             [[ ${#to_install[@]} -gt 0 ]] && brew install "${to_install[@]}"
             ;;
         Linux)
-            if command_exists apt-get; then
-                sudo apt-get install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang-go
-            elif command_exists yum; then
-                sudo yum install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang
-            fi
+            local distro
+            distro=$(get_linux_distro)
+            case "$distro" in
+                ubuntu|debian)
+                    sudo apt-get install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang-go ;;
+                fedora)
+                    sudo dnf install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang ;;
+                rhel|centos)
+                    sudo yum install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang ;;
+                arch|manjaro)
+                    sudo pacman -S --noconfirm git curl wget ripgrep fd nodejs npm python python-pip go ;;
+                *)
+                    if command_exists dnf; then
+                        sudo dnf install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang
+                    elif command_exists apt-get; then
+                        sudo apt-get install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang-go
+                    elif command_exists yum; then
+                        sudo yum install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang
+                    fi ;;
+            esac
             ;;
     esac
 }
@@ -237,8 +264,9 @@ install_extra_tools() {
             distro=$(get_linux_distro)
             case "$distro" in
                 ubuntu|debian)   sudo apt-get install -y tree htop jq fzf bat exa build-essential ;;
-                fedora|rhel|centos) sudo yum install -y tree htop jq fzf bat exa gcc gcc-c++ make ;;
-                arch|manjaro)    sudo pacman -S --noconfirm tree htop jq fzf bat exa base-devel ;;
+                fedora)          sudo dnf install -y tree htop jq fzf bat eza gcc gcc-c++ make ;;
+                rhel|centos)     sudo yum install -y tree htop jq fzf bat gcc gcc-c++ make ;;
+                arch|manjaro)    sudo pacman -S --noconfirm tree htop jq fzf bat eza base-devel ;;
                 *)               log_warning "Unknown distro '$distro', skipping extra tools" ;;
             esac
             ;;
@@ -257,7 +285,8 @@ install_tmux_setup() {
         case "$os" in
             Darwin) brew install tmux ;;
             Linux)
-                if command_exists apt-get; then sudo apt-get install -y tmux
+                if command_exists dnf; then sudo dnf install -y tmux
+                elif command_exists apt-get; then sudo apt-get install -y tmux
                 elif command_exists yum; then sudo yum install -y tmux
                 elif command_exists pacman; then sudo pacman -S --noconfirm tmux
                 fi ;;
@@ -313,10 +342,10 @@ install_fish_shell() {
     case "$os" in
         Darwin) brew install fish ;;
         Linux)
-            if command_exists apt-get; then sudo apt-get install -y fish
+            if command_exists dnf; then sudo dnf install -y fish
+            elif command_exists apt-get; then sudo apt-get install -y fish
             elif command_exists yum; then sudo yum install -y fish
             elif command_exists pacman; then sudo pacman -S --noconfirm fish
-            elif command_exists dnf; then sudo dnf install -y fish
             else log_error "No supported package manager for fish"; return 1
             fi ;;
     esac
