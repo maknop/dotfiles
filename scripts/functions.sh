@@ -226,20 +226,20 @@ install_dependencies() {
             distro=$(get_linux_distro)
             case "$distro" in
                 ubuntu|debian)
-                    sudo apt-get install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang-go ;;
+                    sudo apt-get install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang-go gawk ;;
                 fedora)
-                    sudo dnf install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang ;;
+                    sudo dnf install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang gawk ;;
                 rhel|centos)
-                    sudo yum install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang ;;
+                    sudo yum install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang gawk ;;
                 arch|manjaro)
-                    sudo pacman -S --noconfirm git curl wget ripgrep fd nodejs npm python python-pip go ;;
+                    sudo pacman -S --noconfirm git curl wget ripgrep fd nodejs npm python python-pip go gawk ;;
                 *)
                     if command_exists dnf; then
-                        sudo dnf install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang
+                        sudo dnf install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang gawk
                     elif command_exists apt-get; then
-                        sudo apt-get install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang-go
+                        sudo apt-get install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang-go gawk
                     elif command_exists yum; then
-                        sudo yum install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang
+                        sudo yum install -y git curl wget ripgrep fd-find nodejs npm python3 python3-pip golang gawk
                     fi ;;
             esac
             ;;
@@ -299,6 +299,16 @@ install_tmux_setup() {
             log_success "TPM installed"
         else
             log_warning "TPM installation failed"
+            return 1
+        fi
+    fi
+
+    if [ -x "$TPM_DIR/bin/install_plugins" ]; then
+        log_info "Installing tmux plugins..."
+        if "$TPM_DIR/bin/install_plugins" >/dev/null 2>&1; then
+            log_success "Tmux plugins installed"
+        else
+            log_warning "Some tmux plugins failed to install"
         fi
     fi
 }
@@ -404,7 +414,6 @@ print_summary() {
     log_info "Next steps:"
     log_info "  1. Restart terminal to use fish shell"
     log_info "  2. Run: nvim  (plugins install automatically on first launch)"
-    log_info "  3. In tmux: prefix + I to install plugins"
     log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 }
 
