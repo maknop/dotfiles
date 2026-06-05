@@ -263,10 +263,10 @@ install_extra_tools() {
             local distro
             distro=$(get_linux_distro)
             case "$distro" in
-                ubuntu|debian)   sudo apt-get install -y tree htop jq fzf bat exa build-essential ;;
-                fedora)          sudo dnf install -y tree htop jq fzf bat eza gcc gcc-c++ make ;;
-                rhel|centos)     sudo yum install -y tree htop jq fzf bat gcc gcc-c++ make ;;
-                arch|manjaro)    sudo pacman -S --noconfirm tree htop jq fzf bat eza base-devel ;;
+                ubuntu|debian)   sudo apt-get install -y tree htop jq fzf bat eza build-essential xclip ;;
+                fedora)          sudo dnf install -y tree htop jq fzf bat eza gcc gcc-c++ make xclip ;;
+                rhel|centos)     sudo yum install -y tree htop jq fzf bat gcc gcc-c++ make xclip ;;
+                arch|manjaro)    sudo pacman -S --noconfirm tree htop jq fzf bat eza base-devel xclip ;;
                 *)               log_warning "Unknown distro '$distro', skipping extra tools" ;;
             esac
             ;;
@@ -321,7 +321,7 @@ install_lsp_servers() {
     log_info "Installing LSP servers..."
 
     if command_exists pip3; then
-        pip3 install --user pyright || log_warning "pyright install failed"
+        pip3 install --user pyright ruff || log_warning "pyright/ruff install failed"
     fi
 
     if command_exists npm; then

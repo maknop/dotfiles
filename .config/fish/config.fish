@@ -31,4 +31,4 @@ if set -q GOROOT
     fish_add_path $GOROOT/bin
 end
 
-export PATH="$HOME/.local/bin:$PATH"
+fish_add_path $HOME/.local/bin
