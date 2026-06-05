@@ -295,8 +295,11 @@ install_tmux_setup() {
 
     if [ ! -d "$TPM_DIR" ]; then
         log_info "Installing TPM..."
-        git clone https://github.com/tmux-plugins/tpm "$TPM_DIR" && \
-            log_success "TPM installed" || log_warning "TPM installation failed"
+        if git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"; then
+            log_success "TPM installed"
+        else
+            log_warning "TPM installation failed"
+        fi
     fi
 }
 
@@ -393,9 +396,9 @@ print_summary() {
     log_success "Installation complete!"
     log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-    command_exists fish && log_success "  fish + fisher + plugins" || log_warning "  fish (may have failed)"
-    command_exists nvim && log_success "  neovim $(get_nvim_version)" || log_warning "  neovim (may have failed)"
-    command_exists tmux && log_success "  tmux + TPM" || log_warning "  tmux (may have failed)"
+    if command_exists fish; then log_success "  fish + fisher + plugins"; else log_warning "  fish (may have failed)"; fi
+    if command_exists nvim; then log_success "  neovim $(get_nvim_version)"; else log_warning "  neovim (may have failed)"; fi
+    if command_exists tmux; then log_success "  tmux + TPM"; else log_warning "  tmux (may have failed)"; fi
 
     echo ""
     log_info "Next steps:"
