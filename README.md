@@ -11,9 +11,6 @@ cd ~/dotfiles
 
 # Run the installation script
 ./start.sh
-
-# Or use the Makefile
-make install
 ```
 
 ## Structure
@@ -74,100 +71,12 @@ dotfiles/
 - **TPM integration** - Tmux Plugin Manager for extensibility
 
 ### Installation Script Features
-- **Cross-platform** - Supports macOS and Linux (Ubuntu, Debian, RHEL/CentOS, Fedora, Arch)
+- **Cross-platform** - Supports macOS and Fedora Linux
 - **Automatic dependency installation** - Installs Neovim, tmux, LSP servers, and tools
 - **Safe symlinking** - Automatically replaces existing configurations
 - **Package manager detection** - Uses Homebrew on macOS, apt/yum/dnf/pacman on Linux
 - **Colored output** - Clear progress indicators and error messages
 
-## What Gets Installed
-
-### Core Tools
-- **Neovim** - Version 0.11+ (enforced on macOS and Ubuntu; other distros use system package manager)
-- **Tmux** - Terminal multiplexer with TPM (Tmux Plugin Manager)
-- **Fish Shell** - Modern shell with excellent defaults
-  - Fisher plugin manager
-  - bobthefish prompt theme
-  - nvm.fish for Node version management
-  - bass for running bash scripts
-- **Git** - Version control
-- **Node.js & npm** - For TypeScript LSP and tools
-- **Python 3 & pip** - For Python LSP servers
-- **Go** - For Go development and gopls
-- **ripgrep** - Fast text search for Telescope
-- **fd** - Fast file finder
-
-### LSP Servers
-- **pyright** - Python language server
-- **ruff** - Python linting and formatting (`ruff server`)
-- **typescript-language-server** - TypeScript/JavaScript support
-- **gopls** - Go language server
-
-### Additional Tools (OS-specific)
-- **macOS**: tree, htop, jq, fzf, bat, exa, delta
-- **Linux (Debian/Ubuntu)**: tree, htop, jq, fzf, bat, exa, build-essential
-- **Linux (RHEL/CentOS)**: tree, htop, jq, fzf, bat, exa, gcc, make
-- **Linux (Arch)**: tree, htop, jq, fzf, bat, exa, base-devel
-
-## Manual Installation Steps
-
-If you prefer to install manually:
-
-1. **Install Neovim** (version 0.11+)
-2. **Remove existing config** (if any): `rm -rf ~/.config/nvim`
-3. **Symlink configuration**: `ln -sf /path/to/dotfiles/.config/nvim ~/.config/nvim`
-4. **Install dependencies**: See the installation script for your OS
-5. **Start Neovim**: `nvim` (plugins will install automatically via lazy.nvim)
-
-## Fish Shell
-
-The installation script automatically:
-- Installs fish shell
-- Configures fish with all environment variables
-- Installs Fisher plugin manager
-- Installs all fish plugins (bobthefish theme, nvm.fish, bass)
-- Sets fish as your default shell
-
-After installation, **simply restart your terminal** and you'll be using fish.
-
-### Fish Plugins
-
-Managed via Fisher (`fish_plugins`):
-- `jorgebucaran/fisher` - Plugin manager
-- `oh-my-fish/theme-bobthefish` - Prompt theme
-- `jorgebucaran/nvm.fish` - Node version management
-- `edc/bass` - Run bash scripts in fish
-
-### Customizing Fish
-
-**Configure the bobthefish prompt** — edit theme variables in `config.fish`:
-```fish
-set -g theme_nerd_fonts yes
-set -g theme_color_scheme zenburn
-```
-
-**Add custom functions:**
-Create new files in `~/.config/fish/functions/` — fish automatically loads them.
-
-**Install additional plugins:**
-```fish
-fisher install <plugin-name>
-```
-
-## Customization
-
-### Adding Neovim Plugins
-Edit `~/.config/nvim/lua/config/lazy.lua` and add plugins following the lazy.nvim syntax.
-
-### Modifying Settings
-- **General settings**: `~/.config/nvim/lua/config/options.lua`
-- **Key mappings**: `~/.config/nvim/lua/config/keymaps.lua`
-- **LSP configuration**: `~/.config/nvim/lua/config/lsp.lua`
-- **Colorscheme**: `~/.config/nvim/lua/config/colorscheme.lua`
-
-### Color Schemes
-The configuration includes several color schemes. Change the active one in `colorscheme.lua`.
-Available schemes from installed plugins: catppuccin, gruvbox, everforest, nordic, material, oceanic-material.
 
 ## Development & Maintenance
 
@@ -203,31 +112,6 @@ make lint           # Run all linting
 make shellcheck-verbose  # Detailed shellcheck output
 ```
 
-## Troubleshooting
-
-### Plugin Installation Issues
-```bash
-# Open Neovim and run:
-:Lazy sync
-```
-
-### LSP Server Issues
-```bash
-# Check LSP server status in Neovim:
-:LspInfo
-
-# Install missing LSP servers manually:
-pip install pyright ruff-lsp
-npm install -g typescript typescript-language-server
-go install golang.org/x/tools/gopls@latest
-```
-
-### Permission Issues
-```bash
-# Make scripts executable:
-chmod +x start.sh scripts/*.sh
-```
-
 ## Key Mappings
 
 | Key | Mode | Action |
@@ -261,11 +145,3 @@ chmod +x start.sh scripts/*.sh
 | `prefix + b` | Toggle status bar |
 | `v` (copy mode) | Begin selection |
 | `y` (copy mode) | Yank selection |
-
-## Contributing
-
-Feel free to fork and customize this configuration for your needs. If you find improvements or fixes, pull requests are welcome!
-
-## License
-
-This configuration is provided as-is. Feel free to use and modify as needed.
