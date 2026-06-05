@@ -21,11 +21,9 @@ make install
 ```
 dotfiles/
 ├── Makefile                   # Build automation and linting
-├── start.sh                   # Main installation script
+├── start.sh                   # Main installation script (Linux + macOS)
 ├── scripts/
-│   ├── functions.sh          # Shared installation functions
-│   ├── macos.sh             # macOS-specific installation
-│   └── linux.sh             # Linux-specific installation
+│   └── functions.sh          # All installation functions
 └── .config/
     ├── fish/                  # Fish shell configuration
     │   ├── config.fish       # Main fish configuration
