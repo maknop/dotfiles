@@ -7,4 +7,4 @@ SETUVAR _fisher_jorgebucaran_2F_nvm_2E_fish_files:\x7e/\x2econfig/fish/functions
 SETUVAR _fisher_oh_2D_my_2D_fish_2F_theme_2D_bobthefish_files:\x7e/\x2econfig/fish/functions/__bobthefish_colors\x2efish\x1e\x7e/\x2econfig/fish/functions/__bobthefish_display_colors\x2efish\x1e\x7e/\x2econfig/fish/functions/__bobthefish_glyphs\x2efish\x1e\x7e/\x2econfig/fish/functions/bobthefish_display_colors\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_greeting\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_mode_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_right_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_title\x2efish
 SETUVAR _fisher_plugins:jorgebucaran/fisher\x1ejorgebucaran/nvm\x2efish\x1eedc/bass\x1eoh\x2dmy\x2dfish/theme\x2dbobthefish
 SETUVAR _fisher_upgraded_to_4_4:\x1d
-SETUVAR fish_user_paths:/usr/local/go/bin
+SETUVAR fish_user_paths:/home/maknop/\x2elocal/bin\x1e/usr/local/go/bin
