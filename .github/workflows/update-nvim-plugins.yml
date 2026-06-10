@@ -22,6 +22,8 @@ jobs:
 
       - name: Update plugins
         run: nvim --headless "+Lazy! update" +qa
+        env:
+          XDG_CONFIG_HOME: ${{ github.workspace }}/.config
 
       - name: Create pull request
         id: create-pr
