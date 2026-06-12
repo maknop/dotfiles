@@ -19,74 +19,17 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   -- Color schemes
   {
-    "morhetz/gruvbox",
-    lazy = true,
-  },
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    lazy = true,
-  },
-  {
     "neanias/everforest-nvim",
     priority = 1000,
     config = function()
       require("config.colorscheme").setup()
     end,
   },
-  {
-    "kaicataldo/material.vim",
-    lazy = true,
-  },
-  {
-    "AlexvZyl/nordic.nvim",
-    lazy = true,
-  },
-  {
-    "glepnir/oceanic-material",
-    lazy = true,
-  },
-
-  -- Markdown preview
-  {
-    "JamshedVesuna/vim-markdown-preview",
-    ft = "markdown",
-  },
-
-  -- Vim Personal Wiki
-  {
-    "vimwiki/vimwiki",
-    ft = "vimwiki",
-  },
 
   -- Language-specific plugins
   {
-    "hynek/vim-python-pep8-indent",
-    ft = "python",
-  },
-  {
-    "alvan/vim-closetag",
-    ft = { "html", "xml", "jsx", "tsx" },
-  },
-  {
-    "hail2u/vim-css3-syntax",
-    ft = "css",
-  },
-  {
     "beautify-web/js-beautify",
     ft = { "javascript", "json", "html", "css" },
-  },
-  {
-    "pangloss/vim-javascript",
-    ft = "javascript",
-  },
-  {
-    "mxw/vim-jsx",
-    ft = { "jsx", "javascript.jsx" },
-  },
-  {
-    "fatih/vim-go",
-    ft = "go",
   },
 
   -- Core plugins
@@ -139,14 +82,6 @@ require("lazy").setup({
   {
     "jiangmiao/auto-pairs",
     event = "InsertEnter",
-  },
-  {
-    "vim-airline/vim-airline",
-    event = "VeryLazy",
-  },
-  {
-    "christoomey/vim-tmux-navigator",
-    keys = { "<C-h>", "<C-j>", "<C-k>", "<C-l>" },
   },
 
   -- Telescope and dependencies
@@ -240,7 +175,7 @@ require("lazy").setup({
 }, {
   -- Lazy.nvim configuration
   install = {
-    colorscheme = { "catppuccin", "default" },
+    colorscheme = { "everforest", "default" },
   },
   checker = {
     enabled = true,

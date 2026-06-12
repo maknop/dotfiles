@@ -29,11 +29,6 @@ function M.setup()
     vim.cmd("colorscheme default")
   end
 
-  -- Configure statusline to reflect current theme
-  local statusline_ok, statusline = pcall(require, "config.statusline")
-  if statusline_ok then
-    statusline.setup()
-  end
 end
 
 return M
