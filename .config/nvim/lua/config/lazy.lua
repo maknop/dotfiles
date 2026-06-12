@@ -26,12 +26,6 @@ require("lazy").setup({
     end,
   },
 
-  -- Language-specific plugins
-  {
-    "beautify-web/js-beautify",
-    ft = { "javascript", "json", "html", "css" },
-  },
-
   -- Core plugins
   {
     "nvim-tree/nvim-web-devicons",
@@ -76,12 +70,13 @@ require("lazy").setup({
     end,
   },
   {
-    "scrooloose/nerdcommenter",
-    keys = { "<leader>c" },
-  },
-  {
-    "jiangmiao/auto-pairs",
+    "windwp/nvim-autopairs",
     event = "InsertEnter",
+    config = function()
+      require("nvim-autopairs").setup()
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+      require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+    end,
   },
 
   -- Telescope and dependencies
