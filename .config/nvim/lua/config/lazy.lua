@@ -196,7 +196,7 @@ require("lazy").setup({
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
     config = function()
-      require("nvim-treesitter.configs").setup({
+      require("nvim-treesitter").setup({
         ensure_installed = { "vim", "regex", "lua", "bash", "markdown", "markdown_inline" },
         highlight = {
           enable = true,
