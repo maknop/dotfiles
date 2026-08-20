@@ -27,3 +27,6 @@ Thumbs.db
 
 # Git
 .gitconfig
+
+# Fish local/work environment variables
+.config/fish/conf.d/work.fish
