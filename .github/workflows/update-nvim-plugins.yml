@@ -12,10 +12,10 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install Neovim
-        uses: rhysd/action-setup-vim@v1
+        uses: rhysd/action-setup-vim@47493751bcbf7a4b12bc9e0c2ddce7aa1e3b69e5 # v1.4.1
         with:
           neovim: true
           version: stable
@@ -27,7 +27,7 @@ jobs:
 
       - name: Create pull request
         id: create-pr
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@98357b18bf14b5342f975ff684046ec3b2a07725 # v8.0.0
         with:
           token: ${{ secrets.PAT_TOKEN }}
           commit-message: "chore: update neovim plugins"
