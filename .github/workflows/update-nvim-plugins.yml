@@ -29,7 +29,7 @@ jobs:
         id: create-pr
         uses: peter-evans/create-pull-request@v8
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
           commit-message: "chore: update neovim plugins"
           title: "chore: update neovim plugins"
           body: |
@@ -44,5 +44,5 @@ jobs:
         if: steps.create-pr.outputs.pull-request-number != ''
         run: gh pr merge --auto --squash "$PR_URL"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
           PR_URL: ${{ steps.create-pr.outputs.pull-request-url }}
