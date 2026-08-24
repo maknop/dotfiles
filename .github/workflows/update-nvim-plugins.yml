@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install Neovim
-        uses: rhysd/action-setup-vim@47493751bcbf7a4b12bc9e0c2ddce7aa1e3b69e5 # v1.4.1
+        uses: rhysd/action-setup-vim@febef33995d6649302e9d88dda81e071b68f16a7 # v1.6.1
         with:
           neovim: true
           version: stable
